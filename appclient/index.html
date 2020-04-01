@@ -3,9 +3,231 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alumnos y Profesors</title>
+    <!-- MDB icon -->
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Google Fonts Roboto -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="css/lib/bootstrap.min.css">
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" href="css/lib/mdb.min.css">
+    <!-- MDBootstrap Datatables  -->
+    <link href="css/lib/addons/datatables.min.css" rel="stylesheet">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css" />
+    
+  <title>Ipartek formación</title>
 </head>
 <body>
-  
+<main class="container">
+<!-- Navbar -->
+<div class="row">
+  <div class="col-md-12">
+    <ul class="nav blue-gradient py-4 mb-md-0 mb-4 font-weight-bold z-depth-1">
+      <li class="nav-item">
+        <a class="nav-link active white-text" href="#!">Ipartek formación</a>
+      </li>
+      <!-- <li class="nav-item">
+        <a class="nav-link white-text" href="#!">Link</a>
+      </li> -->
+    </ul>
+  </div>
+</div>
+<!-- Forms Section -->
+<section class="pt-5 my-5 px-5 z-depth-1">
+  <div class="row">
+    <!-- Search form -->
+    <div class="col-lg-4 col-sm-6 mb-5">
+      <form class="form-inline d-flex justify-content-center md-form form-sm active-pink active-pink-2 mt-2">
+        <i class="fas fa-search" aria-hidden="true"></i>
+        <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Buscador" aria-label="Buscador">
+      </form>
+    </div>
+    <!-- Select form -->
+    <div class="col-lg-4 col-sm-6 mt-2">
+      <select class="browser-default custom-select" id="selectorSexo">
+        <option value="t" selected>Todos</option>
+        <option value="h">Hombre</option>
+        <option value="m">Mujer</option>
+      </select>
+    </div>
+  </div>
+</section>
+<!-- User List -->
+  <div class="pt-5 my-5 z-depth-1">
+    <section class="p-md-3 mx-md-5 text-lg-left">
+      <h2 class="text-center font-weight-bold mb-4 pb-1">Listado de Alumnos</h2>
+
+      <div class="row">
+        <div class="col-lg-4 col-sm-6 mb-5">
+          <div class="row d-flex align-items-center">
+            <div class="col-5 avatar w-100 white d-flex justify-content-center align-items-center">
+              <img src="https://i.pravatar.cc/300?u=iptk0001"
+                class="img-fluid rounded-circle z-depth-1" />
+            </div>
+            <div class="col-7">
+              <h6 class="font-weight-bold pt-2">Alan Turing</h6>
+              <p class="text-muted">
+                Lorem Ipsum dolor
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-sm-6 mb-5">
+          <div class="row d-flex align-items-center">
+            <div class="col-5 avatar w-100 white d-flex justify-content-center align-items-center">
+              <img src="https://i.pravatar.cc/300?u=iptk0002"
+                class="img-fluid rounded-circle z-depth-1" />
+            </div>
+            <div class="col-7">
+              <h6 class="font-weight-bold pt-2">Tom Johnson</h6>
+              <p class="text-muted">
+                Lorem Ipsum dolor
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-sm-6 mb-5">
+          <div class="row d-flex align-items-center">
+            <div class="col-5 avatar w-100 white d-flex justify-content-center align-items-center">
+              <img src="https://i.pravatar.cc/300?u=iptk0003"
+                class="img-fluid rounded-circle z-depth-1" />
+            </div>
+            <div class="col-7">
+              <h6 class="font-weight-bold pt-2">Alax Laurie</h6>
+              <p class="text-muted">
+                Lorem Ipsum dolor
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-sm-6 mb-5">
+          <div class="row d-flex align-items-center">
+            <div class="col-5 avatar w-100 white d-flex justify-content-center align-items-center">
+              <img src="https://i.pravatar.cc/300?u=iptk0004"
+                class="img-fluid rounded-circle z-depth-1" />
+            </div>
+            <div class="col-7">
+              <h6 class="font-weight-bold pt-2">Nathalie Fry</h6>
+              <p class="text-muted">
+                Lorem Ipsum dolor
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-sm-6 mb-5">
+          <div class="row d-flex align-items-center">
+            <div class="col-5 avatar w-100 white d-flex justify-content-center align-items-center">
+              <img src="https://i.pravatar.cc/300?u=iptk0005"
+                class="img-fluid rounded-circle z-depth-1" />
+            </div>
+            <div class="col-7">
+              <h6 class="font-weight-bold pt-2">Ella Stone</h6>
+              <p class="text-muted">
+                Lorem Ipsum dolor
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-sm-6 mb-5">
+          <div class="row d-flex align-items-center">
+            <div class="col-5 avatar w-100 white d-flex justify-content-center align-items-center">
+              <img src="https://i.pravatar.cc/300?u=iptk0006"
+                class="img-fluid rounded-circle z-depth-1" />
+            </div>
+            <div class="col-7">
+              <h6 class="font-weight-bold pt-2">Lara Croft</h6>
+              <p class="text-muted">
+                Lorem Ipsum dolor
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-sm-6 mb-5">
+          <div class="row d-flex align-items-center">
+            <div class="col-5 avatar w-100 white d-flex justify-content-center align-items-center">
+              <img src="https://i.pravatar.cc/300?u=iptk0007"
+                class="img-fluid rounded-circle z-depth-1" />
+            </div>
+            <div class="col-7">
+              <h6 class="font-weight-bold pt-2">Billy Turner</h6>
+              <p class="text-muted">
+                Lorem Ipsum dolor
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-sm-6 mb-5">
+          <div class="row d-flex align-items-center">
+            <div class="col-5 avatar w-100 white d-flex justify-content-center align-items-center">
+              <img src="https://i.pravatar.cc/300?u=iptk0008"
+                class="img-fluid rounded-circle z-depth-1" />
+            </div>
+            <div class="col-7">
+              <h6 class="font-weight-bold pt-2">Caroline Thompson</h6>
+              <p class="text-muted">
+                Lorem Ipsum dolor
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-sm-6 mb-5">
+          <div class="row d-flex align-items-center">
+            <div class="col-5 avatar w-100 white d-flex justify-content-center align-items-center">
+              <img src="https://i.pravatar.cc/300?u=iptk0009"
+                class="img-fluid rounded-circle z-depth-1" />
+            </div>
+            <div class="col-7">
+              <h6 class="font-weight-bold pt-2">Anna Polkovsky</h6>
+              <p class="text-muted">
+                Lorem Ipsum dolor
+              </p>
+            </div>
+          </div>
+        </div>
+    </section>
+  </div>
+
+<!-- Footer -->
+<footer class="page-footer font-small indigo darken-4 py-4">
+
+  <!-- Footer Elements -->
+  <div class="container">
+
+    <div class="row">
+      <div class="col-md-6 d-flex justify-content-start">
+        <!-- Copyright -->
+        <div class="footer-copyright text-center bg-transparent">© 2020
+          <a href="#"> Ejemplo javascript</a>
+        </div>
+        <!-- Copyright -->
+      </div>
+      <div class="col-md-6 d-flex justify-content-end">
+        <ul class="list-unstyled d-flex mb-0">
+          <li>
+            <a class="mr-3" role="button"><i class="fab fa-facebook-f"></i></a>
+          </li>
+          <li>
+            <a class="mr-3" role="button"><i class="fab fa-twitter"></i></a>
+          </li>
+          <li>
+            <a class="mr-3" role="button"><i class="fab fa-instagram"></i></a>
+          </li>
+          <li>
+            <a class="" role="button"><i class="fab fa-youtube"></i></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+  <!-- Footer Elements -->
+
+</footer>
+<!-- Footer -->
+
+</main>
 </body>
 </html>
