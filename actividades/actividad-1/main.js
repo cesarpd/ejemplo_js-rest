@@ -7,5 +7,5 @@ eboton.addEventListener('click', function mostrarNombre(e) {
   if (campoTexto.value === "" || campoTexto.value.lenght == 0) {
     alert("El campo esta vacio")
   } else {
-    campoParra.innerHTML += `El testo de arriba es ${campoTexto.value}`;  }; 
+    campoParra.innerHTML += `El texto de arriba es ${campoTexto.value}`;  }; 
 })

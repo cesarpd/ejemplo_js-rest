@@ -1,0 +1,36 @@
+:root {
+  background: lightgrey;
+  color: #333333;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.container {
+  width: 50%;
+  padding: 5rem;
+  margin: 3rem auto;
+  background: lightslategray;
+}
+.list {
+  max-width: 50%;
+  padding: 1rem;;
+  background: lightgray;
+}
+.list li {
+  list-style-type:none;
+  font-size: 1.4rem;;
+  margin-bottom: .7rem;
+}
+.d-flex {
+  display: flex;
+}
+.d-flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.p-3 {
+  padding: 1rem;
+}
+.ml-1 {
+  margin-left: 1rem;
+}
