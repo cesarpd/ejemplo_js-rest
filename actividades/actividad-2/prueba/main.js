@@ -28,24 +28,30 @@ for (let i = 0; i < peliculas.listado.length; i++) {
   let ulPelis = document.createElement('ul');
   eList.appendChild(ulPelis);
   // Añadimos las propiedades del objeto en una lista
-  console.log(Object.keys(peliculas.listado[i]));
+  //console.log(Object.keys(peliculas.listado[i]));
   
   for (let n = 0; n < Object.keys(peliculas.listado[i]).length; n++) {
-    console.log(Object.keys(peliculas.listado[i]));
-    let liPeliId = document.createElement('li');
-    let liPeliNombre = document.createElement('li');
-    let liPeliDirector = document.createElement('li');
-    let liPeliClasificacion = document.createElement('li');
+    //console.log(Object.keys(peliculas.listado[i]));
     
-    liPeliId.textContent = listado.id;
-    liPeliNombre.textContent = listado.nombre;
-    liPeliDirector.textContent = listado.director;
-    liPeliClasificacion.textContent = lista;
+    let miPeli = {listado};
+
+    let liPeli = document.createElement('li');
+    // let liPeliId = document.createElement('li');
+    // let liPeliNombre = document.createElement('li');
+    // let liPeliDirector = document.createElement('li');
+    // let liPeliClasificacion = document.createElement('li');
     
-    ulPelis.appendChild(liPeliId);
-    ulPelis.appendChild(liPeliNombre);
-    ulPelis.appendChild(liPeliDirector);
-    ulPelis.appendChild(liPeliClasificacion);
+    // liPeliId.textContent = listado.id;
+    // liPeliNombre.textContent = listado.nombre;
+    // liPeliDirector.textContent = listado.director;
+     liPeli.textContent = miPeli.id;
+    console.log(miPeli[0]);
+    
+    ulPelis.appendChild(liPeli);
+    // ulPelis.appendChild(liPeliId);
+    // ulPelis.appendChild(liPeliNombre);
+    // ulPelis.appendChild(liPeliDirector);
+    // ulPelis.appendChild(liPeliClasificacion);
     
   }
 }
