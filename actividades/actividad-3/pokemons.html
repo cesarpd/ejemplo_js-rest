@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista Pokemos</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="container">
+
+    <section class="row">
+    <div class="col-sm-6 col-xs-12 mx-auto">
+        <div class="tile">
+          <div class="wrapper">
+            <div class="header">
+             
+              <h1 class="title">Lista Pokemon</h1>
+              <h2 class="subtitle">Ejercicio 6</h2>
+
+            </div>
+
+            <div class="banner-img row align-items-center">
+              
+              <div class="col-6"><img id="poke-front-image" src="http://via.placeholder.com/230x200" alt="Image 1"></div>
+              
+              <div class="col-6">                
+                <h2 id="poke-name" class="subtitle px-1" >Nombre</h2>
+                <div id="poke-type">
+              </div>
+            
+            </div>
+
+            </div>
+
+            <div class="details">
+              <div class="tamaño">
+                <strong>TAMAÑO</strong>
+                <p id="poke-size">0</pid>
+              </div>
+              <div class="experiencia">
+                <strong>EXPERIENCIA</strong>
+                <p id="poke-exp">0</pid>
+              </div>
+            </div>
+
+            <div id="poke-list" class="stats d-flex flex-wrap">
+
+              <div>
+                <strong>ID</strong> NOMBRE
+              </div>
+
+            </div>
+            <!-- <div class="footer">
+              <a href="#" class="Cbtn Cbtn-primary">Siguiente</a>
+              <a href="#" class="Cbtn Cbtn-primary">Anterior</a>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </section>
+<div class="row">
+  <div class="col-6 mx-auto">
+  <p>Debemos consumir el servicio rest https://pokeapi.co/ mediante Ajax para mostrar en la página un listado de pokemons.</p>
+  </div>
+</div>
+  </main>
+
+  <script src="main.js"></script>
+
+</body>
+</html>
