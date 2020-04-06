@@ -9,8 +9,15 @@ function init() {
 }
 // Click Event
 let pokemonClick = (e) => {
+  let id = 0;
   let item = e.target;
-  let id = item.children[0].innerText;
+  if (item.children[0]) {
+    id = item.children[0].innerText;
+    
+  } else {
+    id = item.innerText;
+    console.debug(id);
+  }
   getPokemonData(id);
 }
 
@@ -22,7 +29,6 @@ function getPokemonList() {
   xhr.onreadystatechange = function () {
 
     let eList = document.getElementById('poke-list');
-    let eDetail = document.getElementById('poke-detail');
 
     if (this.readyState == 4 && this.status == 200) {
       //console.info('GET LIST: ' + url);
@@ -36,11 +42,15 @@ function getPokemonList() {
 
       for (let i = 0; i < pokemons.length; i++) {
         const pokemon = pokemons[i];
-
+        let pokemonUrl = pokemon.url;
+        let pokemonId = pokemonUrl.substring(pokemonUrl.lastIndexOf('/')-1);
+        //console.debug(pokemonId);
+        
         eList.innerHTML +=
-          ` <div class="d-flex flex-column">
-                <p class="poke-item pt-1 pb-4"><strong>${i + 1}</strong> ${pokemon.name}</p>
-              </div>`;
+          ` <div class="d-flex flex-column poke-item">
+                <p class="pt-1 pb-4"><strong>${pokemon.name}</strong>
+                ${pokemon.name}</p>
+            </div>`;
       }
 
       let pokeListItems = document.querySelectorAll('.poke-item');
@@ -59,7 +69,8 @@ function getPokemonList() {
 let getPokemonData = (id) => {
 
   let urlId = `https://pokeapi.co/api/v2/pokemon/${id}`
-  
+
+  //let eDetail = document.getElementById('poke-detail');
   let eName = document.getElementById('poke-name');
   let eSize = document.getElementById('poke-size');
   let eExp = document.getElementById('poke-exp');
