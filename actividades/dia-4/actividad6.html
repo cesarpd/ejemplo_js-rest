@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <title>Actividad 6</title>
+</head>
+<body>
+  <main class="container my-5 bg-light p-5">
+  <section id="todos-list-name" class="bg-white pb-3 mb-4">
+      <h1 class="bg-secondary text-light p-3" >Todas las tareas (Map)</h1>
+  </section>
+  <section id="todos-list-time" class="bg-white py-3 mb-4">
+      <h1 class="bg-secondary text-light p-3">Las tareas de menos de 30 hora (Filter)</h1>
+  </section>
+  <section id="todos-list-total-time" class="bg-white py-3 mb-4">
+      <h1 class="bg-secondary text-light p-3">Tiempo total para las tareas (Reduce)</h1>
+  </section>
+</main>
+<script>
+
+let todos =  [
+  {
+    'titulo': 'Hacer la compra',
+    'duracion': 60
+
+  },
+  {
+    'titulo': 'Hacer ejercicio',
+    'duracion': 20
+
+  },
+  {
+    'titulo': 'Limpiar',
+    'duracion': 30
+
+  }
+];
+
+let eListName = document.getElementById('todos-list-name');
+let eListTime = document.getElementById('todos-list-time');
+let eListTotalTime = document.getElementById('todos-list-total-time');
+
+getFilterTodos ();
+getTodos ();
+todosTotalTime()
+
+// Listar el nombre de la tarea
+function getTodos () {
+  let todoName = todos.map ((e) => {
+    let todoItem = document.createElement('h2');
+    todoItem.textContent = e.titulo;
+    eListName.appendChild(todoItem);
+  });
+}
+
+// Listar tareas de menos de 1 hora
+function getFilterTodos () {
+  //Filter
+  let todoTime = todos.filter ((e) => e.duracion < 60);
+  
+  let todoTimes = todoTime.map ((e) => {
+    //console.log(todoTime)
+    let todoItem = document.createElement('h2');
+    todoItem.textContent = e.titulo;
+    eListTime.appendChild(todoItem);
+  });
+};
+
+function todosTotalTime() {
+  let todoTotalTime = todos.map(e=>e.duracion).reduce( function(p,c) {
+    totalTime = p + c;
+    return totalTime;
+  }, 0);
+  //console.info('Total %o ' , todoTotalTime);
+    let todoItem = document.createElement('h2');
+    todoItem.textContent = todoTotalTime;
+    eListTotalTime.appendChild(todoItem);
+};
+
+</script>
+</body>
+</html>
