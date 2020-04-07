@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+  <title>Frutas</title>
+</head>
+<body>
+    <main class="container my-5 bg-light p-5">
+      <section id="todos-list-nombre" class="bg-white pb-3 mb-4">
+        <h1 class="bg-secondary text-light p-3">Array solo con nombres de frutas ( map )</h1>
+      </section>
+      <section id="todos-list-oferta" class="bg-white py-3 mb-4">
+        <h1 class="bg-secondary text-light p-3">Array solo con nombres de frutas que están en oferta ( map + filter )</h1>
+      </section>
+      <section id="todos-list-total" class="bg-white py-3 mb-4">
+        <h1 class="bg-secondary text-light p-3">Precio TOTAL de todas las frutas ( map + reduce )</h1>
+      </section>
+      <section id="todos-list-total-oferta" class="bg-white py-3 mb-4">
+        <h1 class="bg-secondary text-light p-3">Precio TOTAL de todas las frutas, pero aplicando el descuento si están
+          en oferta ( map, filter, reduce )</h1>
+      </section>
+      <section id="todos-list-color" class="bg-white py-3 mb-4">
+        <h1 class="bg-secondary text-light p-3">Array solo con los colores de las frutas</h1>
+      </section>
+      <section id="todos-list-total-color-2" class="bg-white py-3 mb-4">
+        <h1 class="bg-secondary text-light p-3">Array solo con los colores de las frutas SIN REPETICIÓN*</h1>
+      </section>
+    </main>
+<script>
+
+  let eListName = document.getElementById('todos-list-nombre');
+
+
+  getFilterTodos ();
+  getTodos ();
+  todosTotalTime()
+
+  const frutas = [
+    {
+      "nombre": "fresas",
+      "precio": 4.56,
+      "oferta": true,
+      "descuento": 50,
+      "colores": [ "rojo" ]
+    },
+    {
+      "nombre": "manzanas",
+      "precio": 1.99,
+      "oferta": true,
+      "descuento": 50,
+      "colores": [ "rojo", "verde", "amarillo" ]
+    },
+    {
+      "nombre": "kiwi",
+      "precio": 3.00,
+      "oferta": false,
+      "descuento": 10,
+      "colores": [ "rojo", "amarillo" ]
+    }
+  ];
+
+function getTodos () {
+    let todoName = frutas.map ((e) => {
+    let todoItem = document.createElement('h2');
+    todoItem.textContent = e.titulo;
+    eListName.appendChild(todoItem);
+  });
+}
+
+</script>
+
+</body>
+</html>

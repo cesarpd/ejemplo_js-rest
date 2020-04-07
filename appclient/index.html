@@ -27,7 +27,7 @@
   <div class="col-md-12">
     <ul class="nav  primary-color-dark py-4 mb-md-0 mb-4 font-weight-bold z-depth-1">
       <li class="nav-item">
-        <a class="nav-link active white-text" href="#!">Ipartek formación</a>
+        <a class="nav-link active white-text" href="#!"><h1 class="mx-5">Ipartek formación</h1></a>
       </li>
       <!-- <li class="nav-item">
         <a class="nav-link white-text" href="#!">Link</a>
@@ -47,10 +47,10 @@
     </div>
     <!-- Select form -->
     <div class="col-lg-4 col-sm-6 mt-2 mb-4">
-      <select class="browser-default custom-select" id="selectorSexo">
-        <option value="t" selected>Todos</option>
-        <option value="h">Hombre</option>
-        <option value="m">Mujer</option>
+      <select class="browser-default custom-select" id="selectorSexo" onselect="filtroAlumnos()">
+        <option value="none" selected>Todos</option>
+        <option value="male">Hombre</option>
+        <option value="female">Mujer</option>
       </select>
     </div>
   </div>
