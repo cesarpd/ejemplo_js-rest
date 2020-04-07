@@ -4,7 +4,7 @@ function init() {
   console.debug('Documennt loaded...')
   
   // Para el Ajax Request
-  const url = 'http://localhost:8080/AlumnosRestService/api/personas/';
+  const url = 'https://randomuser.me/api/?results=9';
   const xhr = new XMLHttpRequest();
   listaAlumnos(url, xhr);
   //filtroAlumnos(url, xhr);
@@ -13,7 +13,7 @@ function init() {
     let value = this.value;
     //console.log('selected: ' + value );
     // Para el Ajax Request
-    const url = 'http://localhost:8080/AlumnosRestService/api/personas/';
+    const url = 'https://randomuser.me/api/?results=9';
     const xhr = new XMLHttpRequest();
   // Metodo asincrono en donde se aloja todo el código
   xhr.onreadystatechange = function () {
@@ -27,18 +27,21 @@ function init() {
 
       let eList = document.getElementById('alist');
       eList.innerHTML = '';
-      if (value == "m" || value == "h" ) {
+      if (value == "male" || value == "female" ) {
       const alumnoFiltrado = alumnos.filter( e => e.gender == value);
       alumnoFiltrado.forEach(alumno => {
         eList.innerHTML += `
         <div class="col-lg-4 col-sm-6 mb-5 px-5">
           <div class="row d-flex align-items-center">
             <div class="col-5 avatar w-100 white d-flex justify-content-center align-items-center">
-              < img src = "https://randomuser.me/api/portraits/lego/${a.id}.jpg"
+              <img src="${alumno.picture.medium}"
               class="img-fluid rounded-circle z-depth-1" />
             </div>
             <div class="col-7">
-              <h6 class="font-weight-bold pt-2">${alumno.nombre} </h6>
+              <h6 class="font-weight-bold pt-2">${alumno.name.first} ${alumno.name.last}</h6>
+              <p class="text-muted">
+              ${alumno.gender}
+              </p>
             </div>
           </div>
         </div>
@@ -70,9 +73,9 @@ function listaAlumnos(url, xhr) {
       console.info('GET ' + url);
       
       const jsonRes = JSON.parse(this.responseText);
-      console.debug(jsonRes);
+      //console.debug(jsonRes);
       
-      const alumnos = jsonRes;
+      const alumnos = jsonRes.results;
       
       let eList = document.getElementById('alist');
       eList.innerHTML = '';
@@ -83,13 +86,13 @@ function listaAlumnos(url, xhr) {
         <div class="col-lg-4 col-sm-6 mb-5 px-5">
         <div class="row d-flex align-items-center">
         <div class="col-5 avatar w-100 white d-flex justify-content-center align-items-center">
-        <img src = "https://randomuser.me/api/portraits/lego/${a.id}.jpg"
+        <img src="${a.picture.medium}"
         class="img-fluid rounded-circle z-depth-1" />
         </div>
         <div class="col-7">
-        <h6 class="font-weight-bold pt-2">${a.nombre}</h6>
+        <h6 class="font-weight-bold pt-2">${a.name.first} ${a.name.last}</h6>
         <p class="text-muted">
-        ${a.sexo}
+        ${a.gender}
         </p>
         </div>
         </div>
