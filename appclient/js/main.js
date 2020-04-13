@@ -99,7 +99,7 @@ function eliminar(indice) {
 function editar(indice) {
     let alumnoSeleccionado = { id: 0, nombre: "sin nombre" };
 
-    if (indice != 0) {
+    if (indice >= 0) {
       alumnoSeleccionado = alumnos[indice];
     }
     console.debug("click guardar alumno %o", alumnoSeleccionado);
@@ -113,6 +113,7 @@ function editar(indice) {
 }
 
 function guardar() {
+  //TODO Añadir Avatar
     console.trace("click guardar");
     let avatar = "avatar0.png";
     let id = document.getElementById("inputId").value;
@@ -125,6 +126,25 @@ function guardar() {
         avatar:avatar
       };
       alumnos.splice(indice,1,alumno);
+      console.debug(alumnos);
+      listarAlumnos(alumnos);
+
+}
+function crear() {
+  //TODO Añadir Avatar
+  //TODO Limpiar valores del formulario al crear
+    console.trace("click crear");
+    let avatar = "avatar0.png";
+    let id = document.getElementById("inputIdc").value;
+    let nombre = document.getElementById("inputNombrec").value;
+  
+      let alumno = {
+        id: parseInt(id),
+        nombre: nombre,
+        avatar:avatar
+      };
+      alumnos.push(alumno);
+
       console.debug(alumnos);
       listarAlumnos(alumnos);
 
