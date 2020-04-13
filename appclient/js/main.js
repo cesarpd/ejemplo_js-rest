@@ -52,8 +52,6 @@ function listener() {
   
   });
 
-
-
 }
 
 function listarAlumnos(listarAlumnos) {
@@ -65,28 +63,27 @@ function listarAlumnos(listarAlumnos) {
         <div class="col-lg-4 col-sm-6 mb-5 px-5">
          <div class="row d-flex align-items-center">
           <div class="col-5 avatar w-100 white d-flex justify-content-center align-items-center">
-           <img src = "https://randomuser.me/api/portraits/lego/${index}.jpg"
+           <img src="https://randomuser.me/api/portraits/lego/${index}.jpg"
         class="img-fluid rounded-circle z-depth-1" />
           </div>
          <div class="col-7">
         <h6 class="font-weight-bold pt-2">${alumno.nombre}</h6>
 
-        <a class= "pr-2 pl-0" > <i onclick= "eliminar(${index})"
-        class= "fas fa-ban"></i></a>
-        <a class= "pr-2 pl-0"> <i onclick = "editar(${index})"
-        class="fas fa-edit"> </i></a >
-        </div>
-        </div>
+        <a class= "pr-2 pl-0"><i onclick= "eliminar(${index})" class= "fas fa-ban"></i></a>
+
+        <a onclick="editar(${index})" class="pr-2 pl-0" data-toggle="modal" data-target="#fullHeightModalRight"><i class="fas fa-edit"> </i></a>
+            </div>
+          </div>
         </div>
         `)
     );
-
 
 }// listarAlumnos()
 
 function eliminar(indice) {
   let alumnoSeleccionado = alumnos[indice];
   console.debug('click eliminar alumno %o', alumnoSeleccionado);
+  // TODO Cambiar Alert por un Modal 
   const mensaje = `¿Estas seguro que quieres eliminar  a ${alumnoSeleccionado.nombre} ?`;
   if (confirm(mensaje)) {
 
@@ -100,6 +97,37 @@ function eliminar(indice) {
 
 }
 function editar(indice) {
+    let alumnoSeleccionado = { id: 0, nombre: "sin nombre" };
 
+    if (indice != 0) {
+      alumnoSeleccionado = alumnos[indice];
+    }
+    console.debug("click guardar alumno %o", alumnoSeleccionado);
+
+
+    //rellernar formulario
+    document.getElementById("indice").value = indice;
+    document.getElementById("inputId").value = alumnoSeleccionado.id;
+    document.getElementById("inputNombre").value = alumnoSeleccionado.nombre;
 
 }
+
+function guardar() {
+    console.trace("click guardar");
+    let avatar = "avatar0.png";
+    let id = document.getElementById("inputId").value;
+    let nombre = document.getElementById("inputNombre").value;
+    let indice = document.getElementById("indice").value;
+  
+      let alumno = {
+        id: parseInt(id),
+        nombre: nombre,
+        avatar:avatar
+      };
+      alumnos.splice(indice,1,alumno);
+      console.debug(alumnos);
+      listarAlumnos(alumnos);
+
+}
+
+
