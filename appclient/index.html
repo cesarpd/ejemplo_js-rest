@@ -130,27 +130,35 @@
       </div>
       <div class="modal-body">
 
-           <!-- Form -->
-           <form class="text-center" style="color: #757575;" action="#!">
+        <!-- Form -->
+        <form class="text-center" style="color: #757575;" action="#!">
 
-             <!-- Indice -->
-             <div class="md-form mt-3">
-               <input type="text" id="indice" class="form-control" readonly>
-               <label for="indice">Indice</label>
-             </div>
-             <!-- Id -->
-             <div class="md-form mt-3">
-               <input type="text" id="inputId" class="form-control" readonly>
-               <label for="inputId">Id</label>
-             </div>
-             <!-- Name -->
-             <div class="md-form mt-3">
-               <input type="text" id="inputNombre" class="form-control">
-               <label for="inputNombre">Nombre</label>
-             </div>
-
-           </form>
-           <!-- Form -->
+          <!-- Indice -->
+          <div class="md-form mt-3">
+            <input type="hidden" id="indice" class="form-control" readonly>
+          </div>
+          <!-- Id -->
+          <div class="md-form mt-3">
+            <input type="text" id="inputId" class="form-control" readonly>
+            <label for="inputId">Id</label>
+          </div>
+          <!-- Name -->
+          <div class="md-form mt-3">
+            <input type="text" id="inputNombre" class="form-control">
+            <label for="inputNombre">Nombre</label>
+          </div>
+          <!-- Select -->
+         <div class="form-group">
+           <label for="selectorGenero">Genero del alumno</label>
+           <select class="form-control" id="selectorGenero">
+             <option value="t" selected>Seleccionar</option>
+             <option id="hombre" value="h">Hombre</option>
+             <option id="mujer" value="m">Mujer</option>
+           </select>
+         </div>
+         <!-- Select-->
+        </form>
+        <!-- Form -->
       </div>
       <div class="modal-footer justify-content-center">
         <button type="button" class="btn btn-primary" onclick="guardar()" data-dismiss="modal">Guardar</button>

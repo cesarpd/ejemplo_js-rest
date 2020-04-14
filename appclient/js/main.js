@@ -97,7 +97,12 @@ function eliminar(indice) {
 
 }
 function editar(indice) {
-    let alumnoSeleccionado = { id: 0, nombre: "sin nombre" };
+    let alumnoSeleccionado = {
+      id: 0,
+      nombre: "sin nombre",
+      avatar: "avatar0.png",
+      sexo: "t"
+    };
 
     if (indice >= 0) {
       alumnoSeleccionado = alumnos[indice];
@@ -110,6 +115,20 @@ function editar(indice) {
     document.getElementById("inputId").value = alumnoSeleccionado.id;
     document.getElementById("inputNombre").value = alumnoSeleccionado.nombre;
 
+    //Genero del alumno
+    let genero = alumnoSeleccionado.sexo;
+    let esHombre = document.getElementById("hombre");
+    let esMujer = document.getElementById("mujer");
+
+    if (genero == "m") {
+      esHombre.selected = '';
+      esMujer.selected = "selected";
+    } else {
+      esHombre.selected = "selected";
+      esMujer.selected = '';
+    }
+
+
 }
 
 function guardar() {
@@ -119,12 +138,15 @@ function guardar() {
     let id = document.getElementById("inputId").value;
     let nombre = document.getElementById("inputNombre").value;
     let indice = document.getElementById("indice").value;
+    let genero = document.getElementById("selectorGenero").value;
+
   
-      let alumno = {
-        id: parseInt(id),
-        nombre: nombre,
-        avatar:avatar
-      };
+    let alumno = {
+      id: parseInt(id),
+      nombre: nombre,
+      avatar:avatar,
+      sexo: genero
+    };
       alumnos.splice(indice,1,alumno);
       console.debug(alumnos);
       listarAlumnos(alumnos);
