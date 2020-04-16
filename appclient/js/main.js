@@ -1,6 +1,6 @@
 //const endpoint = 'http://127.0.0.1:5500/personas.json';
-const endpoint = "http://localhost:8080/AlumnosRestService/api/personas/";
-//const endpoint = "http://localhost:8080/apprest/api/personas/";
+//const endpoint = "http://localhost:8080/AlumnosRestService/api/personas/";
+const endpoint = "http://localhost:8080/apprest/api/personas/";
 const eList = document.getElementById('alist');
 
 let alumnos = [];
