@@ -30,45 +30,58 @@
       </section>
     </main>
 <script>
+  
+    const frutas = [
+      {
+        "nombre": "fresas",
+        "precio": 4.56,
+        "oferta": true,
+        "descuento": 50,
+        "colores": [ "rojo" ]
+      },
+      {
+        "nombre": "manzanas",
+        "precio": 1.99,
+        "oferta": true,
+        "descuento": 50,
+        "colores": [ "rojo", "verde", "amarillo" ]
+      },
+      {
+        "nombre": "kiwi",
+        "precio": 3.00,
+        "oferta": false,
+        "descuento": 10,
+        "colores": [ "rojo", "amarillo" ]
+      }
+    ];
 
-  let eListName = document.getElementById('todos-list-nombre');
+    let eListName = document.getElementById('todos-list-nombre');
+    let eListOferta = document.getElementById('todos-list-oferta');
+    
 
-
-  getFilterTodos ();
   getTodos ();
-  todosTotalTime()
-
-  const frutas = [
-    {
-      "nombre": "fresas",
-      "precio": 4.56,
-      "oferta": true,
-      "descuento": 50,
-      "colores": [ "rojo" ]
-    },
-    {
-      "nombre": "manzanas",
-      "precio": 1.99,
-      "oferta": true,
-      "descuento": 50,
-      "colores": [ "rojo", "verde", "amarillo" ]
-    },
-    {
-      "nombre": "kiwi",
-      "precio": 3.00,
-      "oferta": false,
-      "descuento": 10,
-      "colores": [ "rojo", "amarillo" ]
-    }
-  ];
+  getFilterTodos ();
+  //todosTotalTime()
 
 function getTodos () {
     let todoName = frutas.map ((e) => {
     let todoItem = document.createElement('h2');
-    todoItem.textContent = e.titulo;
+    todoItem.textContent = e.nombre;
     eListName.appendChild(todoItem);
   });
 }
+
+function getFilterTodos () {
+  //Filter
+  let frutasOferta = frutas.filter ((e) => e.oferta);
+  
+  let frutasOfertas = frutasOferta.map ((e) => {
+    //console.log(frutasOferta)
+    let todoItem = document.createElement('h2');
+    todoItem.textContent = e.nombre;
+    eListOferta.appendChild(todoItem);
+  });
+};
 
 </script>
 
