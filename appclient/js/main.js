@@ -1,4 +1,6 @@
-const url = 'http://127.0.0.1:5500/personas.json';
+//const endpoint = 'http://127.0.0.1:5500/personas.json';
+const endpoint = "http://localhost:8080/AlumnosRestService/api/personas/";
+//const endpoint = "http://localhost:8080/apprest/api/personas/";
 const eList = document.getElementById('alist');
 
 let alumnos = [];
@@ -9,7 +11,7 @@ function init() {
   //Listeners del formulario
   listener();
   // Ajax Request con Promesas
-  const con = ajax("GET", url, undefined);
+  const con = ajax("GET", endpoint, undefined);
   con.then (data => {
     //console.debug('Peticion aceptada')
     alumnos = data;
@@ -92,9 +94,7 @@ function eliminar(indice) {
     alumnos = alumnos.filter(el => el.id != alumnoSeleccionado.id)
     listarAlumnos(alumnos);
     //TODO llamada al servicio rest
-
   }
-
 }
 function editar(indice) {
     let alumnoSeleccionado = {
@@ -159,11 +159,15 @@ function crear() {
     let avatar = "avatar0.png";
     let id = document.getElementById("inputIdc").value;
     let nombre = document.getElementById("inputNombrec").value;
+    let genero = document.getElementById("selectorGeneroc").value;
+
   
       let alumno = {
         id: parseInt(id),
         nombre: nombre,
-        avatar:avatar
+        avatar:avatar,
+        sexo: genero
+
       };
       alumnos.push(alumno);
 
