@@ -1,9 +1,9 @@
-//const endpoint = 'http://127.0.0.1:5500/personas.json';
-//const endpoint = "http://localhost:8080/AlumnosRestService/api/personas/";
-const endpoint = "http://localhost:8080/apprest/api/personas/";
+// TODO Poner la llamada a AJAX en el metodo de listarAlumnos
+const endpoint = "http://localhost:8080/com.apprest.ipartek.ejercicios/api/personas/";
 const eList = document.getElementById('alist');
 
 let alumnos = [];
+
 window.addEventListener('load', init())
 
 function init() {
@@ -58,7 +58,7 @@ function listener() {
 
 function listarAlumnos(listarAlumnos) {
     eList.innerHTML = ''; // vaciar html 
-
+//TODO Usar avatar de la base de datos
     listarAlumnos.forEach(
       (alumno, index) =>
         (eList.innerHTML += `
@@ -69,7 +69,8 @@ function listarAlumnos(listarAlumnos) {
         class="img-fluid rounded-circle z-depth-1" />
           </div>
          <div class="col-7">
-        <h6 class="font-weight-bold pt-2">${alumno.nombre}</h6>
+        <h5 class="font-weight-bold pt-2">${alumno.nombre}</h5>
+        <h6 class="font-weight-light py-0">${alumno.sexo}</h6>
 
         <a class= "pr-2 pl-0"><i onclick= "eliminar(${index})" class= "fas fa-ban"></i></a>
 
@@ -87,28 +88,37 @@ function eliminar(indice) {
   console.debug('click eliminar alumno %o', alumnoSeleccionado);
   // TODO Cambiar Alert por un Modal 
   const mensaje = `¿Estas seguro que quieres eliminar  a ${alumnoSeleccionado.nombre} ?`;
+  
   if (confirm(mensaje)) {
+    const url = endpoint + alumnoSeleccionado.id;
+    
+    ajax('DELETE', url, undefined)
+      .then(data => {
+        //pedimos de nuevo todos los alumnos para pasarselos al listado
+        ajax("GET", endpoint, undefined)
+          .then(data => {
+            console.trace('promesa resolve');
+            alumnos = data;
+            listarAlumnos(alumnos);
 
-    //TODO mirar como remover de una posicion
-    //alumnos = alumnos.splice(indice,1);
-    alumnos = alumnos.filter(el => el.id != alumnoSeleccionado.id)
-    listarAlumnos(alumnos);
-    //TODO llamada al servicio rest
+          }).catch(error => {
+            console.warn('promesa rejectada');
+            alert(error);
+          });
+      })
+      .catch(error => {
+        console.warn('promesa rejectada');
+        alert(error);
+      });
+
   }
 }
 function editar(indice) {
-    let alumnoSeleccionado = {
-      id: 0,
-      nombre: "sin nombre",
-      avatar: "avatar0.png",
-      sexo: "t"
-    };
+  // TODO Cambiar el contenedor por un Modal a pantalla completa
+  // TODO Añadir Avatar
 
-    if (indice >= 0) {
-      alumnoSeleccionado = alumnos[indice];
-    }
-    console.debug("click guardar alumno %o", alumnoSeleccionado);
-
+  let alumnoSeleccionado = alumnos[indice];
+    console.debug('click editar alumno %o', alumnoSeleccionado);    
 
     //rellernar formulario
     document.getElementById("indice").value = indice;
@@ -117,18 +127,17 @@ function editar(indice) {
 
     //Genero del alumno
     let genero = alumnoSeleccionado.sexo;
-    let esHombre = document.getElementById("hombre");
-    let esMujer = document.getElementById("mujer");
+    let checkHombre = document.getElementById('checkHombre');
+    let checkMujer = document.getElementById('checkMujer');
 
-    if (genero == "m") {
-      esHombre.selected = '';
-      esMujer.selected = "selected";
+    if (genero == "h") {
+      checkHombre.checked = 'checked';
+      checkMujer.checked = '';
+  
     } else {
-      esHombre.selected = "selected";
-      esMujer.selected = '';
+      checkHombre.checked = '';
+      checkMujer.checked = 'checked';
     }
-
-
 }
 
 function guardar() {
@@ -140,7 +149,6 @@ function guardar() {
     let indice = document.getElementById("indice").value;
     let genero = document.getElementById("selectorGenero").value;
 
-  
     let alumno = {
       id: parseInt(id),
       nombre: nombre,
@@ -150,8 +158,8 @@ function guardar() {
       alumnos.splice(indice,1,alumno);
       console.debug(alumnos);
       listarAlumnos(alumnos);
-
 }
+
 function crear() {
   //TODO Añadir Avatar
   //TODO Limpiar valores del formulario al crear
@@ -160,19 +168,35 @@ function crear() {
     let id = document.getElementById("inputIdc").value;
     let nombre = document.getElementById("inputNombrec").value;
     let genero = document.getElementById("selectorGeneroc").value;
+    
+    let alumno = {
+      id: parseInt(id),
+      nombre: nombre,
+      avatar:avatar,
+      sexo: genero
+    };
+    ajax('POST', endpoint, alumno)
+      .then(data => {
 
-  
-      let alumno = {
-        id: parseInt(id),
-        nombre: nombre,
-        avatar:avatar,
-        sexo: genero
+        // conseguir de nuevo todos los alumnos
+        ajax("GET", endpoint, undefined)
+          .then(data => {
+            console.trace('promesa resolve');
+            alumnos = data;
+            listarAlumnos(alumnos);
 
-      };
-      alumnos.push(alumno);
+          }).catch(error => {
+            console.warn('promesa rejectada');
+            alert(error);
+          });
 
-      console.debug(alumnos);
-      listarAlumnos(alumnos);
+      })
+      .catch(error => {
+        console.warn('promesa rejectada');
+        alert(error);
+      });
+
+      
 
 }
 

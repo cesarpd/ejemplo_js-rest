@@ -102,13 +102,19 @@
                <label for="inputNombrec" value="nombre" placeholder="El nombre">Nombre</label>
              </div>
           <!-- Select -->
-          <div class="form-group">
-            <label for="selectorGenero">Genero del alumno</label>
-            <select class="form-control" id="selectorGeneroc">
-              <option value="t" selected>Seleccionar</option>
-              <option id="hombre" value="h">Hombre</option>
-              <option id="mujer" value="m">Mujer</option>
-            </select>
+          <div class="d-flex">
+            <!-- Hombre -->
+            <div class="custom-control custom-radio">
+              <input type="radio" class="custom-control-input" id="checkHombrec
+              " name="checkHombrec">
+              <label class="custom-control-label" for="checkHombrec">Hombre</label>
+            </div>
+
+            <!-- Mujer -->
+            <div class="custom-control custom-radio ml-2">
+              <input type="radio" class="custom-control-input" id="checkMujerc" name="checkMujerc" checked>
+              <label class="custom-control-label" for="checkMujerc">Mujer</label>
+            </div>
           </div>
           <!-- Select-->
 
@@ -158,15 +164,20 @@
             <label for="inputNombre">Nombre</label>
           </div>
           <!-- Select -->
-         <div class="form-group">
-           <label for="selectorGenero">Genero del alumno</label>
-           <select class="form-control" id="selectorGenero">
-             <option value="t" selected>Seleccionar</option>
-             <option id="hombre" value="h">Hombre</option>
-             <option id="mujer" value="m">Mujer</option>
-           </select>
-         </div>
-         <!-- Select-->
+          <div class="d-flex">
+            <!-- Hombre -->
+            <div class="custom-control custom-radio">
+              <input type="radio" class="custom-control-input" id="checkHombre" name="checkHombre">
+              <label class="custom-control-label" for="checkHombre">Hombre</label>
+            </div>
+
+            <!-- Mujer2 -->
+            <div class="custom-control custom-radio ml-2">
+              <input type="radio" class="custom-control-input" id="checkMujer" name="checkMujer">
+              <label class="custom-control-label" for="checkMujer">Mujer</label>
+            </div>
+          </div>
+          <!-- Select-->
         </form>
         <!-- Form -->
       </div>
