@@ -32,32 +32,35 @@ function listener() {
   let selectorSexo = document.getElementById('selectorSexo');
   let selectorNombre = document.getElementById('selectorNombre');
 
-  selectorSexo.addEventListener('change', function () {
-    eList.innerHTML = ''; // vaciar html 
-
-    const sexo = selectorSexo.value;
-    //console.debug('cambiado select ' + sexo);
-    if ('t' != sexo) {
-      const alumnosFiltrados = alumnos.filter(el => el.sexo == sexo);
-      listarAlumnos(alumnosFiltrados);
-    } else {
-      listarAlumnos(alumnos);
-    }
-  });
-
-  selectorNombre.addEventListener('keyup', function () {
-    eList.innerHTML = ''; // vaciar html 
-    const nombreBuscado = selectorNombre.value;
-    //console.debug('tecla pulsada ' + nombre);
-    if (nombreBuscado) {
-      const alumnosFiltrados = alumnos.filter(el => el.nombre.toLowerCase().includes(nombreBuscado));
-      listarAlumnos(alumnosFiltrados);
-    } else {
-      listarAlumnos(alumnos);
-    }
+  selectorSexo.addEventListener('change', filtrar);
+  selectorNombre.addEventListener('keyup', filtrar);
+}
+function filtrar(){
+  let selectorSexo = document.getElementById("selectorSexo");
+  let inputNombre = document.getElementById("selectorNombre");
+  const sexo = selectorSexo.value;
+  const nombre = inputNombre.value.trim().toLowerCase();
   
-  });
+  console.trace(`filtro sexo=${sexo} nombre=${nombre}`);
+  console.debug("alumnos %o", alumnos);
 
+  //creamos una copia para no modificar el original
+  let alumnosFiltrados = alumnos.map(el => el);
+
+  //filtrar por sexo, si es 't' todos no hace falta filtrar
+  if (sexo == "h" || sexo == "m") {
+    alumnosFiltrados = alumnosFiltrados.filter(el => el.sexo == sexo);
+    console.debug("filtrado por sexo %o", alumnosFiltrados);
+  }
+
+  //filtrar por nombre buscado
+  if (nombre != " ") {
+    alumnosFiltrados = alumnosFiltrados.filter(el =>
+      el.nombre.toLowerCase().includes(nombre)
+    );
+    console.debug("filtrado por nombre %o", alumnosFiltrados);
+  }
+  listarAlumnos(alumnosFiltrados);
 }
 
 function listarAlumnos(alumnos) {
