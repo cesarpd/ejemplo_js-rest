@@ -55,8 +55,9 @@
     </div>
     <!-- Select form -->
     <div class="col-lg-4 col-sm-6 ">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#fullHeightModalLeft">Añadir
-          Nuevo</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formularioAlumno"
+        onclick="editar()">
+        Añadir Nuevo</button>
     </div>
   </div>
 </section>
@@ -65,63 +66,18 @@
 <section class="pt-5 my-5 z-depth-1">
   <div class="p-md-3 mx-md-5 text-lg-left">
     <h2 class="text-center font-weight-bold mb-4 pb-1">Listado de Alumnos</h2>
-
     <div id="alist" class="row">
       <div class="col-12"><p class="px-2">Cargando...</p></div>
     </div>
 
   </div>
 </section>
-<!-- Full Height Modal Left -->
-<div class="modal fade left" id="fullHeightModalLeft" tabindex="-1" role="dialog" aria-labelledby="crearAlumno"
+
+<!-- Modal #formularioAlumno -->
+<div class="modal fade" id="formularioAlumno" tabindex="-1" role="dialog" aria-labelledby="editarAlumno"
   aria-hidden="true">
 
-  <div class="modal-dialog modal-full-height modal-left" role="document">
-
-
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title w-100" id="crearAlumno">Crear Alumno</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-
-           <!-- Form -->
-           <form class="text-center" style="color: #757575;" action="#!">
-
-             <!-- Id -->
-             <div class="md-form mt-3">
-               <input type="text" id="inputIdc" class="form-control" readonly>
-               <label for="inputIdc" value="0" placeholder="0">Id</label>
-             </div>
-             <!-- Name -->
-             <div class="md-form mt-3">
-               <input type="text" id="inputNombrec" class="form-control">
-               <label for="inputNombrec" value="nombre" placeholder="El nombre">Nombre</label>
-             </div>
-          <!-- Select -->
-
-          <!-- Select-->
-
-           </form>
-           <!-- Form -->
-      </div>
-      <div class="modal-footer justify-content-center">
-        <button type="button" class="btn btn-primary" onclick="crear()" data-dismiss="modal">Guardar</button>
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Full Height Modal Left -->
-
-<!-- Full Height Modal Right -->
-<div class="modal fade right" id="fullHeightModalRight" tabindex="-1" role="dialog" aria-labelledby="editarAlumno"
-  aria-hidden="true">
-
-  <div class="modal-dialog modal-full-height modal-right" role="document">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
 
 
     <div class="modal-content">
@@ -142,8 +98,7 @@
           </div>
           <!-- Id -->
           <div class="md-form mt-3">
-            <input type="text" id="inputId" class="form-control" readonly>
-            <label for="inputId">Id</label>
+            <input type="hidden" id="inputId" class="form-control" readonly>
           </div>
           <!-- Name -->
           <div class="md-form mt-3">
@@ -151,15 +106,13 @@
             <label for="inputNombre">Nombre</label>
           </div>
           <!-- Select -->
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" checked="checked" type="radio" name="sexo" id="checkHombre" value="h">
-              <label class="form-check-label" for="sexoh">Hombre
+          <div class="d-flex">
+            <input checked="checked" type="radio" name="sexo" id="checkHombre" value="h">
+            <label class="mb-0 px-1" for="checkHombre">Hombre</label>
+            
+            <input class="ml-2" type="radio" name="sexo" id="checkMujer" value="m">
+            <label class="mb-0 px-1" for="checkMujer">Mujer</label>
           </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="sexo" id="checkMujer" value="m">
-              <label class="form-check-label" for="sexom">Mujer
-          </div>
-
           <!-- Select-->
         </form>
         <!-- Form -->

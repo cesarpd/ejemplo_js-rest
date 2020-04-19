@@ -75,7 +75,7 @@ function listarAlumnos(alumnos) {
 
         <a class= "pr-2 pl-0"><i onclick= "eliminar(${index})" class= "fas fa-ban"></i></a>
 
-        <a onclick="editar(${index})" class="pr-2 pl-0" data-toggle="modal" data-target="#fullHeightModalRight"><i class="fas fa-edit"> </i></a>
+        <a onclick="editar(${index})" class="pr-2 pl-0" data-toggle="modal" data-target="#formularioAlumno"><i class="fas fa-edit"> </i></a>
             </div>
           </div>
         </div>
@@ -84,42 +84,21 @@ function listarAlumnos(alumnos) {
 
 }// listarAlumnos()
 
-function eliminar(indice) {
-  let alumnoSeleccionado = alumnos[indice];
-  console.debug('click eliminar alumno %o', alumnoSeleccionado);
-  // TODO Cambiar Alert por un Modal 
-  const mensaje = `¿Estas seguro que quieres eliminar  a ${alumnoSeleccionado.nombre} ?`;
-  
-  if (confirm(mensaje)) {
-    const url = endpoint + alumnoSeleccionado.id;
-    listarAlumnos(metodo, url, datos);
 
-    // ajax('DELETE', url, undefined)
-    //   .then(data => {
-    //     //pedimos de nuevo todos los alumnos para pasarselos al listado
-    //     ajax("GET", endpoint, undefined)
-    //       .then(data => {
-    //         console.trace('promesa resolve');
-    //         alumnos = data;
-    //         listarAlumnos(alumnos);
-
-    //       }).catch(error => {
-    //         console.warn('promesa rejectada');
-    //         alert(error);
-    //       });
-    //   })
-    //   .catch(error => {
-    //     console.warn('promesa rejectada');
-    //     alert(error);
-    //   });
-
-  }
-}
 function editar(indice) {
   // TODO Cambiar el contenedor por un Modal a pantalla completa
   // TODO Añadir Avatar
+  
+  let alumnoSeleccionado = {
+    id: 0,
+    nombre: "sin nombre",
+    avatar: "avatar1.png",
+    sexo: "h"
+  };
 
-  let alumnoSeleccionado = alumnos[indice];
+  if (indice >= 0) {
+    alumnoSeleccionado = alumnos[indice];
+  }
     console.debug('click editar alumno %o', alumnoSeleccionado);    
 
     //rellernar formulario
@@ -151,48 +130,19 @@ function guardar() {
   
   let genero = document.getElementById("checkHombre").checked ? "h":"m";
   
-  
     let alumno = {
       id:id,
       nombre: nombre,
       avatar:avatar,
       sexo: genero
     };
+  console.debug("persona a guardar %o", alumno);
 
-    const url = endpoint + alumno.id;
-    ajax('PUT', url, alumno)
-      .then(data => {
-        //Pedimos de nuevo los alumnos
-        ajax('GET', endpoint, undefined)
-          .then(data => {
-            alumnos = data;
-            listarAlumnos(alumnos);
-          
-          }).catch(error =>{
-            alert(error);
-          })
-        //Fin de la peticion del objeto
-      }).catch(error => {
-        alert(error);
-      });//Fin del PUT
-
-}
-
-function crear() {
-  //TODO Añadir Avatar
-  //TODO Limpiar valores del formulario al crear
-    console.trace("click crear");
-    let avatar = "avatar0.png";
-    let id = document.getElementById("inputIdc").value;
-    let nombre = document.getElementById("inputNombrec").value;
-    let genero = document.getElementById("selectorGeneroc").value;
-    
-    let alumno = {
-      "id":id,
-      "nombre": nombre,
-      "avatar":avatar,
-      "sexo": genero
-    };
+  if (id == 0) {
+    //TODO Añadir Avatar
+    //TODO Limpiar valores del formulario al crear
+  
+    // Crear registro
 
     ajax('POST', endpoint, alumno)
       .then(data => {
@@ -214,9 +164,58 @@ function crear() {
         console.warn('promesa rejectada');
         alert(error);
       });
+  } else {
+    // Editar registro
+    const url = endpoint + alumno.id;
+    ajax('PUT', url, alumno)
+      .then(data => {
+        //Pedimos de nuevo los alumnos
+        ajax('GET', endpoint, undefined)
+          .then(data => {
+            alumnos = data;
+            listarAlumnos(alumnos);
+          
+          }).catch(error =>{
+            alert(error);
+          })
+        //Fin de la peticion del objeto
+      }).catch(error => {
+        alert(error);
+      });//Fin del PUT
 
-      
+  }
 
 }
 
+// function crear() {
+// }
+
+function eliminar(indice) {
+  let alumnoSeleccionado = alumnos[indice];
+  console.debug("click eliminar alumno %o", alumnoSeleccionado);
+  // TODO Cambiar Alert por un Modal
+  const mensaje = `¿Estas seguro que quieres eliminar  a ${alumnoSeleccionado.nombre} ?`;
+
+  if (confirm(mensaje)) {
+    const url = endpoint + alumnoSeleccionado.id;
+    ajax("DELETE", url, undefined)
+      .then(data => {
+        //pedimos de nuevo todos los alumnos para pasarselos al listado
+        ajax("GET", endpoint, undefined)
+          .then(data => {
+            console.trace("promesa resolve");
+            alumnos = data;
+            listarAlumnos(alumnos);
+          })
+          .catch(error => {
+            console.warn("promesa rejectada");
+            alert(error);
+          });
+      })
+      .catch(error => {
+        console.warn("promesa rejectada");
+        alert(error);
+      });
+  }
+}
 
