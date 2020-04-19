@@ -11,6 +11,7 @@ function init() {
   console.debug('Documennt loaded...')
   //Listeners del formulario
   listener();
+  
   // Ajax Request con Promesas
   const con = ajax("GET", endpoint, undefined);
   con.then (data => {
@@ -20,6 +21,8 @@ function init() {
   }).catch(error => {
     console.log('error al acceder a los datos')
   })
+  
+  initGallery();
 }
 
 /*
@@ -66,7 +69,7 @@ function listarAlumnos(alumnos) {
         <div class="col-lg-4 col-sm-6 mb-5 px-5">
          <div class="row d-flex align-items-center">
           <div class="col-5 avatar w-100 white d-flex justify-content-center align-items-center">
-           <img src="https://randomuser.me/api/portraits/lego/${index}.jpg"
+           <img src="${alumno.avatar}"
         class="img-fluid rounded-circle z-depth-1" />
           </div>
          <div class="col-7">
@@ -86,13 +89,11 @@ function listarAlumnos(alumnos) {
 
 
 function editar(indice) {
-  // TODO Cambiar el contenedor por un Modal a pantalla completa
-  // TODO Añadir Avatar
   
   let alumnoSeleccionado = {
     id: 0,
     nombre: "sin nombre",
-    avatar: "avatar1.png",
+    avatar: "img/avatar1.png",
     sexo: "h"
   };
 
@@ -105,6 +106,7 @@ function editar(indice) {
     document.getElementById("indice").value = indice;
     document.getElementById("inputId").value = alumnoSeleccionado.id;
     document.getElementById("inputNombre").value = alumnoSeleccionado.nombre;
+    document.getElementById("inputAvatar").value = alumnoSeleccionado.avatar;
 
     //Genero del alumno
     let genero = alumnoSeleccionado.sexo;
@@ -119,14 +121,22 @@ function editar(indice) {
       checkHombre.checked = '';
       checkMujer.checked = 'checked';
     }
+  //seleccionar Avatar
+  const avatares = document.querySelectorAll("#avatarGallery img");
+  avatares.forEach(el => {
+    el.classList.remove("border-primary");
+    if (alumnoSeleccionado.avatar == el.dataset.path) {
+      el.classList.add("border-primary");
+    }
+  });
 }
 
 function guardar() {
   //TODO Añadir Avatar
   console.trace("click guardar");
-  let avatar = "avatar1.png";
   let id = document.getElementById("inputId").value;
   let nombre = document.getElementById("inputNombre").value;
+  let avatar = document.getElementById("inputAvatar").value;
   
   let genero = document.getElementById("checkHombre").checked ? "h":"m";
   
@@ -139,14 +149,11 @@ function guardar() {
   console.debug("persona a guardar %o", alumno);
 
   if (id == 0) {
-    //TODO Añadir Avatar
-    //TODO Limpiar valores del formulario al crear
-  
     // Crear registro
-
     ajax('POST', endpoint, alumno)
       .then(data => {
-
+        //TODO Cambiar alerta por un modal
+        alert("Añadido alumno " + alumno.nombre);
         // conseguir de nuevo todos los alumnos
         ajax("GET", endpoint, undefined)
           .then(data => {
@@ -182,9 +189,7 @@ function guardar() {
       }).catch(error => {
         alert(error);
       });//Fin del PUT
-
   }
-
 }
 
 // function crear() {
@@ -217,5 +222,35 @@ function eliminar(indice) {
         alert(error);
       });
   }
+}
+
+/**
+ * Carga todas las imagen de los avatares
+ */
+function initGallery() {
+  let divGallery = document.getElementById("avatarGallery");
+  for (let i = 1; i <= 10; i++) {
+    divGallery.innerHTML += `<div id="avatar-item" class="m-2 view overlay rounded-circle" onclick="selectAvatar(event)">
+                                <img width="90"  
+                                class="border img-fluid rounded-circle" 
+                                data-path="img/avatar${i}.png"
+                                src="img/avatar${i}.png"
+                                style="border-width: 3px !important;">
+                              </div>
+                              `;
+  }
+}
+
+function selectAvatar(evento) {
+  //console.trace("click avatar");
+  const avatares = document.querySelectorAll("#avatarGallery img");
+  //Recorremos todas las imagenes para eliminar la clase
+  avatares.forEach(el => el.classList.remove("border-primary"));
+  evento.target.classList.add("border-primary");
+  //Tomamos el avatar de un input oculto
+  let elAvatar = document.getElementById("inputAvatar");
+  //@see: https://developer.mozilla.org/es/docs/Learn/HTML/como/Usando_atributos_de_datos
+  elAvatar.value = evento.target.dataset.path;
+
 }
 
