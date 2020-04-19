@@ -73,7 +73,7 @@
   </div>
 </section>
 <!-- Full Height Modal Left -->
-<div class="modal fade left" id="fullHeightModalLeft" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+<div class="modal fade left" id="fullHeightModalLeft" tabindex="-1" role="dialog" aria-labelledby="crearAlumno"
   aria-hidden="true">
 
   <div class="modal-dialog modal-full-height modal-left" role="document">
@@ -81,7 +81,7 @@
 
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title w-100" id="myModalLabel">Crear Alumno</h4>
+        <h4 class="modal-title w-100" id="crearAlumno">Crear Alumno</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -102,20 +102,7 @@
                <label for="inputNombrec" value="nombre" placeholder="El nombre">Nombre</label>
              </div>
           <!-- Select -->
-          <div class="d-flex">
-            <!-- Hombre -->
-            <div class="custom-control custom-radio">
-              <input type="radio" class="custom-control-input" id="checkHombrec
-              " name="checkHombrec">
-              <label class="custom-control-label" for="checkHombrec">Hombre</label>
-            </div>
 
-            <!-- Mujer -->
-            <div class="custom-control custom-radio ml-2">
-              <input type="radio" class="custom-control-input" id="checkMujerc" name="checkMujerc" checked>
-              <label class="custom-control-label" for="checkMujerc">Mujer</label>
-            </div>
-          </div>
           <!-- Select-->
 
            </form>
@@ -131,7 +118,7 @@
 <!-- Full Height Modal Left -->
 
 <!-- Full Height Modal Right -->
-<div class="modal fade right" id="fullHeightModalRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+<div class="modal fade right" id="fullHeightModalRight" tabindex="-1" role="dialog" aria-labelledby="editarAlumno"
   aria-hidden="true">
 
   <div class="modal-dialog modal-full-height modal-right" role="document">
@@ -139,7 +126,7 @@
 
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title w-100" id="myModalLabel">Editar Alumno</h4>
+        <h4 class="modal-title w-100" id="editarAlumno">Editar Alumno</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -164,19 +151,15 @@
             <label for="inputNombre">Nombre</label>
           </div>
           <!-- Select -->
-          <div class="d-flex">
-            <!-- Hombre -->
-            <div class="custom-control custom-radio">
-              <input type="radio" class="custom-control-input" id="checkHombre" name="checkHombre">
-              <label class="custom-control-label" for="checkHombre">Hombre</label>
-            </div>
-
-            <!-- Mujer2 -->
-            <div class="custom-control custom-radio ml-2">
-              <input type="radio" class="custom-control-input" id="checkMujer" name="checkMujer">
-              <label class="custom-control-label" for="checkMujer">Mujer</label>
-            </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" checked="checked" type="radio" name="sexo" id="checkHombre" value="h">
+              <label class="form-check-label" for="sexoh">Hombre
           </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="sexo" id="checkMujer" value="m">
+              <label class="form-check-label" for="sexom">Mujer
+          </div>
+
           <!-- Select-->
         </form>
         <!-- Form -->

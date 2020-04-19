@@ -1,5 +1,6 @@
 // TODO Poner la llamada a AJAX en el metodo de listarAlumnos
-const endpoint = "http://localhost:8080/com.apprest.ipartek.ejercicios/api/personas/";
+//const endpoint = "http://localhost:8080/com.apprest.ipartek.ejercicios/api/personas/";
+const endpoint = "http://192.168.0.35:8080/com.apprest.ipartek.ejercicios/api/personas/";
 const eList = document.getElementById('alist');
 
 let alumnos = [];
@@ -143,22 +144,22 @@ function editar(indice) {
 
 function guardar() {
   //TODO Añadir Avatar
-    console.trace("click guardar");
-    let avatar = "avatar0.png";
-    let id = document.getElementById("inputId").value;
-    let nombre = document.getElementById("inputNombre").value;
-    //let indice = document.getElementById("indice").value;
+  console.trace("click guardar");
+  let avatar = "avatar1.png";
+  let id = document.getElementById("inputId").value;
+  let nombre = document.getElementById("inputNombre").value;
   
-    let genero = 't';
+  let genero = document.getElementById("checkHombre").checked ? "h":"m";
+  
   
     let alumno = {
-      "id":id,
-      "nombre": nombre,
-      "avatar":avatar,
-      "sexo": genero
+      id:id,
+      nombre: nombre,
+      avatar:avatar,
+      sexo: genero
     };
 
-    const url = endpoint + personalbar.id;
+    const url = endpoint + alumno.id;
     ajax('PUT', url, alumno)
       .then(data => {
         //Pedimos de nuevo los alumnos
