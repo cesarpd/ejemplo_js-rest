@@ -56,10 +56,10 @@ function listener() {
 
 }
 
-function listarAlumnos(listarAlumnos) {
+function listarAlumnos(alumnos) {
     eList.innerHTML = ''; // vaciar html 
 //TODO Usar avatar de la base de datos
-    listarAlumnos.forEach(
+    alumnos.forEach(
       (alumno, index) =>
         (eList.innerHTML += `
         <div class="col-lg-4 col-sm-6 mb-5 px-5">
@@ -91,25 +91,26 @@ function eliminar(indice) {
   
   if (confirm(mensaje)) {
     const url = endpoint + alumnoSeleccionado.id;
-    
-    ajax('DELETE', url, undefined)
-      .then(data => {
-        //pedimos de nuevo todos los alumnos para pasarselos al listado
-        ajax("GET", endpoint, undefined)
-          .then(data => {
-            console.trace('promesa resolve');
-            alumnos = data;
-            listarAlumnos(alumnos);
+    listarAlumnos(metodo, url, datos);
 
-          }).catch(error => {
-            console.warn('promesa rejectada');
-            alert(error);
-          });
-      })
-      .catch(error => {
-        console.warn('promesa rejectada');
-        alert(error);
-      });
+    // ajax('DELETE', url, undefined)
+    //   .then(data => {
+    //     //pedimos de nuevo todos los alumnos para pasarselos al listado
+    //     ajax("GET", endpoint, undefined)
+    //       .then(data => {
+    //         console.trace('promesa resolve');
+    //         alumnos = data;
+    //         listarAlumnos(alumnos);
+
+    //       }).catch(error => {
+    //         console.warn('promesa rejectada');
+    //         alert(error);
+    //       });
+    //   })
+    //   .catch(error => {
+    //     console.warn('promesa rejectada');
+    //     alert(error);
+    //   });
 
   }
 }
@@ -146,18 +147,34 @@ function guardar() {
     let avatar = "avatar0.png";
     let id = document.getElementById("inputId").value;
     let nombre = document.getElementById("inputNombre").value;
-    let indice = document.getElementById("indice").value;
-    let genero = document.getElementById("selectorGenero").value;
-
+    //let indice = document.getElementById("indice").value;
+  
+    let genero = 't';
+  
     let alumno = {
-      id: parseInt(id),
-      nombre: nombre,
-      avatar:avatar,
-      sexo: genero
+      "id":id,
+      "nombre": nombre,
+      "avatar":avatar,
+      "sexo": genero
     };
-      alumnos.splice(indice,1,alumno);
-      console.debug(alumnos);
-      listarAlumnos(alumnos);
+
+    const url = endpoint + personalbar.id;
+    ajax('PUT', url, alumno)
+      .then(data => {
+        //Pedimos de nuevo los alumnos
+        ajax('GET', endpoint, undefined)
+          .then(data => {
+            alumnos = data;
+            listarAlumnos(alumnos);
+          
+          }).catch(error =>{
+            alert(error);
+          })
+        //Fin de la peticion del objeto
+      }).catch(error => {
+        alert(error);
+      });//Fin del PUT
+
 }
 
 function crear() {
@@ -170,11 +187,12 @@ function crear() {
     let genero = document.getElementById("selectorGeneroc").value;
     
     let alumno = {
-      id: parseInt(id),
-      nombre: nombre,
-      avatar:avatar,
-      sexo: genero
+      "id":id,
+      "nombre": nombre,
+      "avatar":avatar,
+      "sexo": genero
     };
+
     ajax('POST', endpoint, alumno)
       .then(data => {
 
