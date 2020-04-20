@@ -152,51 +152,13 @@ function guardar() {
   console.debug("persona a guardar %o", alumno);
 
   if (id == 0) {
-    // Crear registro
-    ajax('POST', endpoint, alumno)
-      .then(data => {
-        //TODO Cambiar alerta por un modal
-        alert("Añadido alumno " + alumno.nombre);
-        // conseguir de nuevo todos los alumnos
-        ajax("GET", endpoint, undefined)
-          .then(data => {
-            console.trace('promesa resolve');
-            alumnos = data;
-            listarAlumnos(alumnos);
-
-          }).catch(error => {
-            console.warn('promesa rejectada');
-            alert(error);
-          });
-
-      })
-      .catch(error => {
-        console.warn('promesa rejectada');
-        alert(error);
-      });
+      getAlumno("POST", endpoint, alumno);
   } else {
     // Editar registro
     const url = endpoint + alumno.id;
-    ajax('PUT', url, alumno)
-      .then(data => {
-        //Pedimos de nuevo los alumnos
-        ajax('GET', endpoint, undefined)
-          .then(data => {
-            alumnos = data;
-            listarAlumnos(alumnos);
-          
-          }).catch(error =>{
-            alert(error);
-          })
-        //Fin de la peticion del objeto
-      }).catch(error => {
-        alert(error);
-      });//Fin del PUT
+    getAlumno("PUT", url, alumno);
   }
 }
-
-// function crear() {
-// }
 
 function eliminar(indice) {
   let alumnoSeleccionado = alumnos[indice];
@@ -206,7 +168,13 @@ function eliminar(indice) {
 
   if (confirm(mensaje)) {
     const url = endpoint + alumnoSeleccionado.id;
-    ajax("DELETE", url, undefined)
+    getAlumno('DELETE', url, undefined)
+  }
+}
+
+function getAlumno(metodo, url, datos) {
+  //TODO Añadir mensajes de confirmación de las operaciones CRUD para el usuario
+      ajax(metodo, url, datos)
       .then(data => {
         //pedimos de nuevo todos los alumnos para pasarselos al listado
         ajax("GET", endpoint, undefined)
@@ -224,7 +192,6 @@ function eliminar(indice) {
         console.warn("promesa rejectada");
         alert(error);
       });
-  }
 }
 
 /**
