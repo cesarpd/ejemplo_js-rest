@@ -1,9 +1,12 @@
-// TODO Poner la llamada a AJAX en el metodo de listarAlumnos
-//const endpoint = "http://localhost:8080/com.apprest.ipartek.ejercicios/api/personas/";
-const endpoint = "http://192.168.0.35:8080/com.apprest.ipartek.ejercicios/api/personas/";
+const alumnosApi = "http://192.168.0.35:8080/com.apprest.ipartek.ejercicios/api/personas/";
+const cursosApi = "http://192.168.0.35:8080/com.apprest.ipartek.ejercicios/api/cursos/";
+ 
+
 const eList = document.getElementById('alist');
+const cList = document.getElementById('clist');
 
 let alumnos = [];
+let cursos = [];
 
 window.addEventListener('load', init())
 
@@ -13,14 +16,8 @@ function init() {
   listener();
   
   // Ajax Request con Promesas
-  const con = ajax("GET", endpoint, undefined);
-  con.then (data => {
-    //console.debug('Peticion aceptada')
-    alumnos = data;
-    listarAlumnos(alumnos);
-  }).catch(error => {
-    console.log('error al acceder a los datos')
-  })
+  getAlumno('GET', alumnosApi, undefined);
+  getCurso('GET', cursosApi, undefined);
   
   initGallery();
 }
@@ -65,7 +62,6 @@ function filtrar(){
 
 function listarAlumnos(alumnos) {
     eList.innerHTML = ''; // vaciar html 
-//TODO Usar avatar de la base de datos
     alumnos.forEach(
       (alumno, index) =>
         (eList.innerHTML += `
@@ -88,11 +84,37 @@ function listarAlumnos(alumnos) {
         `)
     );
 
-}// listarAlumnos()
+}//listarAlumnos()
+function listarCursos(cursos) {
+  cList.innerHTML = ""; // vaciar html
+  cursos.forEach(
+    (curso, index) =>
+      (cList.innerHTML += `   
+                <div class="col-12 mb-4">
+                  <div class="card z-depth-0 bordered border-light">
+                    <div class="card-body p-0">
+                      <div class="row mx-0">
+                        <div class="col-md-8 grey lighten-4 rounded-left pt-4">
+                          <p class="font-weight-light text-muted mb-4">${curso.id}</p>
+                          <h5 class="font-weight-bold">${curso.nombre}</h5>
+                        </div>
+                        <div class="col-md-4 text-center pt-4">
+                          <p class="h1 font-weight-normal">${curso.precio}€</p>
+                          <p class="h5 font-weight-light text-muted mb-4">Precio</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>      
+      `)
+  );
+}//listarCursos()
 
 
 function editar(indice) {
-  
+  cursosTab = document.getElementById("hide-if-new");
+  //Ocultamos la pestaña de los cursos
+  cursosTab.classList.add("d-none");
   let alumnoSeleccionado = {
     id: 0,
     nombre: "sin nombre",
@@ -101,29 +123,30 @@ function editar(indice) {
   };
 
   if (indice >= 0) {
+    // Mostramos la pestaña de los cursos
+    cursosTab.classList.add("d-block");
     alumnoSeleccionado = alumnos[indice];
   }
-    console.debug('click editar alumno %o', alumnoSeleccionado);    
+  console.debug("click editar alumno %o", alumnoSeleccionado);
 
-    //rellernar formulario
-    document.getElementById("indice").value = indice;
-    document.getElementById("inputId").value = alumnoSeleccionado.id;
-    document.getElementById("inputNombre").value = alumnoSeleccionado.nombre;
-    document.getElementById("inputAvatar").value = alumnoSeleccionado.avatar;
+  //rellernar formulario
+  document.getElementById("indice").value = indice;
+  document.getElementById("inputId").value = alumnoSeleccionado.id;
+  document.getElementById("inputNombre").value = alumnoSeleccionado.nombre;
+  document.getElementById("inputAvatar").value = alumnoSeleccionado.avatar;
 
-    //Genero del alumno
-    let genero = alumnoSeleccionado.sexo;
-    let checkHombre = document.getElementById('checkHombre');
-    let checkMujer = document.getElementById('checkMujer');
+  //Genero del alumno
+  let genero = alumnoSeleccionado.sexo;
+  let checkHombre = document.getElementById("checkHombre");
+  let checkMujer = document.getElementById("checkMujer");
 
-    if (genero == "h") {
-      checkHombre.checked = 'checked';
-      checkMujer.checked = '';
-  
-    } else {
-      checkHombre.checked = '';
-      checkMujer.checked = 'checked';
-    }
+  if (genero == "h") {
+    checkHombre.checked = "checked";
+    checkMujer.checked = "";
+  } else {
+    checkHombre.checked = "";
+    checkMujer.checked = "checked";
+  }
   //seleccionar Avatar
   const avatares = document.querySelectorAll("#avatarGallery img");
   avatares.forEach(el => {
@@ -152,10 +175,10 @@ function guardar() {
   console.debug("persona a guardar %o", alumno);
 
   if (id == 0) {
-      getAlumno("POST", endpoint, alumno);
+      getAlumno("POST", alumnosApi, alumno);
   } else {
     // Editar registro
-    const url = endpoint + alumno.id;
+    const url = alumnosApi + alumno.id;
     getAlumno("PUT", url, alumno);
   }
 }
@@ -167,7 +190,7 @@ function eliminar(indice) {
   const mensaje = `¿Estas seguro que quieres eliminar  a ${alumnoSeleccionado.nombre} ?`;
 
   if (confirm(mensaje)) {
-    const url = endpoint + alumnoSeleccionado.id;
+    const url = alumnosApi + alumnoSeleccionado.id;
     getAlumno('DELETE', url, undefined)
   }
 }
@@ -177,11 +200,32 @@ function getAlumno(metodo, url, datos) {
       ajax(metodo, url, datos)
       .then(data => {
         //pedimos de nuevo todos los alumnos para pasarselos al listado
-        ajax("GET", endpoint, undefined)
+        ajax("GET", alumnosApi, undefined)
           .then(data => {
             console.trace("promesa resolve");
             alumnos = data;
             listarAlumnos(alumnos);
+          })
+          .catch(error => {
+            console.warn("promesa rejectada");
+            alert(error);
+          });
+      })
+      .catch(error => {
+        console.warn("promesa rejectada");
+        alert(error);
+      });
+}
+function getCurso(metodo, url, datos) {
+  //TODO Añadir mensajes de confirmación de las operaciones CRUD para el usuario
+      ajax(metodo, url, datos)
+      .then(data => {
+        //pedimos de nuevo todos los cursos para pasarselos al listado
+        ajax("GET", cursosApi, undefined)
+          .then(data => {
+            console.trace("promesa resolve");
+            cursos = data;
+            listarCursos(cursos);
           })
           .catch(error => {
             console.warn("promesa rejectada");
