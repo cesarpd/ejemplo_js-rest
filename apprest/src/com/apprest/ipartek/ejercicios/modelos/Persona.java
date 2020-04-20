@@ -1,12 +1,16 @@
 package com.apprest.ipartek.ejercicios.modelos;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 public class Persona {
 	private int id;
+	@Size( min=2, max = 50, message = "minimo 2 maximo 50 carcateres" )
 	private String nombre;
 	@NotEmpty
 	private String avatar;
+	//TODO regexp para "h" o "m"
+	// @Pattern(regexp = "" )
 	private String sexo;
 	
 	public Persona() {

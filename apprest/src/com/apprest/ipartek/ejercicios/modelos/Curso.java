@@ -1,30 +1,31 @@
 package com.apprest.ipartek.ejercicios.modelos;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 public class Curso {
 	private int id;
-	@NotEmpty
+	@Size( min=2, max = 255, message = "minimo 2 maximo 255 carcateres")
 	private String nombre;
 	@NotEmpty
 	private String imagen;
 	@NotEmpty
-	private Double precio;
+	private Float precio;
 	
-	public Curso(int id, @NotEmpty String nombre, @NotEmpty String imagen, @NotEmpty Double precio) {
-		super();
-		this.id = id;
-		this.nombre = nombre;
-		this.imagen = imagen;
-		this.precio = precio;
+	public Curso(int id, @Size(min = 2, max = 255, message = "minimo 2 maximo 255 carcateres") String nombre,
+			@NotEmpty String imagen, @NotEmpty Float precio) {
+		setId(id);
+		setNombre(nombre);
+		setImagen(imagen);
+		setPrecio(precio);
 	}
-	
+
 	public Curso() {
 		super();
 		this.id = 0;
 		this.nombre = "";
 		this.imagen = "default.png";
-		this.precio = 0.0;
+		this.precio = (float) 0;
 	}
 
 	public int getId() {
@@ -39,7 +40,7 @@ public class Curso {
 		return imagen;
 	}
 
-	public Double getPrecio() {
+	public Float getPrecio() {
 		return precio;
 	}
 
@@ -55,7 +56,7 @@ public class Curso {
 		this.imagen = imagen;
 	}
 
-	public void setPrecio(Double precio) {
+	public void setPrecio(Float precio) {
 		this.precio = precio;
 	}
 
