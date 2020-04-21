@@ -1,5 +1,5 @@
-const alumnosApi = "http://192.168.0.35:8080/com.apprest.ipartek.ejercicios/api/personas/";
-const cursosApi = "http://192.168.0.35:8080/com.apprest.ipartek.ejercicios/api/cursos/";
+const alumnosApi = "http://192.168.0.33:8080/com.apprest.ipartek.ejercicios/api/personas/";
+const cursosApi = "http://192.168.0.33:8080/com.apprest.ipartek.ejercicios/api/cursos/";
  
 
 const eList = document.getElementById('alist');
@@ -63,7 +63,7 @@ function filtrar(){
 function listarAlumnos(alumnos) {
     eList.innerHTML = ''; // vaciar html 
     alumnos.forEach(
-      (alumno, index) =>
+      (alumno) =>
         (eList.innerHTML += `
         <div class="col-lg-4 col-sm-6 mb-5 px-5">
          <div class="row d-flex align-items-center">
@@ -75,9 +75,9 @@ function listarAlumnos(alumnos) {
         <h5 class="font-weight-bold pt-2">${alumno.nombre}</h5>
         <h6 class="font-weight-light py-0">${alumno.sexo}</h6>
 
-        <a class= "pr-2 pl-0"><i onclick= "eliminar(${index})" class= "fas fa-ban"></i></a>
+        <a class= "pr-2 pl-0"><i onclick= "eliminar(${alumno.id})" class= "fas fa-ban"></i></a>
 
-        <a onclick="editar(${index})" class="pr-2 pl-0" data-toggle="modal" data-target="#formularioAlumno"><i class="fas fa-edit"> </i></a>
+        <a onclick="editar(${alumno.id})" class="pr-2 pl-0" data-toggle="modal" data-target="#formularioAlumno"><i class="fas fa-edit"> </i></a>
             </div>
           </div>
         </div>
@@ -116,21 +116,23 @@ function editar(indice) {
   //Ocultamos la pestaña de los cursos
   cursosTab.classList.add("d-none");
   let alumnoSeleccionado = {
-    id: 0,
-    nombre: "sin nombre",
-    avatar: "img/avatar1.png",
-    sexo: "h"
-  };
-
+     id: 0,
+     nombre: "sin nombre",
+     avatar: "img/avatar1.png",
+     sexo: "h"
+  }; 
+  
+  // Mostramos el alumno seleccionado solo si tiene id
   if (indice >= 0) {
     // Mostramos la pestaña de los cursos
     cursosTab.classList.add("d-block");
-    alumnoSeleccionado = alumnos[indice];
+    alumnoSeleccionado = alumnos.find(alumno => alumno.id === indice);
   }
+
   console.debug("click editar alumno %o", alumnoSeleccionado);
 
   //rellernar formulario
-  document.getElementById("indice").value = indice;
+  //document.getElementById("indice").value = indice;
   document.getElementById("inputId").value = alumnoSeleccionado.id;
   document.getElementById("inputNombre").value = alumnoSeleccionado.nombre;
   document.getElementById("inputAvatar").value = alumnoSeleccionado.avatar;
@@ -184,13 +186,14 @@ function guardar() {
 }
 
 function eliminar(indice) {
-  let alumnoSeleccionado = alumnos[indice];
+  let alumnoSeleccionado = alumnos.find(alumno => alumno.id === indice);
   console.debug("click eliminar alumno %o", alumnoSeleccionado);
   // TODO Cambiar Alert por un Modal
-  const mensaje = `¿Estas seguro que quieres eliminar  a ${alumnoSeleccionado.nombre} ?`;
+  const mensaje = `¿Estas seguro que quieres eliminar  a ${alumnoSeleccionado.nombre + " con id " + alumnoSeleccionado.id} ?`;
 
   if (confirm(mensaje)) {
     const url = alumnosApi + alumnoSeleccionado.id;
+    console.debug ("url a eliminar " + url)
     getAlumno('DELETE', url, undefined)
   }
 }
