@@ -5,9 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.apprest.ipartek.ejercicios.modelos.Curso;
 import com.apprest.ipartek.ejercicios.modelos.Persona;
 
 public class PersonaDao implements IDAO<Persona> {
@@ -17,13 +19,22 @@ public class PersonaDao implements IDAO<Persona> {
 	private static PersonaDao INSTANCE = null;
 	// Consultas SQL
 	
-	private static String SQL_GET_ALL   = "SELECT id, nombre, avatar, sexo FROM persona ORDER BY id DESC LIMIT 500; ";
-	private static String SQL_GET_BY_ID = "SELECT id, nombre, avatar, sexo FROM persona WHERE id = ?; ";
+	//GET
+	private static String SQL_GET_ALL = "SELECT  p.id as persona_id, p.nombre as persona_nombre, p.avatar as persona_avatar, p.sexo as persona_sexo, c.id as curso_id, c.nombre as curso_nombre, c.imagen as curso_imagen, c.precio as curso_precio \n" + 
+			"FROM persona p LEFT JOIN persona_has_curso phc ON p.id = phc.persona_id \n" + 
+			"LEFT JOIN curso c ON c.id = phc.curso_id LIMIT 500;";
+
+	private static String SQL_GET_BY_ID = " SELECT  p.id as persona_id, p.nombre as persona_nombre, p.avatar as persona_avatar, p.sexo as persona_sexo, c.id as curso_id, c.nombre as curso_nombre, c.imagen as curso_imagen, c.precio as curso_precio \n" + 
+			"			\"FROM persona p LEFT JOIN persona_has_curso phc ON p.id = phc.persona_id \\n\" + \n" + 
+			"			\"LEFT JOIN curso c ON c.id = phc.curso_id WHERE p.id = ?;";
+
+	//CRUD
+	//private static String SQL_GET_ALL   = "SELECT id, nombre, avatar, sexo FROM persona ORDER BY id DESC LIMIT 500; ";
+	//private static String SQL_GET_BY_ID = "SELECT id, nombre, avatar, sexo FROM persona WHERE id = ?; ";
 	private static String SQL_DELETE    = "DELETE FROM persona WHERE id = ?; ";
 	private static String SQL_INSERT    = "INSERT INTO persona ( nombre, avatar, sexo) VALUES ( ?, ?, ? ); ";
 	private static String SQL_UPDATE    = "UPDATE persona SET nombre = ?, avatar = ?,  sexo = ? WHERE id = ?; ";
 	
-	// TODO Añadir consultas SQL
 	
 	private PersonaDao() {
 		super();
@@ -43,6 +54,9 @@ public class PersonaDao implements IDAO<Persona> {
 		LOGGER.info("getAll");
 		
 		ArrayList<Persona> registros = new ArrayList<Persona>();
+		
+		HashMap<Integer, Persona> hmPersonas = new HashMap<Integer, Persona>();
+		
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(SQL_GET_ALL);
 				ResultSet rs = pst.executeQuery();
@@ -52,7 +66,8 @@ public class PersonaDao implements IDAO<Persona> {
 			LOGGER.info(pst.toString());
 			
 			while( rs.next() ) {				
-				registros.add( mapper(rs) );				
+				//registros.add( mapper(rs) );
+				mapper(rs, hmPersonas);
 			}
 			
 			
@@ -61,7 +76,7 @@ public class PersonaDao implements IDAO<Persona> {
 			e.printStackTrace();
 		}
 
-		return registros;
+		return new ArrayList<Persona> (hmPersonas.values());
 	}
 
 
@@ -78,9 +93,11 @@ public class PersonaDao implements IDAO<Persona> {
 			LOGGER.info(pst.toString());
 			
 			try( ResultSet rs = pst.executeQuery() ){
-			
+				
+				HashMap<Integer, Persona> hmPersonas = new HashMap<Integer, Persona>();
+
 				if( rs.next() ) {					
-					registro = mapper(rs);					
+					mapper(rs, hmPersonas);					
 					
 				}else {
 					throw new Exception("Registro no encontrado para id = " + id);
@@ -179,7 +196,7 @@ public class PersonaDao implements IDAO<Persona> {
 			
 		} catch (SQLException e) {
 
-			throw new Exception("No se puede eliminar registro " + e.getMessage() );
+			throw new SQLException("No se puede eliminar registro " + e.getMessage() );
 		}
 
 		return registro;
@@ -187,13 +204,34 @@ public class PersonaDao implements IDAO<Persona> {
 	}
 	
 	// Metodos
-	private Persona mapper(ResultSet rs) throws SQLException {
-		Persona p = new Persona();
-		p.setId( rs.getInt("id") );
-		p.setNombre( rs.getString("nombre"));
-		p.setAvatar( rs.getString("avatar"));
-		p.setSexo( rs.getString("sexo"));
-		return p;
+	private void mapper(ResultSet rs, HashMap<Integer,Persona> hm) throws SQLException {
+		Integer key = rs.getInt("persona_id");
+		
+		Persona p = hm.get(key);
+		if (p == null) {
+			p = new Persona();
+			p.setId(key);
+			p.setNombre( rs.getString("persona_nombre"));
+			p.setAvatar( rs.getString("persona_avatar"));
+			p.setSexo( rs.getString("persona_sexo"));
+
+		}
+
+		// se añade el curso
+		int idCurso = rs.getInt("curso_id");
+		if ( idCurso != 0) {
+			Curso c = new Curso();
+			c.setId(idCurso);
+			c.setNombre(rs.getString("curso_nombre"));
+			c.setPrecio( rs.getFloat("curso_precio"));
+			c.setImagen(rs.getString("curso_imagen"));			
+			p.getCursos().add(c);
+		}	
+
+		//actualizar hashmap
+		hm.put(key, p);
+		
+		
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.apprest.ipartek.ejercicios.modelos;
 
+import java.util.ArrayList;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
@@ -13,12 +15,16 @@ public class Persona {
 	// @Pattern(regexp = "" )
 	private String sexo;
 	
+	// Nuevo Array para almacenar los cursos
+	private ArrayList<Curso> cursos;
+	
 	public Persona() {
 		super();
 		this.id = 0;
 		this.nombre = "";		
 		this.avatar = "avatar1.png";
 		this.sexo = "";
+		this.cursos = new ArrayList<Curso>();
 	}
 	
 	public Persona(int id, String nombre, @NotEmpty String avatar, String sexo) {
@@ -28,7 +34,14 @@ public class Persona {
 		setSexo(sexo);
 	}
 	
-
+	//Getter y setter de curso
+	public ArrayList<Curso> getCursos(){
+		return cursos;
+	}
+	public void  setCursos (ArrayList<Curso> cursos) {
+		this.cursos = cursos;
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -63,8 +76,11 @@ public class Persona {
 
 	@Override
 	public String toString() {
-		return "Persona [id=" + id + ", nombre=" + nombre + ", avatar=" + avatar + ", sexo=" + sexo + "]";
+		return "Persona [id=" + id + ", nombre=" + nombre + ", avatar=" + avatar + ", sexo=" + sexo + ", cursos="
+				+ cursos + "]";
 	}
+
+
 	
 	
 	
