@@ -1,6 +1,11 @@
-const alumnosApi = "http://192.168.0.33:8080/com.apprest.ipartek.ejercicios/api/personas/";
-const cursosApi = "http://192.168.0.33:8080/com.apprest.ipartek.ejercicios/api/cursos/";
- 
+/**
+ * Inicializacion de
+ * Variables Globales
+ */
+
+const endpoint = "http://192.168.0.33:8080/com.apprest.ipartek.ejercicios/api/";
+const alumnosApi = endpoint + "personas";
+const cursosApi = endpoint + "cursos";
 
 const eList = document.getElementById('alist');
 const cList = document.getElementById('clist');
@@ -8,18 +13,28 @@ const cList = document.getElementById('clist');
 let alumnos = [];
 let cursos = [];
 
+let alumnoSeleccionado = {
+    id: 0,
+    nombre: "sin nombre",
+    avatar: "img/avatar1.png",
+    sexo: "h"
+  };
+
+/**
+ * Main
+ * Inicializa init cuando todo se ha cargado
+ */
 window.addEventListener('load', init())
 
 function init() {
   console.debug('Documennt loaded...')
   //Listeners del formulario
   listener();
-  
-  // Ajax Request con Promesas
-  getAlumno('GET', alumnosApi, undefined);
-  getCurso('GET', cursosApi, undefined);
-  
+  // Galeria de avatares
   initGallery();
+  // Ajax Request con Promesas para los recibir los Alumnos y listarlos
+  getAlumno("GET", alumnosApi, undefined);
+
 }
 
 /*
@@ -90,9 +105,6 @@ function listarAlumnos(alumnos) {
               alumno.id
             })" class="pr-2 pl-0" data-toggle="modal" data-target="#formularioAlumno"><i class="fas fa-edit"> </i></a>
 
-            <a onclick="verCursos(${
-              alumno.id
-            })" class="pr-2 pl-0" data-toggle="modal" data-target="#formularioCurso"><i class="fas fa-cart-plus"> </i></a>
             </div>
           </div>
         </div>
@@ -101,57 +113,22 @@ function listarAlumnos(alumnos) {
 
 }//listarAlumnos()
 
-function listarCursos(cursos) {
-  cList.innerHTML = ""; // vaciar html
-  cursos.forEach(
-    (curso, index) =>
-      (cList.innerHTML += `   
-                <div class="col-12 mb-4">
-                  <div class="card z-depth-0 bordered border-light">
-                    <div class="card-body p-0">
-                      <div class="row mx-0">
-                        <div class="col-md-8 grey lighten-4 rounded-left p-4 d-flex flex-row justify-content-start">
-                          <!--<p class="font-weight-light text-muted mb-4">${curso.id}</p>-->
-                          <img src="img/cursos/undefined.jpg" class="img-fluid z-depth-1" width="90">
-                          <h2 class="font-weight-bold px-5">${curso.nombre}</h2>
-                          </div>
-                        <div class="col-md-4 text-center py-4 d-flex flex-row justify-content-around">
-                          <div>
-                            <p class="h5 font-weight-light text-muted mb-0 mt-2">Precio</p>
-                            <p class="h1 font-weight-normal">${curso.precio}€</p>
-                          </div>
-                          <div>
-                            <a class="btn btn-success" href="#" role="button"
-                              
-                            >
-                              <i class="fas fa-cart-plus fa-5x deep-orange-lighter-hover"></i>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>      
-      `)
-  );
-}//listarCursos()
 
 
 function editar(indice) {
   cursosTab = document.getElementById("hide-if-new");
   //Ocultamos la pestaña de los cursos
   cursosTab.classList.add("d-none");
-  let alumnoSeleccionado = {
-     id: 0,
-     nombre: "sin nombre",
-     avatar: "img/avatar1.png",
-     sexo: "h"
-  }; 
-  
-  // Mostramos el alumno seleccionado solo si tiene id
+
+/**
+ * Si se ha seleccionado un alumno lo mostramos
+ * Si no es que se ha pulsado el boton de Añadir Nuevo
+ */
   if (indice >= 0) {
     // Mostramos la pestaña de los cursos
+    listarCursos();
     cursosTab.classList.add("d-block");
+    // Pedimos los datos del alumno seleccionado
     alumnoSeleccionado = alumnos.find(alumno => alumno.id === indice);
   }
 
@@ -182,6 +159,16 @@ function editar(indice) {
     if (alumnoSeleccionado.avatar == el.dataset.path) {
       el.classList.add("border-primary");
     }
+  });
+  // pintar cursos del alumno
+  let listaCursosAlumno = document.getElementById("aclist");
+  listaCursosAlumno.innerHTML = "";
+  alumnoSeleccionado.cursos.forEach(el => {
+    listaCursosAlumno.innerHTML += `
+        <li>
+          ${el.nombre}
+          <i class="fas fa-trash" onclick="eliminarCurso(event, ${alumnoSeleccionado.id},${el.id})"></i>
+        </li>`;
   });
 }
 
@@ -245,27 +232,7 @@ function getAlumno(metodo, url, datos) {
         alert(error);
       });
 }
-function getCurso(metodo, url, datos) {
-  //TODO Añadir mensajes de confirmación de las operaciones CRUD para el usuario
-      ajax(metodo, url, datos)
-      .then(data => {
-        //pedimos de nuevo todos los cursos para pasarselos al listado
-        ajax("GET", cursosApi, undefined)
-          .then(data => {
-            console.trace("promesa resolve");
-            cursos = data;
-            listarCursos(cursos);
-          })
-          .catch(error => {
-            console.warn("promesa rejectada");
-            alert(error);
-          });
-      })
-      .catch(error => {
-        console.warn("promesa rejectada");
-        alert(error);
-      });
-}
+
 
 /**
  * Carga todas las imagen de los avatares
@@ -297,7 +264,81 @@ function selectAvatar(evento) {
 
 }
 
-function verCursos(id) {
-  //alert(`el alumno con id: ${id} selecciona cursos`);
-}
+function listarCursos() {
+ajax("GET", cursosApi, undefined)
+  .then(data => {
+    cursos = data;
+    // cargar cursos en lista
+    cList.innerHTML = "";
+    cursos.forEach(
+      curso =>
+        (cList.innerHTML += `   
+                      <div class="col-12 mb-4">
+                        <div class="card z-depth-0 bordered border-light">
+                          <div class="card-body p-0">
+                            <div class="row mx-0">
+                              <div class="col-md-8 grey lighten-4 rounded-left p-4 d-flex flex-row justify-content-start">
+                                
+                                <img src="img/cursos/undefined.jpg" class="img-fluid z-depth-1" width="90">
+                                <h2 class="font-weight-bold px-5">${curso.nombre}</h2>
+                                </div>
+                              <div class="col-md-4 text-center py-4 d-flex flex-row justify-content-around">
+                                <div>
+                                  <p class="h5 font-weight-light text-muted mb-0 mt-2">Precio</p>
+                                  <p class="h1 font-weight-normal">${curso.precio}€</p>
+                                </div>
+                                <div>
+                                  <a class="btn btn-success comprar-curso" href="#" role="button"
+                                  onClick="asignarCurso( 0, ${curso.id})">
+                                    <i class="fas fa-cart-plus fa-5x deep-orange-lighter-hover"></i>
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>      
+            `)
+    );
+    alert(alumnoSeleccionado.id)
+    //selectCurso(alumnoSeleccionado.id);
+  })
+  .catch(error => alert("No se pueden cargar cursos" + error));
+  
+}//listarCursos()
 
+function asignarCurso(idAlumno = 0, idCurso) {
+  idAlumno = idAlumno != 0 ? idAlumno : alumnoSeleccionado.id;
+
+  console.debug(`click asignarCurso idAlumno=${idAlumno} idCurso=${idCurso}`);
+
+  const url = endpoint + "personas/" + idAlumno + "/curso/" + idCurso;
+ajax("POST", url, undefined)
+  .then(data => {
+      alert(data.informacion);
+  })
+  .catch(error => alert(error));
+
+} //asignarCurso
+/**
+ *
+ * @param {*} idAlumno
+ * @param {*} idCurso
+ */
+function eliminarCurso(event, idAlumno, idCurso) {
+  //BUG Hacer que se refresque la info del alumno
+  console.debug(
+    `click eliminarCurso idAlumno=${idAlumno} idCurso=${idCurso}`
+  );
+
+  const url = endpoint + "personas/" + idAlumno + "/curso/" + idCurso;
+  ajax("DELETE", url, undefined)
+    .then(data => {
+      alert("Curso Eliminado");
+
+      //  event.target.parentElement.style.display = 'none';
+      // event.target.parentElement.classList.add("animated", "bounceOut");
+        editar(idAlumno);
+    })
+    .catch(error => alert(error));
+} //eliminarCurso
