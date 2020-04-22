@@ -63,7 +63,7 @@ function filtrar(){
 function listarAlumnos(alumnos) {
     eList.innerHTML = ''; // vaciar html 
     alumnos.forEach(
-      (alumno) =>
+      alumno =>
         (eList.innerHTML += `
         <div class="col-lg-4 col-sm-6 mb-5 px-5">
          <div class="row d-flex align-items-center">
@@ -72,12 +72,27 @@ function listarAlumnos(alumnos) {
         class="img-fluid rounded-circle z-depth-1" />
           </div>
          <div class="col-7">
-        <h5 class="font-weight-bold pt-2">${alumno.nombre}</h5>
-        <h6 class="font-weight-light py-0">${alumno.sexo}</h6>
+           <h5 class="font-weight-bold pt-2">${alumno.nombre}</h5>
+        
+            <h6 class="font-weight-light py-0">
+            ${
+              alumno.sexo == "h"
+                ? '<i class="fas fa-mars"></i><span> Hombre </span>'
+                : '<i class="fas fa-venus"></i><span> Mujer </span>'
+            } 
+            </h6>
 
-        <a class= "pr-2 pl-0"><i onclick= "eliminar(${alumno.id})" class= "fas fa-ban"></i></a>
+            <a class= "pr-2 pl-0"><i onclick= "eliminar(${
+              alumno.id
+            })" class= "fas fa-ban"></i></a>
 
-        <a onclick="editar(${alumno.id})" class="pr-2 pl-0" data-toggle="modal" data-target="#formularioAlumno"><i class="fas fa-edit"> </i></a>
+            <a onclick="editar(${
+              alumno.id
+            })" class="pr-2 pl-0" data-toggle="modal" data-target="#formularioAlumno"><i class="fas fa-edit"> </i></a>
+
+            <a onclick="verCursos(${
+              alumno.id
+            })" class="pr-2 pl-0" data-toggle="modal" data-target="#formularioCurso"><i class="fas fa-cart-plus"> </i></a>
             </div>
           </div>
         </div>
@@ -85,6 +100,7 @@ function listarAlumnos(alumnos) {
     );
 
 }//listarAlumnos()
+
 function listarCursos(cursos) {
   cList.innerHTML = ""; // vaciar html
   cursos.forEach(
@@ -94,13 +110,23 @@ function listarCursos(cursos) {
                   <div class="card z-depth-0 bordered border-light">
                     <div class="card-body p-0">
                       <div class="row mx-0">
-                        <div class="col-md-8 grey lighten-4 rounded-left pt-4">
-                          <p class="font-weight-light text-muted mb-4">${curso.id}</p>
-                          <h5 class="font-weight-bold">${curso.nombre}</h5>
-                        </div>
-                        <div class="col-md-4 text-center pt-4">
-                          <p class="h1 font-weight-normal">${curso.precio}€</p>
-                          <p class="h5 font-weight-light text-muted mb-4">Precio</p>
+                        <div class="col-md-8 grey lighten-4 rounded-left p-4 d-flex flex-row justify-content-start">
+                          <!--<p class="font-weight-light text-muted mb-4">${curso.id}</p>-->
+                          <img src="img/cursos/undefined.jpg" class="img-fluid z-depth-1" width="90">
+                          <h2 class="font-weight-bold px-5">${curso.nombre}</h2>
+                          </div>
+                        <div class="col-md-4 text-center py-4 d-flex flex-row justify-content-around">
+                          <div>
+                            <p class="h5 font-weight-light text-muted mb-0 mt-2">Precio</p>
+                            <p class="h1 font-weight-normal">${curso.precio}€</p>
+                          </div>
+                          <div>
+                            <a class="btn btn-success" href="#" role="button"
+                              
+                            >
+                              <i class="fas fa-cart-plus fa-5x deep-orange-lighter-hover"></i>
+                            </a>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -269,5 +295,9 @@ function selectAvatar(evento) {
   //@see: https://developer.mozilla.org/es/docs/Learn/HTML/como/Usando_atributos_de_datos
   elAvatar.value = evento.target.dataset.path;
 
+}
+
+function verCursos(id) {
+  //alert(`el alumno con id: ${id} selecciona cursos`);
 }
 
