@@ -1,6 +1,10 @@
 ![](https://github.com/cesarpd/ejemplo_js-rest/blob/master/resources/header.png)
 
 # ejemplo_js-rest
+
+![](https://github.com/cesarpd/ejemplo_js-rest/blob/master/resources/vista-previa-ui.gif)
+
+## Descripción de la aplicación
 Ejemplo de aplicación js que se conecta a una API en java.
 La aplicación consiste en un directorio de Alumnos y Cursos en la que se pueden realizar las siguientes operaciones:
 
@@ -15,17 +19,23 @@ __Para Cursos__
 + Asignar Cursos al Alumno 
 + Eliminar Cursos del Alumno 
 
-[TOCM]
+### Tags
+[ACTIVIDAD_16](https://github.com/cesarpd/ejemplo_js-rest/releases/tag/v1.1-beta.1 "Operaciones CRUD básicas para alumnos")
+
+[ACTIVIDAD_15](https://github.com/cesarpd/ejemplo_js-rest/releases/tag/v1.1-beta.1 "Operaciones CRUD básicas para alumnos")
+
+[!!! Entrega ejercicio alumnos](https://github.com/cesarpd/ejemplo_js-rest/releases/tag/v1.0 "Operaciones CRUD básicas para alumnos")
+
+### Versión
+[v1.1-beta.1 - Operaciones CRUD básicas para alumnos y cursos](https://github.com/cesarpd/ejemplo_js-rest/releases/tag/v1.1-beta.1 "Operaciones CRUD básicas para alumnos y cursos")
+
+[v1.0 - Operaciones CRUD básicas para alumnos](https://github.com/cesarpd/ejemplo_js-rest/releases/tag/v1.0 "Operaciones CRUD básicas para alumnos")
 
 ## Estructura del proyecto
 
 El proyecto utiliza __Java 1.8__ como lenguaje de servidor y __ECMAScript__ como lenguaje de cliente. 
 
 ![](https://github.com/cesarpd/ejemplo_js-rest/blob/master/resources/ui-1.png)
-> Imagen interface.
-
-![](https://github.com/cesarpd/ejemplo_js-rest/blob/master/resources/vista-previa-ui.gif)
-> Vista previa UX.
 
 ### AppCliente
   > La aplicación cliente utiliza __HTML5__,__CSS3__ y __javascript__ 
@@ -107,18 +117,6 @@ El proyecto utiliza __Java 1.8__ como lenguaje de servidor y __ECMAScript__ como
 
   @DELETE Curso en Persona (Alumno)
   > http://localhost:8080/com.apprest.ipartek.ejercicios/api/personas/${idPersona}/curso/${idCurso}
-
-### Tags
-[ACTIVIDAD_16](https://github.com/cesarpd/ejemplo_js-rest/releases/tag/v1.1-beta.1 "Operaciones CRUD básicas para alumnos")
-
-[ACTIVIDAD_15](https://github.com/cesarpd/ejemplo_js-rest/releases/tag/v1.1-beta.1 "Operaciones CRUD básicas para alumnos")
-
-[!!! Entrega ejercicio alumnos](https://github.com/cesarpd/ejemplo_js-rest/releases/tag/v1.0 "Operaciones CRUD básicas para alumnos")
-
-### Versión
-[v1.1-beta.1 - Operaciones CRUD básicas para alumnos y cursos](https://github.com/cesarpd/ejemplo_js-rest/releases/tag/v1.1-beta.1 "Operaciones CRUD básicas para alumnos y cursos")
-
-[v1.0 - Operaciones CRUD básicas para alumnos](https://github.com/cesarpd/ejemplo_js-rest/releases/tag/v1.0 "Operaciones CRUD básicas para alumnos")
 
 
 
