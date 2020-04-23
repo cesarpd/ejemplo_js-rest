@@ -1,11 +1,12 @@
+//TODO Documentar el proyecto
+//BUG Limpiar registro de Alumno y Selector de Cursos al Añadir Nuevo
 /**
  * Inicializacion de
  * Variables Globales
  */
-
 const endpoint = "http://192.168.0.33:8080/com.apprest.ipartek.ejercicios/api/";
-const alumnosApi = endpoint + "personas";
-const cursosApi = endpoint + "cursos";
+const alumnosApi = endpoint + "personas/";
+const cursosApi = endpoint + "cursos/";
 
 const eList = document.getElementById('alist');
 const cList = document.getElementById('clist');
@@ -199,6 +200,7 @@ function guardar() {
 }
 
 function eliminar(indice) {
+  // BUG No se puede eliminar si tiene cursos asociados (mostrar mensaje)
   let alumnoSeleccionado = alumnos.find(alumno => alumno.id === indice);
   console.debug("click eliminar alumno %o", alumnoSeleccionado);
   // TODO Cambiar Alert por un Modal
@@ -300,8 +302,7 @@ ajax("GET", cursosApi, undefined)
                       </div>      
             `)
     );
-    alert(alumnoSeleccionado.id)
-    //selectCurso(alumnoSeleccionado.id);
+    console.log("el ide del alumno es " + alumnoSeleccionado.id);
   })
   .catch(error => alert("No se pueden cargar cursos" + error));
   
@@ -313,13 +314,15 @@ function asignarCurso(idAlumno = 0, idCurso) {
   console.debug(`click asignarCurso idAlumno=${idAlumno} idCurso=${idCurso}`);
 
   const url = endpoint + "personas/" + idAlumno + "/curso/" + idCurso;
-ajax("POST", url, undefined)
-  .then(data => {
-      alert(data.informacion);
-  })
-  .catch(error => alert(error));
+  ajax("POST", url, undefined)
+    .then(data => {
+      //TODO Cambiar alert por un modal GLOBAL
+        alert(data.informacion);
+    })
+    .catch(error => alert(error));
 
 } //asignarCurso
+
 /**
  *
  * @param {*} idAlumno
