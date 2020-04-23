@@ -8,8 +8,9 @@ const endpoint = "http://192.168.0.33:8080/com.apprest.ipartek.ejercicios/api/";
 const alumnosApi = endpoint + "personas/";
 const cursosApi = endpoint + "cursos/";
 
-const eList = document.getElementById('alist');
+const aList = document.getElementById('alist');
 const cList = document.getElementById('clist');
+const acList = document.getElementById('aclist');
 
 let alumnos = [];
 let cursos = [];
@@ -18,7 +19,8 @@ let alumnoSeleccionado = {
     id: 0,
     nombre: "sin nombre",
     avatar: "img/avatar1.png",
-    sexo: "h"
+    sexo: "h",
+    cursos:[]
   };
 
 /**
@@ -77,10 +79,10 @@ function filtrar(){
 }
 
 function listarAlumnos(alumnos) {
-    eList.innerHTML = ''; // vaciar html 
+    aList.innerHTML = ''; // vaciar html 
     alumnos.forEach(
       alumno =>
-        (eList.innerHTML += `
+        (aList.innerHTML += `
         <div class="col-lg-4 col-sm-6 mb-5 px-5">
          <div class="row d-flex align-items-center">
           <div class="col-5 avatar w-100 white d-flex justify-content-center align-items-center">
@@ -164,12 +166,13 @@ function editar(indice) {
   // pintar cursos del alumno
   let listaCursosAlumno = document.getElementById("aclist");
   listaCursosAlumno.innerHTML = "";
-  alumnoSeleccionado.cursos.forEach(el => {
+  alumnoSeleccionado.cursos.forEach(curso => {
     listaCursosAlumno.innerHTML += `
         <li>
-          ${el.nombre}
-          <i class="fas fa-trash" onclick="eliminarCurso(event, ${alumnoSeleccionado.id},${el.id})"></i>
-        </li>`;
+          ${curso.nombre}
+          <i class="fas fa-trash" onclick="eliminarCurso(event, ${alumnoSeleccionado.id},${curso.id})"></i>
+        </li>
+        `;
   });
 }
 
@@ -290,7 +293,7 @@ ajax("GET", cursosApi, undefined)
                                   <p class="h1 font-weight-normal">${curso.precio}€</p>
                                 </div>
                                 <div>
-                                  <a class="btn btn-success comprar-curso" href="#" role="button"
+                                  <a id="btn-comprar-${curso.id}" class="btn btn-success comprar-curso" data-toggle="tab" href="#perfil" role="button"
                                   onClick="asignarCurso( 0, ${curso.id})">
                                     <i class="fas fa-cart-plus fa-5x deep-orange-lighter-hover"></i>
                                   </a>
@@ -318,6 +321,15 @@ function asignarCurso(idAlumno = 0, idCurso) {
     .then(data => {
       //TODO Cambiar alert por un modal GLOBAL
         alert(data.informacion);
+        const curso = data.data;
+        document.getElementById('profile-tab').classList.remove('active');
+        document.getElementById('home-tab').classList.add('active');
+        acList.innerHTML += `<li class="animated bounceIn">  
+                                ${curso.nombre}
+                                <i class="fas fa-trash" onclick="eliminarCurso(event, ${idCurso},${curso.id})"></i>    
+                            </li>`;
+      //BUG necesitamos refrescar al alumno al insertar nuevo curso                            
+        //editar(idAlumno);
     })
     .catch(error => alert(error));
 
@@ -329,19 +341,20 @@ function asignarCurso(idAlumno = 0, idCurso) {
  * @param {*} idCurso
  */
 function eliminarCurso(event, idAlumno, idCurso) {
-  //BUG Hacer que se refresque la info del alumno
+  //BUG necesitamos refrescar al alumno antes de borra un curso
   console.debug(
     `click eliminarCurso idAlumno=${idAlumno} idCurso=${idCurso}`
-  );
-
+    );
+  
   const url = endpoint + "personas/" + idAlumno + "/curso/" + idCurso;
   ajax("DELETE", url, undefined)
     .then(data => {
       alert("Curso Eliminado");
 
-      //  event.target.parentElement.style.display = 'none';
-      // event.target.parentElement.classList.add("animated", "bounceOut");
-        editar(idAlumno);
+      event.target.parentElement.style.display = 'none';
+      event.target.parentElement.classList.add("animated", "bounceOut");
+      //editar(idAlumno);
+
     })
     .catch(error => alert(error));
 } //eliminarCurso
