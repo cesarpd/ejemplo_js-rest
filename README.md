@@ -1,5 +1,4 @@
-> Imagen Logo.
-![](https://picsum.photos/500/100)
+![](https://github.com/cesarpd/ejemplo_js-rest/blob/master/resources/header.png)
 
 # ejemplo_js-rest
 Ejemplo de aplicación js que se conecta a una API en java.
@@ -22,8 +21,11 @@ __Para Cursos__
 
 El proyecto utiliza __Java 1.8__ como lenguaje de servidor y __ECMAScript__ como lenguaje de cliente. 
 
-![](https://picsum.photos/300/300?grayscale)
+![](https://github.com/cesarpd/ejemplo_js-rest/blob/master/resources/ui-1.png)
 > Imagen interface.
+
+![](https://github.com/cesarpd/ejemplo_js-rest/blob/master/resources/vista-previa-ui.gif)
+> Vista previa UX.
 
 ### AppCliente
   > La aplicación cliente utiliza __HTML5__,__CSS3__ y __javascript__ 
