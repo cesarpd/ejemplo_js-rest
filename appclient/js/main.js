@@ -8,20 +8,33 @@ const endpoint = "http://192.168.0.33:8080/com.apprest.ipartek.ejercicios/api/";
 const alumnosApi = endpoint + "personas/";
 const cursosApi = endpoint + "cursos/";
 
+<<<<<<< HEAD
 const aList = document.getElementById("alist");
 const cList = document.getElementById("clist");
 const acList = document.getElementById("aclist");
+=======
+const eList = document.getElementById('alist');
+const cList = document.getElementById('clist');
+>>>>>>> parent of dd30671... mejoras asignación de cursos con bugs
 
 let alumnos = [];
 let cursos = [];
 
 let alumnoSeleccionado = {
+<<<<<<< HEAD
   id: 0,
   nombre: "sin nombre",
   avatar: "img/avatar1.png",
   sexo: "h",
   cursos: []
 };
+=======
+    id: 0,
+    nombre: "sin nombre",
+    avatar: "img/avatar1.png",
+    sexo: "h"
+  };
+>>>>>>> parent of dd30671... mejoras asignación de cursos con bugs
 
 /**
  * Main
@@ -78,10 +91,17 @@ function filtrar() {
 }
 
 function listarAlumnos(alumnos) {
+<<<<<<< HEAD
   aList.innerHTML = ""; // vaciar html
   alumnos.forEach(
     alumno =>
       (aList.innerHTML += `
+=======
+    eList.innerHTML = ''; // vaciar html 
+    alumnos.forEach(
+      alumno =>
+        (eList.innerHTML += `
+>>>>>>> parent of dd30671... mejoras asignación de cursos con bugs
         <div class="col-lg-4 col-sm-6 mb-5 px-5">
          <div class="row d-flex align-items-center">
           <div class="col-5 avatar w-100 white d-flex justify-content-center align-items-center">
@@ -162,14 +182,17 @@ function editar(indice) {
   // pintar cursos del alumno
   let listaCursosAlumno = document.getElementById("aclist");
   listaCursosAlumno.innerHTML = "";
+<<<<<<< HEAD
   alumnoSeleccionado.cursos.forEach(curso => {
     console.info(curso);
+=======
+  alumnoSeleccionado.cursos.forEach(el => {
+>>>>>>> parent of dd30671... mejoras asignación de cursos con bugs
     listaCursosAlumno.innerHTML += `
         <li>
-          ${curso.nombre}
-          <i class="fas fa-trash" onclick="eliminarCurso(event, ${alumnoSeleccionado.id},${curso.id})"></i>
-        </li>
-        `;
+          ${el.nombre}
+          <i class="fas fa-trash" onclick="eliminarCurso(event, ${alumnoSeleccionado.id},${el.id})"></i>
+        </li>`;
   });
 }
 
@@ -290,7 +313,7 @@ function listarCursos() {
                                   <p class="h1 font-weight-normal">${curso.precio}€</p>
                                 </div>
                                 <div>
-                                  <a id="btn-comprar-${curso.id}" class="btn btn-success comprar-curso" data-toggle="tab" href="#perfil" role="button"
+                                  <a class="btn btn-success comprar-curso" href="#" role="button"
                                   onClick="asignarCurso( 0, ${curso.id})">
                                     <i class="fas fa-cart-plus fa-5x deep-orange-lighter-hover"></i>
                                   </a>
@@ -316,6 +339,7 @@ function asignarCurso(idAlumno = 0, idCurso) {
   ajax("POST", url, undefined)
     .then(data => {
       //TODO Cambiar alert por un modal GLOBAL
+<<<<<<< HEAD
       alert(data.informacion);
       const curso = data.data;
       document.getElementById("profile-tab").classList.remove("active");
@@ -326,6 +350,9 @@ function asignarCurso(idAlumno = 0, idCurso) {
                             </li>`;
       //BUG necesitamos refrescar al alumno al insertar nuevo curso
       //editar(idAlumno);
+=======
+        alert(data.informacion);
+>>>>>>> parent of dd30671... mejoras asignación de cursos con bugs
     })
     .catch(error => alert(error));
 } //asignarCurso
@@ -336,17 +363,30 @@ function asignarCurso(idAlumno = 0, idCurso) {
  * @param {*} idCurso
  */
 function eliminarCurso(event, idAlumno, idCurso) {
+<<<<<<< HEAD
   //BUG necesitamos refrescar al alumno antes de borra un curso
   console.debug(`click eliminarCurso idAlumno=${idAlumno} idCurso=${idCurso}`);
+=======
+  //BUG Hacer que se refresque la info del alumno
+  console.debug(
+    `click eliminarCurso idAlumno=${idAlumno} idCurso=${idCurso}`
+  );
+>>>>>>> parent of dd30671... mejoras asignación de cursos con bugs
 
   const url = endpoint + "personas/" + idAlumno + "/curso/" + idCurso;
   ajax("DELETE", url, undefined)
     .then(data => {
       alert("Curso Eliminado");
 
+<<<<<<< HEAD
       event.target.parentElement.style.display = "none";
       event.target.parentElement.classList.add("animated", "bounceOut");
       //editar(idAlumno);
+=======
+      //  event.target.parentElement.style.display = 'none';
+      // event.target.parentElement.classList.add("animated", "bounceOut");
+        editar(idAlumno);
+>>>>>>> parent of dd30671... mejoras asignación de cursos con bugs
     })
     .catch(error => alert(error));
 } //eliminarCurso
