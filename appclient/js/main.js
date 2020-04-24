@@ -8,52 +8,53 @@ const endpoint = "http://192.168.0.33:8080/com.apprest.ipartek.ejercicios/api/";
 const alumnosApi = endpoint + "personas/";
 const cursosApi = endpoint + "cursos/";
 
-const eList = document.getElementById('alist');
-const cList = document.getElementById('clist');
+const aList = document.getElementById("alist");
+const cList = document.getElementById("clist");
+const acList = document.getElementById("aclist");
 
 let alumnos = [];
 let cursos = [];
 
 let alumnoSeleccionado = {
-    id: 0,
-    nombre: "sin nombre",
-    avatar: "img/avatar1.png",
-    sexo: "h"
-  };
+  id: 0,
+  nombre: "sin nombre",
+  avatar: "img/avatar1.png",
+  sexo: "h",
+  cursos: []
+};
 
 /**
  * Main
  * Inicializa init cuando todo se ha cargado
  */
-window.addEventListener('load', init())
+window.addEventListener("load", init());
 
 function init() {
-  console.debug('Documennt loaded...')
+  console.debug("Documennt loaded...");
   //Listeners del formulario
   listener();
   // Galeria de avatares
   initGallery();
   // Ajax Request con Promesas para los recibir los Alumnos y listarlos
   getAlumno("GET", alumnosApi, undefined);
-
 }
 
 /*
- * Inicializamos los listener de index.html 
+ * Inicializamos los listener de index.html
  */
 function listener() {
-  let selectorSexo = document.getElementById('selectorSexo');
-  let selectorNombre = document.getElementById('selectorNombre');
+  let selectorSexo = document.getElementById("selectorSexo");
+  let selectorNombre = document.getElementById("selectorNombre");
 
-  selectorSexo.addEventListener('change', filtrar);
-  selectorNombre.addEventListener('keyup', filtrar);
+  selectorSexo.addEventListener("change", filtrar);
+  selectorNombre.addEventListener("keyup", filtrar);
 }
-function filtrar(){
+function filtrar() {
   let selectorSexo = document.getElementById("selectorSexo");
   let inputNombre = document.getElementById("selectorNombre");
   const sexo = selectorSexo.value;
   const nombre = inputNombre.value.trim().toLowerCase();
-  
+
   console.trace(`filtro sexo=${sexo} nombre=${nombre}`);
   console.debug("alumnos %o", alumnos);
 
@@ -77,10 +78,10 @@ function filtrar(){
 }
 
 function listarAlumnos(alumnos) {
-    eList.innerHTML = ''; // vaciar html 
-    alumnos.forEach(
-      alumno =>
-        (eList.innerHTML += `
+  aList.innerHTML = ""; // vaciar html
+  alumnos.forEach(
+    alumno =>
+      (aList.innerHTML += `
         <div class="col-lg-4 col-sm-6 mb-5 px-5">
          <div class="row d-flex align-items-center">
           <div class="col-5 avatar w-100 white d-flex justify-content-center align-items-center">
@@ -110,21 +111,18 @@ function listarAlumnos(alumnos) {
           </div>
         </div>
         `)
-    );
-
-}//listarAlumnos()
-
-
+  );
+} //listarAlumnos()
 
 function editar(indice) {
   cursosTab = document.getElementById("hide-if-new");
   //Ocultamos la pestaña de los cursos
   cursosTab.classList.add("d-none");
 
-/**
- * Si se ha seleccionado un alumno lo mostramos
- * Si no es que se ha pulsado el boton de Añadir Nuevo
- */
+  /**
+   * Si se ha seleccionado un alumno lo mostramos
+   * Si no es que se ha pulsado el boton de Añadir Nuevo
+   */
   if (indice >= 0) {
     // Mostramos la pestaña de los cursos
     listarCursos();
@@ -164,12 +162,14 @@ function editar(indice) {
   // pintar cursos del alumno
   let listaCursosAlumno = document.getElementById("aclist");
   listaCursosAlumno.innerHTML = "";
-  alumnoSeleccionado.cursos.forEach(el => {
+  alumnoSeleccionado.cursos.forEach(curso => {
+    console.info(curso);
     listaCursosAlumno.innerHTML += `
         <li>
-          ${el.nombre}
-          <i class="fas fa-trash" onclick="eliminarCurso(event, ${alumnoSeleccionado.id},${el.id})"></i>
-        </li>`;
+          ${curso.nombre}
+          <i class="fas fa-trash" onclick="eliminarCurso(event, ${alumnoSeleccionado.id},${curso.id})"></i>
+        </li>
+        `;
   });
 }
 
@@ -179,19 +179,19 @@ function guardar() {
   let id = document.getElementById("inputId").value;
   let nombre = document.getElementById("inputNombre").value;
   let avatar = document.getElementById("inputAvatar").value;
-  
-  let genero = document.getElementById("checkHombre").checked ? "h":"m";
-  
-    let alumno = {
-      id:id,
-      nombre: nombre,
-      avatar:avatar,
-      sexo: genero
-    };
+
+  let genero = document.getElementById("checkHombre").checked ? "h" : "m";
+
+  let alumno = {
+    id: id,
+    nombre: nombre,
+    avatar: avatar,
+    sexo: genero
+  };
   console.debug("persona a guardar %o", alumno);
 
   if (id == 0) {
-      getAlumno("POST", alumnosApi, alumno);
+    getAlumno("POST", alumnosApi, alumno);
   } else {
     // Editar registro
     const url = alumnosApi + alumno.id;
@@ -204,37 +204,38 @@ function eliminar(indice) {
   let alumnoSeleccionado = alumnos.find(alumno => alumno.id === indice);
   console.debug("click eliminar alumno %o", alumnoSeleccionado);
   // TODO Cambiar Alert por un Modal
-  const mensaje = `¿Estas seguro que quieres eliminar  a ${alumnoSeleccionado.nombre + " con id " + alumnoSeleccionado.id} ?`;
+  const mensaje = `¿Estas seguro que quieres eliminar  a ${
+    alumnoSeleccionado.nombre + " con id " + alumnoSeleccionado.id
+  } ?`;
 
   if (confirm(mensaje)) {
     const url = alumnosApi + alumnoSeleccionado.id;
-    console.debug ("url a eliminar " + url)
-    getAlumno('DELETE', url, undefined)
+    console.debug("url a eliminar " + url);
+    getAlumno("DELETE", url, undefined);
   }
 }
 
 function getAlumno(metodo, url, datos) {
   //TODO Añadir mensajes de confirmación de las operaciones CRUD para el usuario
-      ajax(metodo, url, datos)
-      .then(data => {
-        //pedimos de nuevo todos los alumnos para pasarselos al listado
-        ajax("GET", alumnosApi, undefined)
-          .then(data => {
-            console.trace("promesa resolve");
-            alumnos = data;
-            listarAlumnos(alumnos);
-          })
-          .catch(error => {
-            console.warn("promesa rejectada %o", error);
-            alert(error.informacion);
-          });
-      })
-      .catch(error => {
-        console.warn("promesa rejectada %o", error);
-        alert(error.informacion);
-      });
+  ajax(metodo, url, datos)
+    .then(data => {
+      //pedimos de nuevo todos los alumnos para pasarselos al listado
+      ajax("GET", alumnosApi, undefined)
+        .then(data => {
+          console.trace("promesa resolve");
+          alumnos = data;
+          listarAlumnos(alumnos);
+        })
+        .catch(error => {
+          console.warn("promesa rejectada");
+          alert(error);
+        });
+    })
+    .catch(error => {
+      console.warn("promesa rejectada");
+      alert(error);
+    });
 }
-
 
 /**
  * Carga todas las imagen de los avatares
@@ -263,18 +264,17 @@ function selectAvatar(evento) {
   let elAvatar = document.getElementById("inputAvatar");
   //@see: https://developer.mozilla.org/es/docs/Learn/HTML/como/Usando_atributos_de_datos
   elAvatar.value = evento.target.dataset.path;
-
 }
 
 function listarCursos() {
-ajax("GET", cursosApi, undefined)
-  .then(data => {
-    cursos = data;
-    // cargar cursos en lista
-    cList.innerHTML = "";
-    cursos.forEach(
-      curso =>
-        (cList.innerHTML += `   
+  ajax("GET", cursosApi, undefined)
+    .then(data => {
+      cursos = data;
+      // cargar cursos en lista
+      cList.innerHTML = "";
+      cursos.forEach(
+        curso =>
+          (cList.innerHTML += `   
                       <div class="col-12 mb-4">
                         <div class="card z-depth-0 bordered border-light">
                           <div class="card-body p-0">
@@ -290,7 +290,7 @@ ajax("GET", cursosApi, undefined)
                                   <p class="h1 font-weight-normal">${curso.precio}€</p>
                                 </div>
                                 <div>
-                                  <a class="btn btn-success comprar-curso" href="#" role="button"
+                                  <a id="btn-comprar-${curso.id}" class="btn btn-success comprar-curso" data-toggle="tab" href="#perfil" role="button"
                                   onClick="asignarCurso( 0, ${curso.id})">
                                     <i class="fas fa-cart-plus fa-5x deep-orange-lighter-hover"></i>
                                   </a>
@@ -301,12 +301,11 @@ ajax("GET", cursosApi, undefined)
                         </div>
                       </div>      
             `)
-    );
-    console.log("el ide del alumno es " + alumnoSeleccionado.id);
-  })
-  .catch(error => alert("No se pueden cargar cursos" + error));
-  
-}//listarCursos()
+      );
+      console.log("el ide del alumno es " + alumnoSeleccionado.id);
+    })
+    .catch(error => alert("No se pueden cargar cursos" + error));
+} //listarCursos()
 
 function asignarCurso(idAlumno = 0, idCurso) {
   idAlumno = idAlumno != 0 ? idAlumno : alumnoSeleccionado.id;
@@ -317,10 +316,18 @@ function asignarCurso(idAlumno = 0, idCurso) {
   ajax("POST", url, undefined)
     .then(data => {
       //TODO Cambiar alert por un modal GLOBAL
-        alert(data.informacion);
+      alert(data.informacion);
+      const curso = data.data;
+      document.getElementById("profile-tab").classList.remove("active");
+      document.getElementById("home-tab").classList.add("active");
+      acList.innerHTML += `<li class="animated bounceIn">  
+                                ${curso.nombre}
+                                <i class="fas fa-trash" onclick="eliminarCurso(event, ${idCurso},${curso.id})"></i>    
+                            </li>`;
+      //BUG necesitamos refrescar al alumno al insertar nuevo curso
+      //editar(idAlumno);
     })
     .catch(error => alert(error));
-
 } //asignarCurso
 
 /**
@@ -329,19 +336,17 @@ function asignarCurso(idAlumno = 0, idCurso) {
  * @param {*} idCurso
  */
 function eliminarCurso(event, idAlumno, idCurso) {
-  //BUG Hacer que se refresque la info del alumno
-  console.debug(
-    `click eliminarCurso idAlumno=${idAlumno} idCurso=${idCurso}`
-  );
+  //BUG necesitamos refrescar al alumno antes de borra un curso
+  console.debug(`click eliminarCurso idAlumno=${idAlumno} idCurso=${idCurso}`);
 
   const url = endpoint + "personas/" + idAlumno + "/curso/" + idCurso;
   ajax("DELETE", url, undefined)
     .then(data => {
       alert("Curso Eliminado");
 
-      //  event.target.parentElement.style.display = 'none';
-      // event.target.parentElement.classList.add("animated", "bounceOut");
-        editar(idAlumno);
+      event.target.parentElement.style.display = "none";
+      event.target.parentElement.classList.add("animated", "bounceOut");
+      //editar(idAlumno);
     })
     .catch(error => alert(error));
 } //eliminarCurso
