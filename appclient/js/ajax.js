@@ -27,8 +27,22 @@ function ajax(metodo, url, datos) {
           }
 
         } else {
-          // falla promesa, catch
-          reject(Error(JSON.parse(this.responseText)));
+            /**
+             * falla promesa, catch
+             * Recibe el Objeto responseBody desde Java y
+             * lo almacena en el objeto error de javascript
+             * Parametros
+             *  @informacion ""
+             *  @data ""
+             *  @errores[]
+             *  @hypermedias[]
+             */
+            //reject( Error( JSON.parse(this responseText) ));
+          if (this.responseText) {
+            reject(JSON.parse(this.responseText));
+          } else {
+            reject(this.status);
+          }
         }
       } // readyState == 4
 

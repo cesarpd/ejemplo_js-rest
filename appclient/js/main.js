@@ -228,13 +228,13 @@ function getAlumno(metodo, url, datos) {
             listarAlumnos(alumnos);
           })
           .catch(error => {
-            console.warn("promesa rejectada");
-            alert(error);
+            console.warn("promesa rejectada %o", error);
+            alert(error.informacion);
           });
       })
       .catch(error => {
-        console.warn("promesa rejectada");
-        alert(error);
+        console.warn("promesa rejectada %o", error);
+        alert(error.informacion);
       });
 }
 
