@@ -1,10 +1,10 @@
 package com.apprest.ipartek.ejercicios.api.controller;
 
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.logging.Logger;
-
 
 import javax.servlet.ServletContext;
 import javax.validation.ConstraintViolation;
@@ -23,7 +23,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.apprest.ipartek.ejercicios.modelos.Curso;
 import com.apprest.ipartek.ejercicios.modelos.Persona;
+import com.apprest.ipartek.ejercicios.modelos.dao.CursoDao;
 import com.apprest.ipartek.ejercicios.modelos.dao.PersonaDao;
 
 @Path("/personas")
@@ -31,7 +33,8 @@ import com.apprest.ipartek.ejercicios.modelos.dao.PersonaDao;
 @Consumes("application/json")
 public class PersonaController {
 	private static final Logger LOGGER = Logger.getLogger(PersonaController.class.getCanonicalName());
-	private static PersonaDao personaDao = PersonaDao.getInstance();
+	private static PersonaDao personaDao = PersonaDao.getInstancia();
+	private static CursoDao cursoDao = CursoDao.getInstancia();
 
 	private ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 	private Validator validator = factory.getValidator();
@@ -67,7 +70,9 @@ public class PersonaController {
 				response = Response.status(Status.CREATED).entity(persona).build();
 				
 			}catch (Exception e) {
-				response = Response.status(Status.CONFLICT).entity(persona).build();
+				ResponseBody responseBody = new ResponseBody();
+				responseBody.setInformacion("El nombre no puede estar duplicado");
+				response = Response.status(Status.CONFLICT).entity(responseBody).build();
 			}	
 
 		} else {
@@ -115,21 +120,87 @@ public class PersonaController {
 	@Path("/{id: \\d+}")
 	public Response eliminar(@PathParam("id") int id) {
 		LOGGER.info("eliminar(" + id + ")");
+		ResponseBody responseBody = new ResponseBody();
 
 		Response response = Response.status(Status.INTERNAL_SERVER_ERROR).entity(null).build();
 		Persona persona = null;
 		
 		try {
 			personaDao.delete(id);
-			response = Response.status(Status.OK).entity(persona).build();
+			responseBody.setInformacion("Alumno eliminado con exito");
+			response = Response.status(Status.OK).entity(responseBody).build();
 			
-		}catch (SQLException e) {
-			response = Response.status(Status.CONFLICT).entity(persona).build();
 			
-		}catch (Exception e) {
+		} catch (SQLException e) {
+			if (e instanceof SQLIntegrityConstraintViolationException) {
+				responseBody.setInformacion("No se puede eliminar un alumno con cursos asignados");
+				response = Response.status(Status.CONFLICT).entity(responseBody).build();
+				LOGGER.info("No se puede eliminar por conflicto con las primary keys" +  e);
+			}
+			
+		} catch (Exception e) {
 			response = Response.status(Status.NOT_FOUND).entity(persona).build();
 		}
 		return response;
 	}
+	
+	@POST
+	@Path("/{idPersona}/curso/{idCurso}")
+	public Response asignarCurso(@PathParam("idPersona") int idPersona, @PathParam("idCurso") int idCurso) {
+		LOGGER.info("asignarCurso idPersona=" + idPersona + " idCurso= " + idCurso);
+		Response response = Response.status(Status.INTERNAL_SERVER_ERROR).entity(null).build();
+		ResponseBody responseBody = new ResponseBody();
 
+		try {		
+			personaDao.asignarCurso(idPersona, idCurso);
+			Curso c = cursoDao.getById(idCurso);
+			
+			responseBody.setInformacion("curso asigando con exito");
+			responseBody.setData(c);
+			response = Response.status(Status.CREATED).entity(responseBody).build();
+			
+		}catch (SQLException e) {
+			
+			 if (e instanceof SQLIntegrityConstraintViolationException) {
+			        // Duplicate entry
+				 	responseBody.setInformacion("Ya tienes ese curso asignado");
+				 	response = Response.status(Status.CONFLICT).entity(responseBody).build();
+			    } 
+		}
+		
+		catch (Exception e) {					
+				responseBody.setInformacion("se ha producido un error al asignar el curso");
+				LOGGER.info(e.getMessage());
+				response = Response.status(Status.NOT_FOUND).entity(responseBody).build();
+		}
+
+		return response;
+
+	}
+	
+	
+	@DELETE
+	@Path("/{idPersona}/curso/{idCurso}")
+	public Response eliminarCurso(@PathParam("idPersona") int idPersona, @PathParam("idCurso") int idCurso) {
+		LOGGER.info("eliminarCurso idPersona=" + idPersona + " idCurso= " + idCurso);
+		Response response = Response.status(Status.INTERNAL_SERVER_ERROR).entity(null).build();
+		ResponseBody responseBody = new ResponseBody();
+
+		try {		
+			personaDao.eliminarCurso(idPersona, idCurso);
+			//Persona p = personaDao.getById(idPersona);
+			
+			responseBody.setInformacion("curso eliminado con exito");
+			//responseBody.setData(p);
+			response = Response.status(Status.OK).entity(responseBody).build();
+			
+		} catch (Exception e) {			
+				responseBody.setInformacion(e.getMessage());
+				response = Response.status(Status.NOT_FOUND).entity(responseBody).build();
+		}
+
+		return response;
+
+	}
+	
 }
