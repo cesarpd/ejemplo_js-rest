@@ -8,33 +8,19 @@ const endpoint = "http://192.168.0.33:8080/com.apprest.ipartek.ejercicios/api/";
 const alumnosApi = endpoint + "personas/";
 const cursosApi = endpoint + "cursos/";
 
-<<<<<<< HEAD
-const aList = document.getElementById("alist");
-const cList = document.getElementById("clist");
-const acList = document.getElementById("aclist");
-=======
 const eList = document.getElementById('alist');
-const cList = document.getElementById('clist');
->>>>>>> parent of dd30671... mejoras asignación de cursos con bugs
+const acList = document.getElementById('aclist');
 
 let alumnos = [];
 let cursos = [];
 
 let alumnoSeleccionado = {
-<<<<<<< HEAD
   id: 0,
   nombre: "sin nombre",
   avatar: "img/avatar1.png",
   sexo: "h",
   cursos: []
 };
-=======
-    id: 0,
-    nombre: "sin nombre",
-    avatar: "img/avatar1.png",
-    sexo: "h"
-  };
->>>>>>> parent of dd30671... mejoras asignación de cursos con bugs
 
 /**
  * Main
@@ -91,17 +77,10 @@ function filtrar() {
 }
 
 function listarAlumnos(alumnos) {
-<<<<<<< HEAD
-  aList.innerHTML = ""; // vaciar html
-  alumnos.forEach(
-    alumno =>
-      (aList.innerHTML += `
-=======
     eList.innerHTML = ''; // vaciar html 
     alumnos.forEach(
       alumno =>
         (eList.innerHTML += `
->>>>>>> parent of dd30671... mejoras asignación de cursos con bugs
         <div class="col-lg-4 col-sm-6 mb-5 px-5">
          <div class="row d-flex align-items-center">
           <div class="col-5 avatar w-100 white d-flex justify-content-center align-items-center">
@@ -127,6 +106,10 @@ function listarAlumnos(alumnos) {
               alumno.id
             })" class="pr-2 pl-0" data-toggle="modal" data-target="#formularioAlumno"><i class="fas fa-edit"> </i></a>
 
+            <a onclick="verCursos(${
+              alumno.id
+            })" class="pr-2 pl-0" data-toggle="modal" data-target="#formularioCurso"><i class="fas fa-cart-plus"> </i></a>
+
             </div>
           </div>
         </div>
@@ -137,18 +120,17 @@ function listarAlumnos(alumnos) {
 function editar(indice) {
   cursosTab = document.getElementById("hide-if-new");
   //Ocultamos la pestaña de los cursos
-  cursosTab.classList.add("d-none");
 
   /**
    * Si se ha seleccionado un alumno lo mostramos
    * Si no es que se ha pulsado el boton de Añadir Nuevo
    */
   if (indice >= 0) {
-    // Mostramos la pestaña de los cursos
-    listarCursos();
-    cursosTab.classList.add("d-block");
     // Pedimos los datos del alumno seleccionado
     alumnoSeleccionado = alumnos.find(alumno => alumno.id === indice);
+    // Listamos los cursos del alumno
+    listarCursos(alumnoSeleccionado);
+
   }
 
   console.debug("click editar alumno %o", alumnoSeleccionado);
@@ -179,21 +161,8 @@ function editar(indice) {
       el.classList.add("border-primary");
     }
   });
-  // pintar cursos del alumno
-  let listaCursosAlumno = document.getElementById("aclist");
-  listaCursosAlumno.innerHTML = "";
-<<<<<<< HEAD
-  alumnoSeleccionado.cursos.forEach(curso => {
-    console.info(curso);
-=======
-  alumnoSeleccionado.cursos.forEach(el => {
->>>>>>> parent of dd30671... mejoras asignación de cursos con bugs
-    listaCursosAlumno.innerHTML += `
-        <li>
-          ${el.nombre}
-          <i class="fas fa-trash" onclick="eliminarCurso(event, ${alumnoSeleccionado.id},${el.id})"></i>
-        </li>`;
-  });
+  
+
 }
 
 function guardar() {
@@ -239,6 +208,7 @@ function eliminar(indice) {
 }
 
 function getAlumno(metodo, url, datos) {
+  //BUG No funciona para todas las peticiones. Posible causante del error CORS cuando desarrollo en local. REAHACER POR COMPLETO
   //TODO Añadir mensajes de confirmación de las operaciones CRUD para el usuario
   ajax(metodo, url, datos)
     .then(data => {
@@ -251,12 +221,12 @@ function getAlumno(metodo, url, datos) {
         })
         .catch(error => {
           console.warn("promesa rejectada");
-          alert(error);
+          alert(error.informacion);
         });
     })
     .catch(error => {
       console.warn("promesa rejectada");
-      alert(error);
+      alert(error.informacion);
     });
 }
 
@@ -288,73 +258,66 @@ function selectAvatar(evento) {
   //@see: https://developer.mozilla.org/es/docs/Learn/HTML/como/Usando_atributos_de_datos
   elAvatar.value = evento.target.dataset.path;
 }
-
+function verCursos(indice) {
+  if (indice >= 0) {
+    // Pedimos los datos del alumno seleccionado
+    alumnoSeleccionado = alumnos.find(alumno => alumno.id === indice);
+  }
+ console.trace("cargar cursos");
+ //const url = endpoint + "cursos/?filtro=" + filtro;
+ ajax("GET", cursosApi, undefined)
+   .then(data => {
+     cursos = data;
+     // cargar cursos en clist
+     let cList = document.getElementById("clist");
+     cList.innerHTML = "";
+     cursos.forEach(
+       curso =>
+         (cList.innerHTML += `
+            <li class="list-group-item py-2" onclick="asignarCurso(event, ${alumnoSeleccionado.id},${curso.id})">
+            <h3 class="w-50">${curso.nombre}<i class="fas fa-cart-plus w-50 text-right text-black-50"></i></h3>
+            </li>
+                            `)
+     );
+     cargarAlumnos();
+   })
+   .catch(error => alert("No se pueden cargar cursos" + error));
+}
 function listarCursos() {
-  ajax("GET", cursosApi, undefined)
-    .then(data => {
-      cursos = data;
-      // cargar cursos en lista
-      cList.innerHTML = "";
-      cursos.forEach(
-        curso =>
-          (cList.innerHTML += `   
-                      <div class="col-12 mb-4">
-                        <div class="card z-depth-0 bordered border-light">
-                          <div class="card-body p-0">
-                            <div class="row mx-0">
-                              <div class="col-md-8 grey lighten-4 rounded-left p-4 d-flex flex-row justify-content-start">
-                                
-                                <img src="img/cursos/undefined.jpg" class="img-fluid z-depth-1" width="90">
-                                <h2 class="font-weight-bold px-5">${curso.nombre}</h2>
-                                </div>
-                              <div class="col-md-4 text-center py-4 d-flex flex-row justify-content-around">
-                                <div>
-                                  <p class="h5 font-weight-light text-muted mb-0 mt-2">Precio</p>
-                                  <p class="h1 font-weight-normal">${curso.precio}€</p>
-                                </div>
-                                <div>
-                                  <a class="btn btn-success comprar-curso" href="#" role="button"
-                                  onClick="asignarCurso( 0, ${curso.id})">
-                                    <i class="fas fa-cart-plus fa-5x deep-orange-lighter-hover"></i>
-                                  </a>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>      
-            `)
-      );
-      console.log("el ide del alumno es " + alumnoSeleccionado.id);
-    })
-    .catch(error => alert("No se pueden cargar cursos" + error));
+  // pintar cursos del alumno
+  acList.innerHTML = "";
+    ajax("GET", cursosApi, undefined)
+      .then(data => {
+        cursos = data;
+        // cargar cursos en lista
+        acList.innerHTML = "";
+        alumnoSeleccionado.cursos.forEach(curso => {
+          acList.innerHTML += `
+            <li class="list-group-item py-2" onclick="eliminarCurso(event, ${alumnoSeleccionado.id},${curso.id})">
+            <h3 class="w-50">${curso.nombre}<i class="fas fa-trash w-50 text-right text-black-50"></i></h3>
+            </li>
+            `;
+        });
+        //seleccionar(alumnoSeleccionado.id);
+      })
+      .catch(error => alert("No se pueden cargar cursos" + error));
+  
+
 } //listarCursos()
 
-function asignarCurso(idAlumno = 0, idCurso) {
-  idAlumno = idAlumno != 0 ? idAlumno : alumnoSeleccionado.id;
-
-  console.debug(`click asignarCurso idAlumno=${idAlumno} idCurso=${idCurso}`);
-
+function asignarCurso(event, idAlumno, idCurso) {
+  console.info(" idAlumno " + idAlumno + " idCurso " + idCurso);
+  
   const url = endpoint + "personas/" + idAlumno + "/curso/" + idCurso;
+  
   ajax("POST", url, undefined)
     .then(data => {
-      //TODO Cambiar alert por un modal GLOBAL
-<<<<<<< HEAD
-      alert(data.informacion);
-      const curso = data.data;
-      document.getElementById("profile-tab").classList.remove("active");
-      document.getElementById("home-tab").classList.add("active");
-      acList.innerHTML += `<li class="animated bounceIn">  
-                                ${curso.nombre}
-                                <i class="fas fa-trash" onclick="eliminarCurso(event, ${idCurso},${curso.id})"></i>    
-                            </li>`;
-      //BUG necesitamos refrescar al alumno al insertar nuevo curso
-      //editar(idAlumno);
-=======
-        alert(data.informacion);
->>>>>>> parent of dd30671... mejoras asignación de cursos con bugs
+      console.debug(data.informacion);
+      //TODO Cambiar alert por ventana modal
+      alert("Curso añadido con exito");
+      cargarAlumnos();
     })
-    .catch(error => alert(error));
+    .catch(error => alert(error.informacion));
 } //asignarCurso
 
 /**
@@ -363,30 +326,38 @@ function asignarCurso(idAlumno = 0, idCurso) {
  * @param {*} idCurso
  */
 function eliminarCurso(event, idAlumno, idCurso) {
-<<<<<<< HEAD
-  //BUG necesitamos refrescar al alumno antes de borra un curso
   console.debug(`click eliminarCurso idAlumno=${idAlumno} idCurso=${idCurso}`);
-=======
-  //BUG Hacer que se refresque la info del alumno
-  console.debug(
-    `click eliminarCurso idAlumno=${idAlumno} idCurso=${idCurso}`
-  );
->>>>>>> parent of dd30671... mejoras asignación de cursos con bugs
-
+  //TODO pedir la confirmacion del usuario
   const url = endpoint + "personas/" + idAlumno + "/curso/" + idCurso;
   ajax("DELETE", url, undefined)
     .then(data => {
-      alert("Curso Eliminado");
-
-<<<<<<< HEAD
-      event.target.parentElement.style.display = "none";
-      event.target.parentElement.classList.add("animated", "bounceOut");
-      //editar(idAlumno);
-=======
       //  event.target.parentElement.style.display = 'none';
-      // event.target.parentElement.classList.add("animated", "bounceOut");
-        editar(idAlumno);
->>>>>>> parent of dd30671... mejoras asignación de cursos con bugs
+      cursoParaEliminar = event.target.parentElement.parentNode;
+      cursoParaEliminar.classList.add("animated", "slideOutRight", "fast");
+      if (cursoParaEliminar.parentNode.hasChildNodes()) {
+        // Si el ul tiene hijos elimina el li
+        cursoParaEliminar.parentNode.removeChild(cursoParaEliminar);
+      }
+      cargarAlumnos();
     })
     .catch(error => alert(error));
 } //eliminarCurso
+
+function cargarAlumnos() {
+  //TODO insertar la peticion en un metodo que funcione, de momento lo harcodeo
+    console.trace("cargarAlumnos");
+    const url = endpoint + "personas/";
+    
+    const promesa = ajax("GET", url, undefined);
+      promesa
+        .then(data => {
+          console.trace("promesa resolve");
+          personas = data;
+          listarAlumnos(personas);
+        })
+        .catch(error => {
+          console.warn("promesa rejectada");
+          alert(error);
+        });
+  
+}
