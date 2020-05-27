@@ -11,14 +11,23 @@ const cursosApi = endpoint + "cursos/";
 const aList = document.getElementById("alist");
 const cList = document.getElementById("clist");
 
+let alumnos = [];
+
 window.addEventListener("load", init());
 
 function init() {
   console.debug("Documennt loaded...");
   listarAlumnos();
+  initGallery();
 }
 function listarAlumnos() {
-
+  // reset para alumno
+  let alumno = {
+    id: 0,
+    nombre: "sin nombre",
+    avatar: "img/avatar1.png",
+    sexo: "h",
+  };
   axios.get(alumnosApi).then( response => {
     console.info(response);
 
@@ -60,7 +69,6 @@ function listarAlumnos() {
   }).catch(error => console.error(error));
 }
 function crearAlumno() {
-  initGallery();
   console.log('click en alumno para crear')
 }
 
@@ -106,7 +114,6 @@ function guardarAlumno() {
   let id = document.getElementById("inputId").value;
   let nombre = document.getElementById("inputNombre").value;
   let avatar = document.getElementById("inputAvatar").value;
-
   let genero = document.getElementById("checkHombre").checked ? "h" : "m";
 
   let alumno = {
@@ -119,21 +126,53 @@ function guardarAlumno() {
   if (id == 0) {
     //Crear registro
     console.log("alumno a crear: %o", alumno);
-    axios.post(alumnosApi, alumno).then(response =>{
-      if (response.status == 200 || response.status == 201) {
+    axios
+      .post(alumnosApi, alumno)
+      .then((response) => {
         console.info(response);
         listarAlumnos();
-      } else {
-        console.error("ERROR: conflictos: " + response.informacion);
-        
-      }
-    });
+      })
+      .catch((error) => {
+        if (error.response.status == 409) {
+          alert("No se permiten nombre duplicados");
+        } else if (error.response.status == 400) {
+          alert("Revise los datos");
+        } 
+        console.info(error.message);
+      });
 
   } else {
     // Editar registro
     console.log("alumno a editar: %o", alumno);
     const url = alumnosApi + alumno.id;
   }
+}
 
-  
+function eliminar(indice) {
+  // TODO No se puede eliminar si tiene cursos asociados (mostrar mensaje)
+  let alumnoSeleccionado = alumnos.find((alumno) => alumno.id === indice);
+  console.debug("click eliminar alumno %o", alumnoSeleccionado);
+  // TODO Cambiar Alert por un Modal
+  const mensaje = `¿Estas seguro que quieres eliminar  a ${
+    alumnoSeleccionado.nombre + " con id " + alumnoSeleccionado.id
+  } ?`;
+
+  if (confirm(mensaje)) {
+    const url = alumnosApi + alumnoSeleccionado.id;
+    console.debug("url a eliminar " + url);
+    axios
+      .delete(url)
+      .then((response) => {
+        console.info(response);
+        listarAlumnos();
+      })
+      .catch((error) => {
+        if (error.response.status == 409) {
+          alert("No se puede eliminar, es posible que el alumno tenga cursos asignados");
+        } else if (error.response.status == 400) {
+          alert("Revise los datos");
+        }
+        console.info(error.message);
+      });
+  }
 }
