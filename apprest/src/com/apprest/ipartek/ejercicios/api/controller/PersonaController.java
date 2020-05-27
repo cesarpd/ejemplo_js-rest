@@ -67,6 +67,8 @@ public class PersonaController {
 				response = Response.status(Status.CREATED).entity(persona).build();
 				
 			}catch (Exception e) {
+				ResponseBody responseBody = new ResponseBody();
+				responseBody.setInformacion("nombre duplicado");
 				response = Response.status(Status.CONFLICT).entity(persona).build();
 			}	
 
