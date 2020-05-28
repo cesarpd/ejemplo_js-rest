@@ -13,6 +13,7 @@ const cList = document.getElementById("clist");
 
 let alumnos = [];
 
+
 window.addEventListener("load", init());
 
 function init() {
@@ -28,6 +29,11 @@ function listarAlumnos() {
     avatar: "img/avatar1.png",
     sexo: "h",
   };
+  document.getElementById("inputId").value = alumno.id
+  document.getElementById("inputNombre").value = alumno.nombre
+  document.getElementById("inputAvatar").value = alumno.avatar
+  document.getElementById("checkHombre").checked  = "h"
+  //petición get
   axios.get(alumnosApi).then( response => {
     console.info(response);
 
@@ -57,7 +63,7 @@ function listarAlumnos() {
               alumno.id
             })" class= "fas fa-ban"></i></a>
 
-            <a onclick="editar(${
+            <a onclick="editarAlumno(${
               alumno.id
             })" class="pr-2 pl-0" data-toggle="modal" data-target="#formularioAlumno"><i class="fas fa-edit"> </i></a>
 
@@ -79,10 +85,19 @@ function crearAlumno() {
  * Define el avatar que se ha seleccionado pasando el evento al que se ha hecho click
  */
 function initGallery() {
-  let divGallery = document.getElementById("avatarGallery");
+  let newDivGallery = document.getElementById("new-avatarGallery");
+  let editDivGallery = document.getElementById("edit-avatarGallery");
   for (let i = 1; i <= 10; i++) {
-    divGallery.innerHTML += `<div id="avatar-item" class="m-2 view overlay rounded-circle" onclick="selectAvatar(event)">
+    newDivGallery.innerHTML += `<div id="new-avatar-item" class="m-2 view overlay rounded-circle" onclick="selectAvatar(event)">
                                 <img width="90"  
+                                class="border img-fluid rounded-circle" 
+                                data-path="img/avatar${i}.png"
+                                src="img/avatar${i}.png"
+                                style="border-width: 3px !important;">
+                              </div>
+                              `;
+    editDivGallery.innerHTML += `<div id="edit-avatar-item" class="m-2 view overlay rounded-circle" onclick="selectAvatar(event)">
+                                <img width="75"  
                                 class="border img-fluid rounded-circle" 
                                 data-path="img/avatar${i}.png"
                                 src="img/avatar${i}.png"
@@ -94,58 +109,124 @@ function initGallery() {
 
 function selectAvatar(evento) {
   //console.trace("click avatar");
-  const avatares = document.querySelectorAll("#avatarGallery img");
+  const newAvatares = document.querySelectorAll("#new-avatarGallery img");
+  const editAvatares = document.querySelectorAll("#edit-avatarGallery img");
   //Recorremos todas las imagenes para eliminar la clase
-  avatares.forEach((el) => el.classList.remove("border-primary"));
+  newAvatares.forEach((el) => el.classList.remove("border-primary"));
+  editAvatares.forEach((el) => el.classList.remove("border-primary"));
   evento.target.classList.add("border-primary");
   //Tomamos el avatar del input oculto
-  let elAvatar = document.getElementById("inputAvatar");
   //@see: https://developer.mozilla.org/es/docs/Learn/HTML/como/Usando_atributos_de_datos
+  let elAvatar = document.getElementById("inputAvatar");
   elAvatar.value = evento.target.dataset.path;
+  let editElAvatar = document.getElementById("edit-inputAvatar");
+  editElAvatar.value = evento.target.dataset.path;
 }
 
 /**
- * guardarAlumno
+ * guardarNuevoAlumno
+ * Se ejecuta desde el moda #crearAlumno
  */
-
-function guardarAlumno() {
-  console.trace("click guardar");
-  
-  let id = document.getElementById("inputId").value;
-  let nombre = document.getElementById("inputNombre").value;
-  let avatar = document.getElementById("inputAvatar").value;
-  let genero = document.getElementById("checkHombre").checked ? "h" : "m";
+function guardarNuevoAlumno() {
+  console.log("click guardar");
+  // Valores de Añadir alumno nuevo  
+  let newId = document.getElementById("inputId").value;
+  let newNombre = document.getElementById("inputNombre").value;
+  let newAvatar = document.getElementById("inputAvatar").value;
+  let newGenero = document.getElementById("checkHombre").checked ? "h" : "m";
 
   let alumno = {
-    id: id,
-    nombre: nombre,
-    avatar: avatar,
-    sexo: genero
+    id: newId,
+    nombre: newNombre,
+    avatar: newAvatar,
+    sexo: newGenero,
   };
+  //Crear registro
+  console.log("alumno a crear: %o", alumno);
+  axios
+    .post(alumnosApi, alumno)
+    .then((response) => {
+      console.info(response);
+      listarAlumnos();
+    })
+    .catch((error) => {
+      if (error.response.status == 409) {
+        alert("No se permiten nombre duplicados");
+      } else if (error.response.status == 400) {
+        alert("Revise los datos");
+      } 
+      console.info(error.message);
+    });
+}
+/**
+ * guardarNuevoAlumno
+ * Se ejecuta desde el moda #formularioAlumno
+ */
+function guardarAlumno() {
+  console.log("click guardar");
 
-  if (id == 0) {
-    //Crear registro
-    console.log("alumno a crear: %o", alumno);
-    axios
-      .post(alumnosApi, alumno)
-      .then((response) => {
-        console.info(response);
-        listarAlumnos();
-      })
-      .catch((error) => {
-        if (error.response.status == 409) {
-          alert("No se permiten nombre duplicados");
-        } else if (error.response.status == 400) {
-          alert("Revise los datos");
-        } 
-        console.info(error.message);
-      });
+  // Valores de Editar Alumno existente
+  let editId = document.getElementById("edit-inputId").value;
+  let editNombre = document.getElementById("edit-inputNombre").value;
+  let editAvatar = document.getElementById("edit-inputAvatar").value;
+  let editGenero = document.getElementById("edit-checkHombre").checked ? "h" : "m";
+  // Editar registro
+  let alumno = {
+      id: editId,
+      nombre: editNombre,
+      avatar: editAvatar,
+      sexo: editGenero,
+    };
+  //console.log("alumno a editar: %o", alumno);
+  const url = alumnosApi + alumno.id;
+  // Peticion PUT
+  axios
+    .put(url, alumno)
+    .then((response) => {
+      console.info(response);
+      listarAlumnos();
+    })
+    .catch((error) => {
+      if (error.response.status == 409) {
+        alert("No se permiten nombre duplicados");
+      } else if (error.response.status == 400) {
+        alert("Revise los datos");
+      }
+      console.info(error.message);
+    });
+}
 
+function editarAlumno(indice) {
+  // Pedimos los datos del alumno seleccionado
+  let alumnoSeleccionado = alumnos.find(alumno => alumno.id === indice);
+  console.log ("el alumno es : %o", alumnoSeleccionado)
+  //rellernar formulario
+  //document.getElementById("indice").value = indice;
+  document.getElementById("edit-inputId").value = alumnoSeleccionado.id;
+  document.getElementById("edit-inputNombre").value = alumnoSeleccionado.nombre;
+  document.getElementById("edit-inputAvatar").value = alumnoSeleccionado.avatar;
+
+  //Genero del alumno
+  let genero = alumnoSeleccionado.sexo;
+  let checkHombre = document.getElementById("edit-checkHombre");
+  let checkMujer = document.getElementById("edit-checkMujer");
+
+  if (genero == "h") {
+    checkHombre.checked = "checked";
+    checkMujer.checked = "";
   } else {
-    // Editar registro
-    console.log("alumno a editar: %o", alumno);
-    const url = alumnosApi + alumno.id;
+    checkHombre.checked = "";
+    checkMujer.checked = "checked";
   }
+  //seleccionar Avatar
+  const avatares = document.querySelectorAll("#edit-avatarGallery img");
+  avatares.forEach(el => {
+    el.classList.remove("border-primary");
+    if (alumnoSeleccionado.avatar == el.dataset.path) {
+      el.classList.add("border-primary");
+    }
+  });
+
 }
 
 function eliminar(indice) {

@@ -126,15 +126,13 @@
               <div class="col-12 col-sm-6">
                 <!-- Avatares -->
                 <h3>Avatares</h3>
-                <div class="d-flex flex-wrap mt-4" id="avatarGallery"></div>
+                <div class="d-flex flex-wrap mt-4" id="new-avatarGallery"></div>
                 <!-- Avatares -->
               </div><!-- col-6 Derecha-->
-
           </div>
-
       </div> <!-- Modal Body -->
       <div class="modal-footer justify-content-center">
-        <button type="button" class="btn btn-primary" onclick="guardarAlumno()" data-dismiss="modal">Guardar</button>
+        <button type="button" class="btn btn-primary" onclick="guardarNuevoAlumno()" data-dismiss="modal">Guardar</button>
         <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
@@ -175,34 +173,34 @@
                 <form class="text-center" style="color: #757575;" action="#!">
                   <!-- Indice:: Oculto para referencia-->
                   <div class="md-form mt-3">
-                    <input type="hidden" id="indice" class="form-control" readonly>
+                    <input type="hidden" id="edit-indice" class="form-control" readonly>
                   </div>
                   <!-- Id:: Oculto para referencia -->
                   <div class="md-form mt-3">
-                    <input type="hidden" id="inputId" class="form-control" readonly>
+                    <input type="hidden" id="edit-inputId" class="form-control" readonly>
                   </div>
                   <!-- Avatar:: Oculto para referencia -->
                   <div class="md-form mt-3">
-                    <input type="hidden" id="inputAvatar" class="form-control" readonly>
+                    <input type="hidden" id="edit-inputAvatar" class="form-control" readonly>
                   </div>
                   <!-- Name -->
                   <div class="md-form mt-3">
-                    <input type="text" id="inputNombre" class="form-control">
+                    <input type="text" id="edit-inputNombre" class="form-control">
                     <label for="inputNombre">Nombre</label>
                   </div>
                   <!-- Select -->
                   <div class="d-flex">
-                    <input checked="checked" type="radio" name="sexo" id="checkHombre" value="h">
-                    <label class="mb-0 px-1" for="checkHombre">Hombre</label>
+                    <input checked="checked" type="radio" name="sexo" id="edit-checkHombre" value="h">
+                    <label class="mb-0 px-1" for="edit-checkHombre">Hombre</label>
   
-                    <input class="ml-2" type="radio" name="sexo" id="checkMujer" value="m">
-                    <label class="mb-0 px-1" for="checkMujer">Mujer</label>
+                    <input class="ml-2" type="radio" name="sexo" id="edit-checkMujer" value="m">
+                    <label class="mb-0 px-1" for="edit-checkMujer">Mujer</label>
                   </div>
                   <!-- Select-->
                 </form>
                 <!-- Form -->
                 <!-- Avatares -->
-                <div class="d-flex flex-wrap mt-4" id="avatarGallery"></div>
+                <div class="d-flex flex-wrap mt-4" id="edit-avatarGallery"></div>
                 <!-- Avatares -->
               </div><!-- col-6 Izquierda-->
               <div class="col-12 col-sm-6">
@@ -237,15 +235,13 @@
 
       </div> <!-- Modal Body -->
       <div class="modal-footer justify-content-center">
-        <button type="button" class="btn btn-primary" onclick="guardar()" data-dismiss="modal">Guardar</button>
+        <button type="button" class="btn btn-primary" onclick="guardarAlumno()" data-dismiss="modal">Guardar</button>
         <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
   </div>
 </div>
 <!-- Modal #formularioAlumno -->
-
-
 <!-- Footer -->
 <footer class="page-footer font-small primary-color-dark py-4">
 
