@@ -19,8 +19,15 @@ function listarPersonas() {
 
       aList.innerHTML = "";
       personas = response.data;
-      personas.forEach((persona) => {
-        aList.innerHTML += `
+      maquetarLista(personas)
+      
+    })
+    .catch((error) => console.error(error));
+}
+
+function maquetarLista(personas) {
+  personas.forEach((persona) => {
+    aList.innerHTML += `
       <div class="col-lg-4 col-sm-6 mb-5 px-5">
          <div class="row d-flex align-items-center">
           <div class="col-5 avatar w-100 white d-flex justify-content-center align-items-center">
@@ -55,9 +62,7 @@ function listarPersonas() {
           </div>
         </div>
      `;
-      }); // Fin de innerHTML
-    })
-    .catch((error) => console.error(error));
+  }); // Fin de innerHTML
 }
 
 /**
