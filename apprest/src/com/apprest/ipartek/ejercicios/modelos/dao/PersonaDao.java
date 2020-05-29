@@ -205,6 +205,7 @@ public class PersonaDao implements IDAO<Persona> {
 		return registro;
 	
 	}
+	
 	public boolean asignarCurso( int idPersona, int idCurso ) throws Exception, SQLException {
 		boolean result = false;
 		

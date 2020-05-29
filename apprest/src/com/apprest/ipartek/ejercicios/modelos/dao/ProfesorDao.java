@@ -18,17 +18,21 @@ public class ProfesorDao implements IDAO<Persona>{
 	private static ProfesorDao INSTANCE = null;
 	//CONSULTAS SQL
 	//GET ALL
-	private static String SQL_GET_ALL = "SELECT \n" + 
-				"p.id as persona_id , p.nombre as persona_nombre, p.avatar as persona_avatar, p.sexo as persona_sexo, \n" + 
-				"c.id as curso_id, c.nombre as curso_nombre, c.precio as curso_precio, c.imagen as curso_imagen \n" + 
-				"FROM profesor p \n" + 
-				"LEFT JOIN curso c ON p.id = c.profesor_id \n" + 
-				"LIMIT 100;";
+	private static String SQL_GET_ALL = 
+			"SELECT\n" + 
+			"p.id as persona_id, p.nombre as persona_nombre, p.avatar as persona_avatar, p.sexo as persona_sexo, c.id as curso_id, c.nombre as curso_nombre, c.imagen as curso_imagen, c.precio as curso_precio\n" + 
+			"FROM profesor p LEFT JOIN profesor_has_curso phc ON p.id = phc.profesor_id\n" + 
+			"LEFT JOIN curso c ON c.id = phc.curso_id LIMIT 500;";
 	
 	
 	private static String SQL_INSERT    = "INSERT INTO profesor ( nombre, avatar, sexo) VALUES ( ?, ?, ? ); ";
 
+	private static String SQL_DELETE    = "DELETE FROM profesor WHERE id = ?; ";
 	
+	private static String SQL_UPDATE    = "UPDATE profesor SET nombre = ?, avatar = ?,  sexo = ? WHERE id = ?; ";
+
+	private static String SQL_ASIGNAR_CURSO    = "INSERT INTO profesor_has_curso (profesor_id, curso_id) VALUES ( ?, ?); ";
+
 	// SINGLETON
 	private ProfesorDao() {
 		super();
@@ -115,16 +119,81 @@ public class ProfesorDao implements IDAO<Persona>{
 
 	@Override
 	public Persona update(Persona pojo) throws Exception, SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("update");
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_UPDATE);
+		) {
+
+			pst.setString(1, pojo.getNombre() );
+			pst.setString(2, pojo.getAvatar() );
+			pst.setString(3, pojo.getSexo() );
+			pst.setInt(4, pojo.getId() );
+			LOGGER.info(pst.toString());
+			
+			//eliminamos la persona
+			int affetedRows = pst.executeUpdate();	
+			if (affetedRows != 1) {				
+				throw new Exception("No se puede modificar registro " + pojo);
+			}
+			
+		} catch (SQLException e) {
+
+			throw new Exception("No se puede modificar registro " + e.getMessage() );
+		}
+
+		return pojo;
 	}
 
 	@Override
 	public Persona delete(int id) throws Exception, SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		LOGGER.info("delete");
+		Persona registro = null;
+		
+		//recuperar persona antes de eliminar
+		registro = getById(id);
+		
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_DELETE);
+		) {
 
+			pst.setInt(1, id);
+			LOGGER.info(pst.toString());
+			
+			//eliminamos la persona
+			int affetedRows = pst.executeUpdate();	
+			if (affetedRows != 1) {
+				throw new Exception("No se puede eliminar registro " + id);
+			}
+			
+		} catch (SQLException e) {
+
+			throw new SQLException("No se puede eliminar registro " + e.getMessage() );
+		}
+
+		return registro;
+	}
+	public boolean asignarCurso( int idPersona, int idCurso ) throws Exception, SQLException {
+		boolean result = false;
+		
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_ASIGNAR_CURSO);
+		) {
+
+			pst.setInt(1, idPersona);
+			pst.setInt(2, idCurso);
+			LOGGER.info(pst.toString());
+			
+			//eliminamos la persona
+			int affetedRows = pst.executeUpdate();	
+			if (affetedRows == 1) {
+				result = true;
+			}else {
+				result = false;		
+			}
+		}
+		
+		return result;
+	}
 	// Metodos
 	private void mapper(ResultSet rs, HashMap<Integer,Persona> hm) throws SQLException {
 		Integer key = rs.getInt("persona_id");

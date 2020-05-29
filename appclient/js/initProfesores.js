@@ -4,7 +4,7 @@
  */
 
 const endpoint = "http://localhost:8080/apprest/api/";
-const profesoresApi = endpoint + "personas/profesores";
+const profesoresApi = endpoint + "personas/profesores/";
 const cursosApi = endpoint + "cursos/";
 
 const aList = document.getElementById("alist");

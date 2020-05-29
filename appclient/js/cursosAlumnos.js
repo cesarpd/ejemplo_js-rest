@@ -26,7 +26,6 @@ function listarCursosAlumno(alumnoSeleccionado){
 }
 
 function listarCursos(indice) {
-  //let alumnoSeleccionado = alumnos.find((alumno) => alumno.id === indice);
   //console.log("click en comprarCursos para: %o", alumnoSeleccionado);
   //petición Get para cursos
   cList.innerHTML = "";
@@ -59,7 +58,7 @@ function listarCursos(indice) {
                                 </div>
                                 <div>
                                   <a class="btn btn-success comprar-curso" href="#" role="button"
-                                  onClick="asignarCurso( ${indice}, ${curso.id}, event)">
+                                  onClick="asignarCurso( ${indice}, ${curso.id},event, '')">
                                     <i class="fas fa-cart-plus fa-5x deep-orange-lighter-hover"></i>
                                   </a>
                                 </div>
@@ -80,10 +79,10 @@ function listarCursos(indice) {
     }); 
 }
 
-function asignarCurso(alumnoId, cursoId, event) {
-   //let alumnoSeleccionado = alumnos.find((alumno) => alumno.id === alumnoId);
+function asignarCurso(personaId, cursoId, event) {
+   //let alumnoSeleccionado = alumnos.find((alumno) => alumno.id === personaId);
    //console.debug("curso asignado al alumno %o", alumnoSeleccionado);
-   const url = endpoint + "personas/" + alumnoId + "/curso/" + cursoId;
+   const url = alumnosApi + personaId + "/curso/" + cursoId;
    axios
      .post(url)
      .then((response) => {
@@ -91,7 +90,7 @@ function asignarCurso(alumnoId, cursoId, event) {
        alert(mensaje);
       event.target.parentElement.parentElement.innerHTML = `
                                   <a class="btn btn-info comprar-curso" href="#" role="button"
-                                  onClick="eliminarCurso( ${alumnoId}, ${cursoId}, event)">
+                                  onClick="eliminarCurso( ${personaId}, ${cursoId}, event)">
                                     <i class="fas fa-cart-plus fa-5x deep-orange-lighter-hover"></i>
                                   </a>
         `; 
