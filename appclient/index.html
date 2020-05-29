@@ -29,244 +29,68 @@
       <li class="nav-item">
         <a class="nav-link active white-text" href="#!"><h1 class="mx-5">Ipartek formación</h1></a>
       </li>
-      <!-- <li class="nav-item">
-        <a class="nav-link white-text" href="#!">Link</a>
-      </li> -->
     </ul>
   </div>
 </div>
-<!-- Forms Section -->
-<section class="pt-2 my-5 px-5 z-depth-1">
-  <div class="row">
-    <!-- Search form -->
-    <div class="col-lg-4 col-sm-6 mb-2">
-      <form class="form-inline d-flex justify-content-center md-form form-sm active-pink active-pink-2 mt-2">
-        <i class="fas fa-search" aria-hidden="true"></i>
-        <input id="selectorNombre" class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Buscador" aria-label="Buscador">
-      </form>
-    </div>
-    <!-- Select form -->
-    <div class="col-lg-4 col-sm-6 mt-2 mb-4">
-      <select class="browser-default custom-select" id="selectorSexo">
-        <option value="t" selected>Todos</option>
-        <option value="h">Hombre</option>
-        <option value="m">Mujer</option>
-      </select>
-    </div>
-    <!-- Select form -->
-    <div class="col-lg-4 col-sm-6 ">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#crearAlumno"
-        onclick="crearAlumno()">
-        Añadir Nuevo</button>
-    </div>
-  </div>
-</section>
+<!-- Explore content -->
+  <!--Section: Content-->
+  <section class="dark-grey-text my-5">
 
-<!-- User List -->
-<section class="pt-5 my-5 z-depth-1">
-  <div class="p-md-3 mx-md-5 text-lg-left">
-    <h2 class="text-center font-weight-bold mb-4 pb-1">Listado de Alumnos</h2>
-    <div id="alist" class="row">
-      <div class="col-12"><p class="px-2">Cargando...</p></div>
-    </div>
+    <!-- Section heading -->
+    <h3 class="text-center font-weight-bold mb-4 pb-2">Bienvenido! </h3>
+    <hr class="w-header">
+    <!-- Section description -->
+    <p class="lead text-center w-responsive mx-auto text-muted mt-4 pt-2 mb-5">¿Qué perfil queremos gestionar hoy? Selecciona una opción para empezar</p>
 
-  </div>
-</section>
-
-<!-- Modal #crearAlumno -->
-<div class="modal fade" id="crearAlumno" tabindex="-1" role="dialog" aria-labelledby="crearAlumno"
-  aria-hidden="true">
-
-  <div class="modal-dialog modal-notify modal-primary modal-xl modal-dialog-centered" role="document">
-
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title w-100 text-white" id="crearAlumno">Crear Alumno</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span class="text-white" aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Contenido del modal -->
-            <div class="row">
-              <div class="col-12 col-sm-6">
-                <h3>Formulario</h3>
-                <!-- Form -->
-                <form class="text-center" style="color: #757575;" action="#!">
-                  <!-- Indice:: Oculto para referencia-->
-                  <div class="md-form mt-3">
-                    <input type="hidden" id="indice" class="form-control" readonly>
-                  </div>
-                  <!-- Id:: Oculto para referencia -->
-                  <div class="md-form mt-3">
-                    <input type="hidden" id="inputId" class="form-control" readonly>
-                  </div>
-                  <!-- Avatar:: Oculto para referencia -->
-                  <div class="md-form mt-3">
-                    <input type="hidden" id="inputAvatar" class="form-control" readonly>
-                  </div>
-                  <!-- Name -->
-                  <div class="md-form mt-3">
-                    <input type="text" id="inputNombre" class="form-control">
-                    <label for="inputNombre">Nombre</label>
-                  </div>
-                  <!-- Select -->
-                  <div class="d-flex">
-                    <input checked="checked" type="radio" name="sexo" id="checkHombre" value="h">
-                    <label class="mb-0 px-1" for="checkHombre">Hombre</label>
-  
-                    <input class="ml-2" type="radio" name="sexo" id="checkMujer" value="m">
-                    <label class="mb-0 px-1" for="checkMujer">Mujer</label>
-                  </div>
-                  <!-- Select-->
-                </form>
-                <!-- Form -->
-
-              </div><!-- col-6 Izquierda-->
-              <div class="col-12 col-sm-6">
-                <!-- Avatares -->
-                <h3>Avatares</h3>
-                <div class="d-flex flex-wrap mt-4" id="new-avatarGallery"></div>
-                <!-- Avatares -->
-              </div><!-- col-6 Derecha-->
-          </div>
-      </div> <!-- Modal Body -->
-      <div class="modal-footer justify-content-center">
-        <button type="button" class="btn btn-primary" onclick="guardarNuevoAlumno()" data-dismiss="modal">Guardar</button>
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal #formularioAlumno -->
-<div class="modal fade" id="formularioAlumno" tabindex="-1" role="dialog" aria-labelledby="formularioAlumno"
-  aria-hidden="true">
-
-  <div class="modal-dialog modal-notify modal-primary modal-xl modal-dialog-centered" role="document">
-
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title w-100 text-white" id="formularioAlumno">Detalles del Alumno</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span class="text-white" aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Menu del Tab -->
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-          <li class="nav-item">
-            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#perfil" role="tab" aria-controls="home"
-              aria-selected="true">Perfil</a>
-          </li>
-          <!-- TODO Hacer que este Tab sea dinamico -->
-          <li id="hide-if-new" class="nav-item">
-            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#cursos" role="tab" aria-controls="profile"
-              aria-selected="false">Cursos</a>
-          </li>
-        </ul> <!-- Menu Tab -->
-        <!-- Contenido del tab -->
-          <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="perfil" role="tabpanel">
-            <div class="row">
-              <div class="col-12 col-sm-6">                
-                <!-- Form -->
-                <form class="text-center" style="color: #757575;" action="#!">
-                  <!-- Indice:: Oculto para referencia-->
-                  <div class="md-form mt-3">
-                    <input type="hidden" id="edit-indice" class="form-control" readonly>
-                  </div>
-                  <!-- Id:: Oculto para referencia -->
-                  <div class="md-form mt-3">
-                    <input type="hidden" id="edit-inputId" class="form-control" readonly>
-                  </div>
-                  <!-- Avatar:: Oculto para referencia -->
-                  <div class="md-form mt-3">
-                    <input type="hidden" id="edit-inputAvatar" class="form-control" readonly>
-                  </div>
-                  <!-- Name -->
-                  <div class="md-form mt-3">
-                    <input type="text" id="edit-inputNombre" class="form-control">
-                    <label class="active" for="inputNombre">Nombre</label>
-                  </div>
-                  <!-- Select -->
-                  <div class="d-flex">
-                    <input checked="checked" type="radio" name="sexo" id="edit-checkHombre" value="h">
-                    <label class="mb-0 px-1" for="edit-checkHombre">Hombre</label>
-  
-                    <input class="ml-2" type="radio" name="sexo" id="edit-checkMujer" value="m">
-                    <label class="mb-0 px-1" for="edit-checkMujer">Mujer</label>
-                  </div>
-                  <!-- Select-->
-                </form>
-                <!-- Form -->
-                <!-- Avatares -->
-                <div class="d-flex flex-wrap mt-4" id="edit-avatarGallery"></div>
-                <!-- Avatares -->
-              </div><!-- col-6 Izquierda-->
-              <div class="col-12 col-sm-6">
-                <h3 class="h5">Los cursos del alumno</h3>
-                <div id="aclist">
-                  <!-- Autogenerated -->
-                </div>
-              </div><!-- col-6 Derecha-->
-            </div>
-            
-            </div><!-- Tab 1 -->
-            <!-- Tab 2 -->
-            <div class="tab-pane fade" id="cursos" role="tabpanel" aria-labelledby="profile-tab">
-
-              <!-- Search form para Cursos -->
-              <form class="form-inline d-flex justify-content-start md-form form-sm active-pink active-pink-2 mt-2 w-50">
-                <i class="fas fa-search" aria-hidden="true"></i>
-                <input id="buscarCurso" class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Buscador"
-                  aria-label="Buscador">
-              </form>
-              <!-- Search form para Curso -->
-              <div>
-
+    <!--First row-->
+    <div class="row">
+      <!--First column-->
+      <div class="col-md-6 mb-4">
+        <!-- Card -->
+        <a href="/alumnos.html" class="card hoverable">
+          <!-- Card content -->
+          <div class="card-body">
+            <div class="media">
+              <span
+                class="card-img-100 d-inline-flex justify-content-center align-items-center rounded-circle grey lighten-3 mr-4">
+                <i class="fas fa-user-graduate fa-2x text-primary"></i>
+              </span>
+              <div class="media-body">
+                <h5 class="dark-grey-text mb-3">Quiero gestionar alumnos</h5>
+                <p class="font-weight-light text-muted mb-0">Selecciona esta opción si quieres editar, crear o eliminar alumnos y sus cursos asociados</p>
               </div>
             </div>
           </div>
-
-      </div> <!-- Modal Body -->
-      <div class="modal-footer justify-content-center">
-        <button type="button" class="btn btn-primary" onclick="guardarAlumno()" data-dismiss="modal">Guardar</button>
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+        </a>
+        <!-- Card -->
       </div>
+      <!--First column-->
+      <!--Second column-->
+      <div class="col-md-6 mb-4">
+        <!-- Card -->
+        <a href="/profesores.html" class="card hoverable">
+          <!-- Card content -->
+          <div class="card-body">
+            <div class="media">
+              <span
+                class="card-img-100 d-inline-flex justify-content-center align-items-center rounded-circle grey lighten-3 mr-4">
+                <i class="fas fa-graduation-cap fa-2x text-info"></i>
+              </span>
+              <div class="media-body">
+                <h5 class="dark-grey-text mb-3">Quiero gestionar profesores</h5>
+                <p class="font-weight-light text-muted mb-0">Selecciona esta opción si quieres editar, crear o eliminar profesores y sus cursos asociados</p>
+              </div>
+            </div>
+          </div>
+        </a>
+        <!-- Card -->
+        <!-- Card -->
+      </div>
+      <!--Second column-->
     </div>
+    <!--First row-->
+  </section>
   </div>
-</div>
-<!-- Modal #formularioAlumno -->
-
-<!-- Modal #comprarCursos -->
-<div class="modal fade" id="comprarCursos" tabindex="-1" role="dialog" aria-labelledby="comprarCursos" aria-hidden="true">
-
-  <div class="modal-dialog modal-notify modal-primary modal-xl modal-dialog-centered" role="document">
-
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title w-100 text-white" id="comprarCursos">Comprar Cursos</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span class="text-white" aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Contenido del modal -->
-        <div class="row">
-          <div class="col-12">
-            <h3>Cursos</h3>
-            <div id="clist">Generando los cursos disponibles...</div>
-            <!-- Cursos -->
-          </div><!-- col-6 Izquierda-->
-        </div>
-      </div> <!-- Modal Body -->
-      <div class="modal-footer justify-content-center">
-        <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="listarAlumnos()">Cerrar</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- Footer -->
 <footer class="page-footer font-small primary-color-dark py-4">
@@ -312,13 +136,7 @@
 <script type="text/javascript" src="vendor/js/mdb/jquery.min.js"></script>
 <script type="text/javascript" src="vendor/js/mdb/bootstrap.min.js"></script>
 <script type="text/javascript" src="vendor/js/mdb/mdb.min.js"></script>
-<!-- Axios - promise based Http client -->
-<script src="vendor/js/axios/axios.min.js"></script>
-<!-- App scripts -->
-<script src="js/alumnos.js"></script>
-<script src="js/cursos.js"></script>
-<script src="js/filtros.js"></script>
-<script src="js/main.js"></script>
+
 
 </body>
 </html>

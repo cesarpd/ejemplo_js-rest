@@ -4,7 +4,7 @@
  */
 
 const endpoint = "http://localhost:8080/apprest/api/";
-const alumnosApi = endpoint + "personas/";
+const profesoresApi = endpoint + "personas/profesores";
 const cursosApi = endpoint + "cursos/";
 
 const aList = document.getElementById("alist");
@@ -21,7 +21,7 @@ window.addEventListener("load", init());
 
 function init() {
   console.debug("Document loaded...");
-  listarAlumnos();
+  listarPersonas();
   initGallery();
 
 }

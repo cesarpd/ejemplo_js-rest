@@ -108,7 +108,7 @@ function asignarCurso(alumnoId, cursoId, event) {
 function eliminarCurso(alumnoId, cursoId, event) {
   //let alumnoSeleccionado = alumnos.find((alumno) => alumno.id === alumnoId);
   //console.debug("curso eliminado del alumno %o", alumnoSeleccionado);
-  const url = endpoint + "personas/" + alumnoId + "/curso/" + cursoId;
+  const url = alumnosApi + alumnoId + "/curso/" + cursoId;
   axios
     .delete(url)
     .then((response) => {

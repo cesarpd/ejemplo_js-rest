@@ -27,13 +27,15 @@ import com.apprest.ipartek.ejercicios.modelos.Persona;
 import com.apprest.ipartek.ejercicios.modelos.dao.CursoDao;
 import com.apprest.ipartek.ejercicios.modelos.dao.PersonaDao;
 
-@Path("/personas")
+@Path("/personas/")
 @Produces("application/json")
 @Consumes("application/json")
 public class PersonaController {
 	private static final Logger LOGGER = Logger.getLogger(PersonaController.class.getCanonicalName());
+	
 	private static PersonaDao personaDao = PersonaDao.getInstance();
 	private static CursoDao cursoDao = CursoDao.getInstance();
+
 
 	private ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 	private Validator validator = factory.getValidator();
@@ -47,6 +49,7 @@ public class PersonaController {
 	}
 
 	@GET
+	@Path("alumnos/")
 	public ArrayList<Persona> getAll() {
 		LOGGER.info("getAll");		
 		// return personas;
@@ -56,6 +59,7 @@ public class PersonaController {
 
 
 	@POST
+	@Path("alumnos/")
 	public Response insert(Persona persona) {
 		LOGGER.info("insert(" + persona + ")");
 		Response response = Response.status(Status.INTERNAL_SERVER_ERROR).entity(null).build();
@@ -89,7 +93,7 @@ public class PersonaController {
 	}
 
 	@PUT
-	@Path("/{id: \\d+}")
+	@Path("alumnos/{id: \\d+}")
 	public Response update(@PathParam("id") int id, Persona persona) {
 		LOGGER.info("update(" + id + ", " + persona + ")");		
 		Response response = Response.status(Status.NOT_FOUND).entity(persona).build();
@@ -117,7 +121,7 @@ public class PersonaController {
 	}
 
 	@DELETE
-	@Path("/{id: \\d+}")
+	@Path("alumnos/{id: \\d+}")
 	public Response eliminar(@PathParam("id") int id) {
 		LOGGER.info("eliminar(" + id + ")");
 
@@ -138,7 +142,7 @@ public class PersonaController {
 	}
 	
 	@POST
-	@Path("/{idPersona}/curso/{idCurso}")
+	@Path("alumnos/{idPersona}/curso/{idCurso}")
 	public Response asignarCurso(@PathParam("idPersona") int idPersona, @PathParam("idCurso") int idCurso) {
 		LOGGER.info("asignarCurso idPersona=" + idPersona + " idCurso= " + idCurso);
 		Response response = Response.status(Status.INTERNAL_SERVER_ERROR).entity(null).build();
@@ -164,7 +168,7 @@ public class PersonaController {
 
 	}
 	@DELETE
-	@Path("/{idPersona}/curso/{idCurso}")
+	@Path("alumnos/{idPersona}/curso/{idCurso}")
 	public Response eliminarCurso(@PathParam("idPersona") int idPersona, @PathParam("idCurso") int idCurso) {
 		LOGGER.info("eliminarCurso idPersona=" + idPersona + " idCurso= " + idCurso);
 		Response response = Response.status(Status.INTERNAL_SERVER_ERROR).entity(null).build();
@@ -186,5 +190,7 @@ public class PersonaController {
 		return response;
 
 	}
+	
+	
 
 }
