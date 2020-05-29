@@ -33,6 +33,8 @@ public class ProfesorDao implements IDAO<Persona>{
 
 	private static String SQL_ASIGNAR_CURSO    = "INSERT INTO profesor_has_curso (profesor_id, curso_id) VALUES ( ?, ?); ";
 
+	private static String SQL_ELIMINAR_CURSO    = "DELETE FROM profesor_has_curso WHERE profesor_id = ? AND curso_id = ?;  ";
+
 	// SINGLETON
 	private ProfesorDao() {
 		super();
@@ -194,6 +196,28 @@ public class ProfesorDao implements IDAO<Persona>{
 		
 		return result;
 	}
+	public boolean eliminarCurso( int idPersona, int idCurso ) throws Exception, SQLException {
+		boolean resul = false;
+		
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_ELIMINAR_CURSO);
+		) {
+
+			pst.setInt(1, idPersona);
+			pst.setInt(2, idCurso);
+			LOGGER.info(pst.toString());
+			
+			//eliminamos la persona
+			int affetedRows = pst.executeUpdate();	
+			if (affetedRows == 1) {
+				resul = true;
+			}else {
+				throw new Exception("No se encontrado registro id_persona =" + idPersona + " id_curso=" + idCurso );		
+			}
+		}
+		
+		return resul;
+	}
 	// Metodos
 	private void mapper(ResultSet rs, HashMap<Integer,Persona> hm) throws SQLException {
 		Integer key = rs.getInt("persona_id");
@@ -208,16 +232,16 @@ public class ProfesorDao implements IDAO<Persona>{
 
 		}
 
-		// se añade el curso
-//		int idCurso = rs.getInt("curso_id");
-//		if ( idCurso != 0) {
-//			Curso c = new Curso();
-//			c.setId(idCurso);
-//			c.setNombre(rs.getString("curso_nombre"));
-//			c.setPrecio( rs.getFloat("curso_precio"));
-//			c.setImagen(rs.getString("curso_imagen"));			
-//			p.getCursos().add(c);
-//		}	
+		//se añade el curso
+		int idCurso = rs.getInt("curso_id");
+		if ( idCurso != 0) {
+			Curso c = new Curso();
+			c.setId(idCurso);
+			c.setNombre(rs.getString("curso_nombre"));
+			c.setPrecio( rs.getFloat("curso_precio"));
+			c.setImagen(rs.getString("curso_imagen"));			
+			p.getCursos().add(c);
+		}	
 
 		//actualizar hashmap
 		hm.put(key, p);

@@ -185,7 +185,7 @@ function guardarPersona() {
 function editarPersona(indice) {
   // Pedimos los datos del persona seleccionado
   let personaSeleccionado = personas.find((persona) => persona.id === indice);  
-  console.log("el persona es : %o", personaSeleccionado);
+  console.log("La persona es : %o", personaSeleccionado);
   listarCursosProfesor(personaSeleccionado);
   //rellernar formulario
   //document.getElementById("indice").value = indice;

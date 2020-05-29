@@ -3,12 +3,12 @@
 
 function listarCursosProfesor(personaSeleccionada) {
   //let alumnoAeditar = alumnos.find((alumno) => alumno.id === personaSeleccionada.id);
-  console.debug("AlumnoAeditar %o", personaSeleccionada);
+  console.debug("Persona a editar %o", personaSeleccionada);
+  console.log(personaSeleccionada.cursos.length);
 
   // pintar cursos del alumno
   let listaCursosProfesor = document.getElementById("aclist");
   listaCursosProfesor.innerHTML = "";
-
   if (personaSeleccionada.cursos.length === 0) {
     listaCursosProfesor.innerHTML = `
       <p>No tienes ningun curso.</p>
@@ -86,7 +86,8 @@ function asignarCurso(personaId, cursoId, event) {
      .then((response) => {
        let mensaje = response.data.informacion;
        alert(mensaje);
-      event.target.parentElement.parentElement.innerHTML = `
+       //BUG Al usar el evento añadimos el codigo html tambien en el listado de los cursos del profesor listarCursosProfesor(). Aunque no se sobreescriba de inmediato no es bonito
+       event.target.parentElement.parentElement.innerHTML = `
                                   <a class="btn btn-info comprar-curso" href="#" role="button"
                                   onClick="eliminarCurso( ${personaId}, ${cursoId}, event)">
                                     <i class="fas fa-cart-plus fa-5x deep-orange-lighter-hover"></i>
@@ -102,23 +103,30 @@ function asignarCurso(personaId, cursoId, event) {
   
 }
 
-function eliminarCurso(alumnoId, cursoId, event) {
-  //let alumnoSeleccionado = alumnos.find((alumno) => alumno.id === alumnoId);
-  //console.debug("curso eliminado del alumno %o", alumnoSeleccionado);
-  const url = alumnosApi + alumnoId + "/curso/" + cursoId;
+function eliminarCurso(personaId, cursoId, event) {
+  //let personaSeleccionado = personas.find((persona) => persona.id === personaId);
+  //console.debug("curso eliminado del persona %o", personaSeleccionado);
+  const url = profesoresApi + personaId + "/curso/" + cursoId;
   axios
     .delete(url)
     .then((response) => {
       let mensaje = response.data.informacion;
       alert(mensaje);
+      // Cambio visual para mostrar que se ha seleccionado
+      event.target.parentElement.parentElement.innerHTML = `
+                                  <a class="btn btn-success comprar-curso" href="#" role="button"
+                                  >
+                                    <i class="fas fa-cart-plus fa-5x deep-orange-lighter-hover"></i>
+                                  </a>
+        `; 
       //Pedimos los datos actualizados
       //TODO recibir el objeto directamente sin tener que buscarlo
       axios
-        .get(alumnosApi)
+        .get(profesoresApi)
         .then((response) => {
-          let alumnos = response.data;
-          let alumnoAeditar = alumnos.find((alumno) => alumno.id === alumnoId);
-          listarCursosAlumno(alumnoAeditar);
+          let personas = response.data;
+          let personaAeditar = personas.find((persona) => persona.id === personaId);
+          listarCursosProfesor(personaAeditar);
         })
         .catch((error) => {
           console.error(error);
