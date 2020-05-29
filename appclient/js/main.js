@@ -23,4 +23,5 @@ function init() {
   console.debug("Document loaded...");
   listarAlumnos();
   initGallery();
+
 }

@@ -54,6 +54,7 @@ public class PersonaController {
 		return registros;
 	}
 
+
 	@POST
 	public Response insert(Persona persona) {
 		LOGGER.info("insert(" + persona + ")");

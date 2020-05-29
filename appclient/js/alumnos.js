@@ -1,4 +1,5 @@
 function listarAlumnos() {
+  console.debug("Listar alumnos...")
   // reset para alumno
   let alumno = {
     id: 0,
@@ -184,8 +185,9 @@ function guardarAlumno() {
 
 function editarAlumno(indice) {
   // Pedimos los datos del alumno seleccionado
-  let alumnoSeleccionado = alumnos.find((alumno) => alumno.id === indice);
+  let alumnoSeleccionado = alumnos.find((alumno) => alumno.id === indice);  
   console.log("el alumno es : %o", alumnoSeleccionado);
+  listarCursosAlumno(alumnoSeleccionado);
   //rellernar formulario
   //document.getElementById("indice").value = indice;
   document.getElementById("edit-inputId").value = alumnoSeleccionado.id;

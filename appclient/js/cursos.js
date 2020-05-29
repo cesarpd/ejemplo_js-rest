@@ -1,8 +1,35 @@
+//BUG alumnoSeleccionado debe de actualizarse con un nueva consulta a la API. Asi se actualizaran los resultados
+//BUG El boton cerrar debe refrescar los datos o puede generar un error
+
+function listarCursosAlumno(alumnoSeleccionado){
+  //let alumnoAeditar = alumnos.find((alumno) => alumno.id === alumnoSeleccionado.id);
+  console.debug("AlumnoAeditar %o", alumnoSeleccionado);
+
+  // pintar cursos del alumno
+  let listaCursosAlumno = document.getElementById("aclist");
+  listaCursosAlumno.innerHTML = "";
+
+  if (alumnoSeleccionado.cursos.length === 0) {
+    listaCursosAlumno.innerHTML = `
+      <p>No tienes ningun curso.</p>
+      `;
+  } else {
+    //let alumnoAeditar = alumnos.find((alumno) => alumno.id === alumnoSeleccionado.id)
+    alumnoSeleccionado.cursos.forEach((curso) => {
+      listaCursosAlumno.innerHTML += `
+        <li>
+          ${curso.nombre}
+          <i class="fas fa-trash" onclick='eliminarCurso(${alumnoSeleccionado.id},${curso.id},event)'></i>
+        </li>`;
+    });
+  }
+}
+
 function listarCursos(indice) {
   //let alumnoSeleccionado = alumnos.find((alumno) => alumno.id === indice);
   //console.log("click en comprarCursos para: %o", alumnoSeleccionado);
   //petición Get para cursos
-    cList.innerHTML = "";
+  cList.innerHTML = "";
   axios
     .get(cursosApi)
     .then((response) => {
@@ -43,6 +70,7 @@ function listarCursos(indice) {
                       </div> 
         `;
       });
+      
     }).catch((error) => {
       cList.innerHTML = `
         <h3>ERROR ${error.response.status}</h3
@@ -67,7 +95,7 @@ function asignarCurso(alumnoId, cursoId, event) {
                                     <i class="fas fa-cart-plus fa-5x deep-orange-lighter-hover"></i>
                                   </a>
         `; 
-
+      listarAlumnos();
      })
      .catch((error) => {
        console.error(error)
@@ -78,24 +106,33 @@ function asignarCurso(alumnoId, cursoId, event) {
 }
 
 function eliminarCurso(alumnoId, cursoId, event) {
-   //let alumnoSeleccionado = alumnos.find((alumno) => alumno.id === alumnoId);
-   //console.debug("curso eliminado del alumno %o", alumnoSeleccionado);
-   const url = endpoint + "personas/" + alumnoId + "/curso/" + cursoId;
-   axios
-     .delete(url)
-     .then((response) => {
-       let mensaje = response.data.informacion;
-       alert(mensaje);
-       event.target.parentElement.parentElement.innerHTML = `
-                                  <a class="btn btn-success comprar-curso" href="#" role="button"
-                                  onClick="asignarCurso( ${alumnoId}, ${cursoId}, event)">
-                                    <i class="fas fa-cart-plus fa-5x deep-orange-lighter-hover"></i>
-                                  </a>
-        `;
-     })
-     .catch((error) => {
-       console.error(error);
-       let mensaje = error.response.data.informacion;
-       alert(mensaje);
-     });
+  //let alumnoSeleccionado = alumnos.find((alumno) => alumno.id === alumnoId);
+  //console.debug("curso eliminado del alumno %o", alumnoSeleccionado);
+  const url = endpoint + "personas/" + alumnoId + "/curso/" + cursoId;
+  axios
+    .delete(url)
+    .then((response) => {
+      let mensaje = response.data.informacion;
+      alert(mensaje);
+      //Pedimos los datos actualizados
+      //TODO recibir el objeto directamente sin tener que buscarlo
+      axios
+        .get(alumnosApi)
+        .then((response) => {
+          let alumnos = response.data;
+          let alumnoAeditar = alumnos.find((alumno) => alumno.id === alumnoId);
+          listarCursosAlumno(alumnoAeditar);
+        })
+        .catch((error) => {
+          console.error(error);
+          let mensaje = error.response.data.informacion;
+          alert(mensaje);
+        });//Fin de GET
+      })
+    .catch((error) => {
+      console.error(error);
+      let mensaje = error.response.data.informacion;
+      alert(mensaje);
+    });// Fin de DELETE
 }
+
