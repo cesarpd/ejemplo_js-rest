@@ -20,7 +20,7 @@ body {
 }
 
 /* Reset mdb animation in form label*/
-.reset-mdb-label {
+label.reset-mdb-label {
     -webkit-transform: translateY(-14px) scale(0.8);
     transform: translateY(-14px) scale(0.8);
 }
