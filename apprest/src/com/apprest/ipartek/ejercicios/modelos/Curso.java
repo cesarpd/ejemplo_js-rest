@@ -11,14 +11,8 @@ public class Curso {
 	private String imagen;
 	@NotEmpty
 	private Float precio;
+	private String profesor;
 	
-	public Curso(int id, @Size(min = 2, max = 255, message = "minimo 2 maximo 255 carcateres") String nombre,
-			@NotEmpty String imagen, @NotEmpty Float precio) {
-		setId(id);
-		setNombre(nombre);
-		setImagen(imagen);
-		setPrecio(precio);
-	}
 
 	public Curso() {
 		super();
@@ -26,8 +20,28 @@ public class Curso {
 		this.nombre = "";
 		this.imagen = "default.png";
 		this.precio = (float) 0;
+		this.profesor = "";
 	}
-
+	
+//	public Curso(int id, @Size(min = 2, max = 255, message = "minimo 2 maximo 255 carcateres") String nombre,
+//			@NotEmpty String imagen, @NotEmpty Float precio) {
+//		setId(id);
+//		setNombre(nombre);
+//		setImagen(imagen);
+//		setPrecio(precio);
+//	}
+	
+	public Curso(int id, @Size(min = 2, max = 255, message = "minimo 2 maximo 255 carcateres") String nombre,
+			@NotEmpty String imagen, @NotEmpty Float precio, String profesor) {
+		setId(id);
+		setNombre(nombre);
+		setImagen(imagen);
+		setPrecio(precio);
+		setProfesor(profesor);
+	}
+	
+	
+	//Getters y setters
 	public int getId() {
 		return id;
 	}
@@ -42,6 +56,9 @@ public class Curso {
 
 	public Float getPrecio() {
 		return precio;
+	}
+	public String getProfesor() {
+		return profesor;
 	}
 
 	public void setId(int id) {
@@ -59,11 +76,61 @@ public class Curso {
 	public void setPrecio(Float precio) {
 		this.precio = precio;
 	}
+	public void setProfesor(String profesor) {
+		this.profesor = profesor;
+	}
 
 	@Override
 	public String toString() {
-		return "Curso [id=" + id + ", nombre=" + nombre + ", imagen=" + imagen + ", precio=" + precio + "]";
+		return "Curso [id=" + id + ", nombre=" + nombre + ", imagen=" + imagen + ", precio=" + precio + ", profesor="
+				+ profesor + "]";
 	}
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		result = prime * result + ((imagen == null) ? 0 : imagen.hashCode());
+		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
+		result = prime * result + ((precio == null) ? 0 : precio.hashCode());
+		result = prime * result + ((profesor == null) ? 0 : profesor.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Curso other = (Curso) obj;
+		if (id != other.id)
+			return false;
+		if (imagen == null) {
+			if (other.imagen != null)
+				return false;
+		} else if (!imagen.equals(other.imagen))
+			return false;
+		if (nombre == null) {
+			if (other.nombre != null)
+				return false;
+		} else if (!nombre.equals(other.nombre))
+			return false;
+		if (precio == null) {
+			if (other.precio != null)
+				return false;
+		} else if (!precio.equals(other.precio))
+			return false;
+		if (profesor == null) {
+			if (other.profesor != null)
+				return false;
+		} else if (!profesor.equals(other.profesor))
+			return false;
+		return true;
+	}
+
 
 }

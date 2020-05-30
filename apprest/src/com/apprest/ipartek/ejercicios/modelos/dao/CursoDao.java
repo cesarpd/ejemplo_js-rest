@@ -14,9 +14,15 @@ public class CursoDao implements IDAO<Curso> {
 
 	private static final Logger LOGGER = Logger.getLogger(CursoDao.class.getCanonicalName());
 
-	private static String SQL_GET_ALL   = "SELECT id, nombre, imagen, precio FROM curso ORDER BY id DESC LIMIT 100;";
+	//private static String SQL_GET_ALL   = "SELECT id, nombre, imagen, precio FROM curso ORDER BY id DESC LIMIT 100;";
+	private static String SQL_GET_ALL   = 
+			"SELECT\n" + 
+			"c.id as id, c.nombre as nombre, c.imagen as imagen, c.precio as precio, p.nombre as profesor\n" + 
+			"FROM profesor p LEFT JOIN profesor_has_curso phc ON p.id = phc.profesor_id\n" + 
+			"JOIN curso c ON c.id = phc.curso_id LIMIT 100;";
+	
 	private static String SQL_GET_BY_ID   = "SELECT id, nombre, precio, imagen FROM curso WHERE id = ?; ";
-
+	
 	private static CursoDao INSTANCE = null;
 	
 	private CursoDao() {
@@ -45,7 +51,7 @@ public class CursoDao implements IDAO<Curso> {
 			LOGGER.info(pst.toString());
 			
 			while( rs.next() ) {				
-				registros.add( mapper(rs) );				
+				registros.add( mapper(rs) );			
 			}
 			
 			
@@ -110,6 +116,8 @@ public class CursoDao implements IDAO<Curso> {
 		c.setNombre( rs.getString("nombre"));
 		c.setImagen( rs.getString("imagen"));
 		c.setPrecio( rs.getFloat("precio"));
+		c.setProfesor( rs.getString("profesor"));
+		//LOGGER.warning(rs.getString("profesor"));;
 		return c;
 	}
 }

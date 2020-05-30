@@ -26,13 +26,9 @@ public class ProfesorDao implements IDAO<Persona>{
 	
 	
 	private static String SQL_INSERT    = "INSERT INTO profesor ( nombre, avatar, sexo) VALUES ( ?, ?, ? ); ";
-
 	private static String SQL_DELETE    = "DELETE FROM profesor WHERE id = ?; ";
-	
 	private static String SQL_UPDATE    = "UPDATE profesor SET nombre = ?, avatar = ?,  sexo = ? WHERE id = ?; ";
-
 	private static String SQL_ASIGNAR_CURSO    = "INSERT INTO profesor_has_curso (profesor_id, curso_id) VALUES ( ?, ?); ";
-
 	private static String SQL_ELIMINAR_CURSO    = "DELETE FROM profesor_has_curso WHERE profesor_id = ? AND curso_id = ?;  ";
 
 	// SINGLETON
@@ -61,7 +57,6 @@ public class ProfesorDao implements IDAO<Persona>{
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(SQL_GET_ALL);
 				ResultSet rs = pst.executeQuery();
-
 		) {
 
 			LOGGER.info(pst.toString());

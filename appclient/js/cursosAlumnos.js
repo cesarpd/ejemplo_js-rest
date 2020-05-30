@@ -15,10 +15,11 @@ function listarCursosAlumno(alumnoSeleccionado){
       `;
   } else {
     //let alumnoAeditar = alumnos.find((alumno) => alumno.id === alumnoSeleccionado.id)
+
     alumnoSeleccionado.cursos.forEach((curso) => {
       listaCursosAlumno.innerHTML += `
         <li>
-          ${curso.nombre}
+          ${curso.nombre} <small> ${curso.profesor}</small>
           <i class="fas fa-trash" onclick='eliminarCurso(${alumnoSeleccionado.id},${curso.id},event)'></i>
         </li>`;
     });

@@ -20,11 +20,20 @@ public class PersonaDao implements IDAO<Persona> {
 	// Consultas SQL
 	
 	//GET
-	private static String SQL_GET_ALL = "SELECT  p.id as persona_id, p.nombre as persona_nombre, p.avatar as persona_avatar, p.sexo as persona_sexo, c.id as curso_id, c.nombre as curso_nombre, c.imagen as curso_imagen, c.precio as curso_precio \n" + 
-			"FROM persona p LEFT JOIN persona_has_curso phc ON p.id = phc.persona_id \n" + 
-			"LEFT JOIN curso c ON c.id = phc.curso_id LIMIT 500;";
+//	private static String SQL_GET_ALL = "SELECT  p.id as persona_id, p.nombre as persona_nombre, p.avatar as persona_avatar, p.sexo as persona_sexo, c.id as curso_id, c.nombre as curso_nombre, c.imagen as curso_imagen, c.precio as curso_precio \n" + 
+//			"FROM persona p LEFT JOIN persona_has_curso phc ON p.id = phc.persona_id \n" + 
+//			"LEFT JOIN curso c ON c.id = phc.curso_id LIMIT 500;";
 
-	private static String SQL_GET_BY_ID = " SELECT  p.id as persona_id, p.nombre as persona_nombre, p.avatar as persona_avatar, p.sexo as persona_sexo, c.id as curso_id, c.nombre as curso_nombre, c.imagen as curso_imagen, c.precio as curso_precio \n" + 
+	private static String SQL_GET_ALL = "SELECT\n" + 
+			"p.id as persona_id, p.nombre as persona_nombre, p.avatar as persona_avatar, p.sexo as persona_sexo, c.id as curso_id, c.nombre as curso_nombre, c.imagen as curso_imagen, c.precio as curso_precio, pr.nombre as curso_profesor\n" + 
+			"FROM persona p LEFT JOIN persona_has_curso phc ON p.id = phc.persona_id\n" + 
+			"LEFT JOIN curso c ON c.id = phc.curso_id \n" + 
+			"JOIN profesor_has_curso prhc ON prhc.curso_id = c.id\n" + 
+			"JOIN profesor pr ON prhc.profesor_id = pr.id\n" + 
+			"LIMIT 500;";
+	
+
+	private static String SQL_GET_BY_ID = "SELECT  p.id as persona_id, p.nombre as persona_nombre, p.avatar as persona_avatar, p.sexo as persona_sexo, c.id as curso_id, c.nombre as curso_nombre, c.imagen as curso_imagen, c.precio as curso_precio \n" + 
 			"			\"FROM persona p LEFT JOIN persona_has_curso phc ON p.id = phc.persona_id \\n\" + \n" + 
 			"			\"LEFT JOIN curso c ON c.id = phc.curso_id WHERE p.id = ?;";
 
@@ -271,8 +280,13 @@ public class PersonaDao implements IDAO<Persona> {
 			c.setId(idCurso);
 			c.setNombre(rs.getString("curso_nombre"));
 			c.setPrecio( rs.getFloat("curso_precio"));
-			c.setImagen(rs.getString("curso_imagen"));			
+			c.setImagen(rs.getString("curso_imagen"));
+			c.setProfesor(rs.getString("curso_profesor"));
+			
+
 			p.getCursos().add(c);
+			LOGGER.warning(p.getCursos().toString());;
+
 		}	
 
 		//actualizar hashmap

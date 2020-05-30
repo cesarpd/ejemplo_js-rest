@@ -145,6 +145,7 @@ public class PersonaController {
 	@Path("alumnos/{idPersona}/curso/{idCurso}")
 	public Response asignarCurso(@PathParam("idPersona") int idPersona, @PathParam("idCurso") int idCurso) {
 		LOGGER.info("asignarCurso idPersona=" + idPersona + " idCurso= " + idCurso);
+		
 		Response response = Response.status(Status.INTERNAL_SERVER_ERROR).entity(null).build();
 		ResponseBody responseBody = new ResponseBody();
 
