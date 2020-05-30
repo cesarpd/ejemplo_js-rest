@@ -1,6 +1,7 @@
 package com.apprest.ipartek.ejercicios.api.controller;
 
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -46,6 +47,8 @@ public class ProfesorController {
 	public ProfesorController() {
 		super();
 	}
+	
+	// Listar todos los profesores
 	@GET
 	@Path("profesores/")
 	public ArrayList<Persona> getAll() {
@@ -54,7 +57,8 @@ public class ProfesorController {
 		ArrayList<Persona> registros = (ArrayList<Persona>) profesorDao.getAll(); 
 		return registros;
 	}
-
+	
+	// Crear profesor
 	@POST
 	@Path("profesores/")
 	public Response insert(Persona persona) {
@@ -89,6 +93,7 @@ public class ProfesorController {
 
 	}
 	
+	// Editar profesor
 	@PUT
 	@Path("profesores/{id: \\d+}")
 	public Response update(@PathParam("id") int id, Persona persona) {
@@ -115,6 +120,7 @@ public class ProfesorController {
 		return response;
 	}
 	
+	// Borrar profesor
 	@DELETE
 	@Path("profesores/{id: \\d+}")
 	public Response eliminar(@PathParam("id") int id) {
@@ -136,6 +142,7 @@ public class ProfesorController {
 		return response;
 	}
 	
+	// Asignar curso a profesor
 	@POST
 	@Path("profesores/{idPersona}/curso/{idCurso}")
 	public Response asignarCurso(@PathParam("idPersona") int idPersona, @PathParam("idCurso") int idCurso) {
@@ -143,26 +150,56 @@ public class ProfesorController {
 		Response response = Response.status(Status.INTERNAL_SERVER_ERROR).entity(null).build();
 		ResponseBody responseBody = new ResponseBody();
 
-		try {		
-			profesorDao.asignarCurso(idPersona, idCurso);
-			Curso c = cursoDao.getById(idCurso);
+			try {
+				profesorDao.asignarCurso(idPersona, idCurso);
+				Curso c = cursoDao.getById(idCurso);
+				
+				responseBody.setInformacion("curso asigando con exito");
+				responseBody.setData(c);
+				response = Response.status(Status.CREATED).entity(responseBody).build();
 			
-			responseBody.setInformacion("curso asigando con exito");
-			responseBody.setData(c);
-			response = Response.status(Status.CREATED).entity(responseBody).build();
-			
-		}  catch (SQLException e) {
-			responseBody.setInformacion("Error de conflicto, puede que ya tengas este curso");
-			response = Response.status(Status.CONFLICT).entity(responseBody).build();
-		}
-		catch (Exception e) {			
-			responseBody.setInformacion(e.getMessage());
-			response = Response.status(Status.NOT_FOUND).entity(responseBody).build();
-	}
-		return response;
+			} catch (SQLException e) {
+				// Capturamos los errores de conflicto
+				
+//				LOGGER.info("**********************************************");
+//				LOGGER.info("SQL Error Type : " + e.getClass().getName());
+//				LOGGER.info("Error Message  : " + e.getMessage());
+//				LOGGER.info("Error Code     : " + e.getErrorCode());
+//				LOGGER.info("SQL State      : " + e.getSQLState());
+//				LOGGER.info("**********************************************");
 
+				if (e instanceof SQLIntegrityConstraintViolationException) {
+					// Usamos el codigo de error en lugar del estado por ser mas preciso
+					if (e.getErrorCode() == 1062) {
+						
+						if (e.getMessage().contains("PRIMARY")) { // Si es error de clave primaria es que el profesor ya tiene curso
+			            	responseBody.setInformacion("Solo puedes tener un curso asignado");
+			            	//System.out.println(responseBody);
+							
+						} else if (e.getMessage().contains("UNIQUE")) { // Si es error de clave unica es que los cursos no pueden asignarse a mas de un profesor
+				            responseBody.setInformacion("Este curso ya está asignado a un profesor");
+				            System.out.println(responseBody);
+						}
+					// Resolvemos otro tipo de errores de conflicto	
+					} else {
+						responseBody.setInformacion("Error de conflicto, no se puede asignar este curso");
+						responseBody.setData(e);
+					}
+				}
+				    System.out.println(responseBody);
+					response = Response.status(Status.CONFLICT).entity(responseBody).build();
+				
+				
+			} catch (Exception e) {
+				responseBody.setInformacion(e.getMessage());
+				response = Response.status(Status.NOT_FOUND).entity(responseBody).build();
+			}
+			
+			return response;
 	}
+
 	
+	// Desasignar curso al profesor
 	@DELETE
 	@Path("profesores/{idPersona}/curso/{idCurso}")
 	public Response eliminarCurso(@PathParam("idPersona") int idPersona, @PathParam("idCurso") int idCurso) {
