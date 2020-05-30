@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- MDB icon -->
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Google Fonts Roboto -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="vendor/css/mdb//bootstrap.min.css">
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" href="vendor/css/mdb//mdb.min.css">
+    <!-- MDBootstrap Datatables  -->
+    <link href="vendor/css/mdb//addons/datatables.min.css" rel="stylesheet">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css" />
+    
+  <title>Ipartek formación</title>
+</head>
+<body>
+<main class="container">
+<!-- Navbar -->
+<div class="row">
+  <div class="col-md-12">
+    <ul class="nav info-color-dark py-4 mb-md-0 mb-4 font-weight-bold z-depth-1 align-items-center">
+      <li class="nav-item mr-auto">
+        <a class="nav-link active white-text" href="/index.html">
+          <h1 class="mx-5">Ipartek formación</h1>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link white-text font-weight-normal" href="/index.html">Inicio </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link white-text font-weight-normal" href="/profesores.html">Profesores</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link white-text font-weight-normal" href="/alumnos.html">Alumnos</a>
+      </li>
+    </ul>
+  </div>
+</div>
+<!-- Forms Section -->
+<section class="pt-2 my-5 px-5 z-depth-1">
+  <div class="row">
+    <!-- Search form -->
+    <div class="col-lg-4 col-sm-6 mb-2">
+      <form class="form-inline d-flex justify-content-center md-form form-sm active-pink active-pink-2 mt-2">
+        <i class="fas fa-search" aria-hidden="true"></i>
+        <input id="selectorNombre" class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Buscador" aria-label="Buscador">
+      </form>
+    </div>
+    <!-- Select form -->
+    <div class="col-lg-4 col-sm-6 mt-2 mb-4">
+      <select class="browser-default custom-select" id="selectorSexo">
+        <option value="t" selected>Todos</option>
+        <option value="h">Hombre</option>
+        <option value="m">Mujer</option>
+      </select>
+    </div>
+    <!-- Select form -->
+    <div class="col-lg-4 col-sm-6 ">
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#crearPersona">
+        Añadir Nuevo</button>
+    </div>
+  </div>
+</section>
+
+<!-- User List -->
+<section class="pt-5 my-5 z-depth-1">
+  <div class="p-md-3 mx-md-5 text-lg-left">
+    <h2 class="text-center font-weight-bold mb-4 pb-1">Listado de Profesores</h2>
+    <div id="alist" class="row">
+      <div class="col-12"><p class="px-2">Cargando...</p></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Modal #crearPersona -->
+<div class="modal fade" id="crearPersona" tabindex="-1" role="dialog" aria-labelledby="crearPersona"
+  aria-hidden="true">
+
+  <div class="modal-dialog modal-notify modal-primary modal-xl modal-dialog-centered" role="document">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title w-100 text-white" id="crearPersona">Crear Profesor</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span class="text-white" aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Contenido del modal -->
+            <div class="row">
+              <div class="col-12 col-sm-6">
+                <h3>Formulario</h3>
+                <!-- Form -->
+                <form class="text-center" style="color: #757575;" action="#!">
+                  <!-- Indice:: Oculto para referencia-->
+                  <div class="md-form mt-3">
+                    <input type="hidden" id="indice" class="form-control" readonly>
+                  </div>
+                  <!-- Id:: Oculto para referencia -->
+                  <div class="md-form mt-3">
+                    <input type="hidden" id="inputId" class="form-control" readonly>
+                  </div>
+                  <!-- Avatar:: Oculto para referencia -->
+                  <div class="md-form mt-3">
+                    <input type="hidden" id="inputAvatar" class="form-control" readonly>
+                  </div>
+                  <!-- Name -->
+                  <div class="md-form mt-3">
+                    <input type="text" id="inputNombre" class="form-control">
+                    <label for="inputNombre">Nombre</label>
+                  </div>
+                  <!-- Select -->
+                  <div class="d-flex">
+                    <input checked="checked" type="radio" name="sexo" id="checkHombre" value="h">
+                    <label class="mb-0 px-1" for="checkHombre">Hombre</label>
+  
+                    <input class="ml-2" type="radio" name="sexo" id="checkMujer" value="m">
+                    <label class="mb-0 px-1" for="checkMujer">Mujer</label>
+                  </div>
+                  <!-- Select-->
+                </form>
+                <!-- Form -->
+
+              </div><!-- col-6 Izquierda-->
+              <div class="col-12 col-sm-6">
+                <!-- Avatares -->
+                <h3>Avatares</h3>
+                <div class="d-flex flex-wrap mt-4" id="new-avatarGallery"></div>
+                <!-- Avatares -->
+              </div><!-- col-6 Derecha-->
+          </div>
+      </div> <!-- Modal Body -->
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-primary" onclick="guardarNuevaPersona()" data-dismiss="modal">Guardar</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal #formularioPersona -->
+<div class="modal fade" id="formularioPersona" tabindex="-1" role="dialog" aria-labelledby="formularioPersona"
+  aria-hidden="true">
+
+  <div class="modal-dialog modal-notify modal-primary modal-xl modal-dialog-centered" role="document">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title w-100 text-white" id="formularioPersona">Detalles del Profesor</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span class="text-white" aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <div class="row">
+              <div class="col-12 col-sm-6">                
+                <!-- Form -->
+                <form class="text-center" style="color: #757575;" action="#!">
+                  <!-- Indice:: Oculto para referencia-->
+                  <div class="md-form mt-3">
+                    <input type="hidden" id="edit-indice" class="form-control" readonly>
+                  </div>
+                  <!-- Id:: Oculto para referencia -->
+                  <div class="md-form mt-3">
+                    <input type="hidden" id="edit-inputId" class="form-control" readonly>
+                  </div>
+                  <!-- Avatar:: Oculto para referencia -->
+                  <div class="md-form mt-3">
+                    <input type="hidden" id="edit-inputAvatar" class="form-control" readonly>
+                  </div>
+                  <!-- Name -->
+                  <div class="md-form mt-3">
+                    <input type="text" id="edit-inputNombre" class="form-control">
+                    <label class="reset-mdb-label" for="inputNombre">Nombre</label>
+                  </div>
+                  <!-- Select -->
+                  <div class="d-flex">
+                    <input checked="checked" type="radio" name="sexo" id="edit-checkHombre" value="h">
+                    <label class="mb-0 px-1" for="edit-checkHombre">Hombre</label>
+  
+                    <input class="ml-2" type="radio" name="sexo" id="edit-checkMujer" value="m">
+                    <label class="mb-0 px-1" for="edit-checkMujer">Mujer</label>
+                  </div>
+                  <!-- Select-->
+                </form>
+                <!-- Form -->
+                <!-- Avatares -->
+                <div class="d-flex flex-wrap mt-4" id="edit-avatarGallery"></div>
+                <!-- Avatares -->
+              </div><!-- col-6 Izquierda-->
+              <div class="col-12 col-sm-6">
+                <h3 class="h5">Los cursos del profesor</h3>
+                <div id="aclist">
+                  <!-- Autogenerated -->
+                </div>
+              </div><!-- col-6 Derecha-->
+            </div>
+            
+
+      </div> <!-- Modal Body -->
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-primary" onclick="guardarPersona()" data-dismiss="modal">Guardar</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal #formularioPersona -->
+
+<!-- Modal #comprarCursos -->
+<div class="modal fade" id="comprarCursos" tabindex="-1" role="dialog" aria-labelledby="comprarCursos" aria-hidden="true">
+
+  <div class="modal-dialog modal-notify modal-primary modal-xl modal-dialog-centered" role="document">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title w-100 text-white" id="comprarCursos">Comprar Cursos</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span class="text-white" aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Contenido del modal -->
+        <div class="row">
+          <div class="col-12">
+            <h3>Cursos</h3>
+            <div id="clist">Generando los cursos disponibles...</div>
+            <!-- Cursos -->
+          </div><!-- col-6 Izquierda-->
+        </div>
+      </div> <!-- Modal Body -->
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="listarPersonas()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="page-footer font-small info-color-dark py-4">
+
+  <!-- Footer Elements -->
+  <div class="container">
+
+    <div class="row">
+      <div class="col-md-6 d-flex justify-content-start">
+        <!-- Copyright -->
+        <div class="footer-copyright text-center bg-transparent">© 2020
+          <a href="#"> Ejemplo javascript</a>
+        </div>
+        <!-- Copyright -->
+      </div>
+      <div class="col-md-6 d-flex justify-content-end">
+        <ul class="list-unstyled d-flex mb-0">
+          <li>
+            <a class="mr-3" role="button"><i class="fab fa-facebook-f"></i></a>
+          </li>
+          <li>
+            <a class="mr-3" role="button"><i class="fab fa-twitter"></i></a>
+          </li>
+          <li>
+            <a class="mr-3" role="button"><i class="fab fa-instagram"></i></a>
+          </li>
+          <li>
+            <a class="" role="button"><i class="fab fa-youtube"></i></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+  <!-- Footer Elements -->
+
+</footer>
+<!-- Footer -->
+
+</main>
+<!-- MDBootstrap dependencies -->
+<script type="text/javascript" src="vendor/js/mdb/jquery.min.js"></script>
+<script type="text/javascript" src="vendor/js/mdb/jquery.min.js"></script>
+<script type="text/javascript" src="vendor/js/mdb/bootstrap.min.js"></script>
+<script type="text/javascript" src="vendor/js/mdb/mdb.min.js"></script>
+<!-- Axios - promise based Http client -->
+<script src="vendor/js/axios/axios.min.js"></script>
+<!-- App scripts -->
+<script src="js/profesores.js"></script>
+<script src="js/cursosProfesores.js"></script>
+<script src="js/filtros.js"></script>
+<script src="js/initProfesores.js"></script>
+
+</body>
+</html>

@@ -9,6 +9,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import com.apprest.ipartek.ejercicios.modelos.Curso;
 import com.apprest.ipartek.ejercicios.modelos.dao.CursoDao;
@@ -23,14 +25,16 @@ public class CursoController {
 
 	private static final Logger LOGGER = Logger.getLogger(CursoController.class.getCanonicalName());
 	
-	private static CursoDao cursoDao = CursoDao.getInstancia();
+	private static CursoDao cursoDao = CursoDao.getInstance();
 
 	
 	@GET
-	public ArrayList<Curso> getAll(){
+	public Response getAll(){
 		LOGGER.info("API: GetAll");
 		ArrayList<Curso> registros = (ArrayList<Curso>) cursoDao.getAll();
-		return registros;
+		Response response = Response.status(Status.OK).entity(registros).build();
+
+		return response;
 		
 	}
 }

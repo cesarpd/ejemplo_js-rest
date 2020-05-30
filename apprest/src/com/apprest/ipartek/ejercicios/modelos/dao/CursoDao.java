@@ -14,7 +14,14 @@ public class CursoDao implements IDAO<Curso> {
 
 	private static final Logger LOGGER = Logger.getLogger(CursoDao.class.getCanonicalName());
 
-	private static String SQL_GET_ALL   = "SELECT id, nombre, imagen, precio FROM curso ORDER BY id DESC LIMIT 100;";
+	//private static String SQL_GET_ALL   = "SELECT id, nombre, imagen, precio FROM curso ORDER BY id DESC LIMIT 100;";
+	private static String SQL_GET_ALL   = 
+			"SELECT\n" + 
+			"c.id as id, c.nombre as nombre, c.imagen as imagen, c.precio as precio, p.nombre as profesor\n" + 
+			"FROM profesor p LEFT JOIN profesor_has_curso phc ON p.id = phc.profesor_id\n" + 
+			"JOIN curso c ON c.id = phc.curso_id LIMIT 100;";
+	
+	private static String SQL_GET_BY_ID   = "SELECT id, nombre, precio, imagen FROM curso WHERE id = ?; ";
 	
 	private static CursoDao INSTANCE = null;
 	
@@ -23,7 +30,7 @@ public class CursoDao implements IDAO<Curso> {
 	}
 	
 	//Singleton
-	public synchronized static CursoDao getInstancia() {
+	public synchronized static CursoDao getInstance() {
 		if (INSTANCE == null) {
 			INSTANCE = new CursoDao();
 		}
@@ -44,7 +51,7 @@ public class CursoDao implements IDAO<Curso> {
 			LOGGER.info(pst.toString());
 			
 			while( rs.next() ) {				
-				registros.add( mapper(rs) );				
+				registros.add( mapper(rs) );			
 			}
 			
 			
@@ -58,26 +65,48 @@ public class CursoDao implements IDAO<Curso> {
 
 	@Override
 	public Curso getById(int id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Curso registro = null;
+		try (Connection con = ConnectionManager.getConnection();
+				PreparedStatement pst = con.prepareStatement(SQL_GET_BY_ID);
+		) {
+
+			pst.setInt(1, id);
+			LOGGER.info(pst.toString());
+			
+			try( ResultSet rs = pst.executeQuery() ){			
+				
+				if( rs.next() ) {					
+					registro = mapper(rs);
+				}else {
+					throw new Exception("Registro no encontrado para id = " + id);
+				}
+			}
+			
+			
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+
+		return registro;
 	}
 
 	@Override
 	public Curso insert(Curso pojo) throws Exception, SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		throw new Exception("sin implementar");
+
 	}
 
 	@Override
 	public Curso update(Curso pojo) throws Exception, SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		throw new Exception("sin implementar");
+
 	}
 
 	@Override
 	public Curso delete(int id) throws Exception, SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		throw new Exception("sin implementar");
+
 	}
 	
 	// Metodo de mapeo de los datos
@@ -87,6 +116,8 @@ public class CursoDao implements IDAO<Curso> {
 		c.setNombre( rs.getString("nombre"));
 		c.setImagen( rs.getString("imagen"));
 		c.setPrecio( rs.getFloat("precio"));
+		c.setProfesor( rs.getString("profesor"));
+		//LOGGER.warning(rs.getString("profesor"));;
 		return c;
 	}
 }

@@ -4,37 +4,22 @@
  * Inicializacion de
  * Variables Globales
  */
-const endpoint = "http://192.168.0.33:8080/com.apprest.ipartek.ejercicios/api/";
+const endpoint = "http://localhost:8080/apprest/api/";
 const alumnosApi = endpoint + "personas/";
 const cursosApi = endpoint + "cursos/";
 
-<<<<<<< HEAD
-const aList = document.getElementById("alist");
-const cList = document.getElementById("clist");
-const acList = document.getElementById("aclist");
-=======
 const eList = document.getElementById('alist');
 const cList = document.getElementById('clist');
->>>>>>> parent of dd30671... mejoras asignación de cursos con bugs
 
 let alumnos = [];
 let cursos = [];
 
 let alumnoSeleccionado = {
-<<<<<<< HEAD
-  id: 0,
-  nombre: "sin nombre",
-  avatar: "img/avatar1.png",
-  sexo: "h",
-  cursos: []
-};
-=======
     id: 0,
     nombre: "sin nombre",
     avatar: "img/avatar1.png",
     sexo: "h"
   };
->>>>>>> parent of dd30671... mejoras asignación de cursos con bugs
 
 /**
  * Main
@@ -45,11 +30,55 @@ window.addEventListener("load", init());
 function init() {
   console.debug("Documennt loaded...");
   //Listeners del formulario
-  listener();
+  //listener();
   // Galeria de avatares
-  initGallery();
+ // initGallery();
   // Ajax Request con Promesas para los recibir los Alumnos y listarlos
-  getAlumno("GET", alumnosApi, undefined);
+  //getAlumno("GET", alumnosApi, undefined);
+  testListaAlumnos();
+}
+function testListaAlumnos() {
+
+  const url = "http://localhost:8080/apprest/api/personas";
+  const xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    let eList = document.getElementById("alist");
+
+    if (this.readyState == 4 && this.status == 200) {
+      //console.info('GET LIST: ' + url);
+
+      const jsonRes = JSON.parse(this.responseText);
+      //console.debug(jsonRes);
+      //let pokemons = jsonRes.results
+      let pokemons = jsonRes
+      //console.debug(pokemons);
+
+      eList.innerHTML = "";
+
+      for (let i = 0; i < pokemons.length; i++) {
+        let pokemon = pokemons[i];
+        //let pokemonUrl = pokemon.url;
+        //let pokemonId = pokemonUrl.substring(pokemonUrl.lastIndexOf("/") - 1);
+        //console.debug(pokemonId);
+
+        eList.innerHTML += ` <div class="d-flex flex-column poke-item">
+                <p class="pt-1 pb-4"><strong>${pokemon.nombre}</strong>
+                ${pokemon.id}</p>
+            </div>`;
+      }
+
+      // let pokeListItems = document.querySelectorAll(".poke-item");
+
+      // for (let pokeListItem of pokeListItems) {
+      //   pokeListItem.addEventListener("click", pokemonClick);
+      // }
+    }
+  };
+  //Peticion GET
+  xhr.open("GET", url, true);
+  xhr.send();
+
+
 }
 
 /*
@@ -91,17 +120,10 @@ function filtrar() {
 }
 
 function listarAlumnos(alumnos) {
-<<<<<<< HEAD
-  aList.innerHTML = ""; // vaciar html
-  alumnos.forEach(
-    alumno =>
-      (aList.innerHTML += `
-=======
     eList.innerHTML = ''; // vaciar html 
     alumnos.forEach(
       alumno =>
         (eList.innerHTML += `
->>>>>>> parent of dd30671... mejoras asignación de cursos con bugs
         <div class="col-lg-4 col-sm-6 mb-5 px-5">
          <div class="row d-flex align-items-center">
           <div class="col-5 avatar w-100 white d-flex justify-content-center align-items-center">
@@ -182,12 +204,7 @@ function editar(indice) {
   // pintar cursos del alumno
   let listaCursosAlumno = document.getElementById("aclist");
   listaCursosAlumno.innerHTML = "";
-<<<<<<< HEAD
-  alumnoSeleccionado.cursos.forEach(curso => {
-    console.info(curso);
-=======
   alumnoSeleccionado.cursos.forEach(el => {
->>>>>>> parent of dd30671... mejoras asignación de cursos con bugs
     listaCursosAlumno.innerHTML += `
         <li>
           ${el.nombre}
@@ -339,20 +356,7 @@ function asignarCurso(idAlumno = 0, idCurso) {
   ajax("POST", url, undefined)
     .then(data => {
       //TODO Cambiar alert por un modal GLOBAL
-<<<<<<< HEAD
-      alert(data.informacion);
-      const curso = data.data;
-      document.getElementById("profile-tab").classList.remove("active");
-      document.getElementById("home-tab").classList.add("active");
-      acList.innerHTML += `<li class="animated bounceIn">  
-                                ${curso.nombre}
-                                <i class="fas fa-trash" onclick="eliminarCurso(event, ${idCurso},${curso.id})"></i>    
-                            </li>`;
-      //BUG necesitamos refrescar al alumno al insertar nuevo curso
-      //editar(idAlumno);
-=======
         alert(data.informacion);
->>>>>>> parent of dd30671... mejoras asignación de cursos con bugs
     })
     .catch(error => alert(error));
 } //asignarCurso
@@ -363,30 +367,54 @@ function asignarCurso(idAlumno = 0, idCurso) {
  * @param {*} idCurso
  */
 function eliminarCurso(event, idAlumno, idCurso) {
-<<<<<<< HEAD
-  //BUG necesitamos refrescar al alumno antes de borra un curso
-  console.debug(`click eliminarCurso idAlumno=${idAlumno} idCurso=${idCurso}`);
-=======
   //BUG Hacer que se refresque la info del alumno
   console.debug(
     `click eliminarCurso idAlumno=${idAlumno} idCurso=${idCurso}`
   );
->>>>>>> parent of dd30671... mejoras asignación de cursos con bugs
 
   const url = endpoint + "personas/" + idAlumno + "/curso/" + idCurso;
   ajax("DELETE", url, undefined)
     .then(data => {
       alert("Curso Eliminado");
 
-<<<<<<< HEAD
-      event.target.parentElement.style.display = "none";
-      event.target.parentElement.classList.add("animated", "bounceOut");
-      //editar(idAlumno);
-=======
       //  event.target.parentElement.style.display = 'none';
       // event.target.parentElement.classList.add("animated", "bounceOut");
         editar(idAlumno);
->>>>>>> parent of dd30671... mejoras asignación de cursos con bugs
     })
     .catch(error => alert(error));
 } //eliminarCurso
+/**
+ * llamada ajax en vanilla javascript
+ * @param {*} metodo
+ * @param {*} url
+ * @param {*} datos en formato json para el request body, pero luego hacemos un JSON.stringify
+ * @return Promise
+ */
+function ajax(metodo, url, datos) {
+  return new Promise((resolve, reject) => {
+    console.debug(`promesa ajax metodo ${metodo} - ${url}`);
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4) {
+        if (this.status == 200 || this.status == 201) {
+          // comprobamos que el body que hay que parsear no esté vacio
+          if (this.responseText) {
+            const jsonData = JSON.parse(this.responseText);
+            console.debug(jsonData);
+            // funciona promesa, then
+            resolve(jsonData);
+          } else {
+            resolve();
+          }
+        } else {
+          // falla promesa, catch
+          reject(Error(JSON.parse(this.responseText)));
+        }
+      } // readyState == 4
+    }; // onreadystatechange
+
+    xhttp.open(metodo, url, true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send(JSON.stringify(datos));
+  });
+}

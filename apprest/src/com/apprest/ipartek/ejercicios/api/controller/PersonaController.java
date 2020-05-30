@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.logging.Logger;
 
-
 import javax.servlet.ServletContext;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -23,15 +22,20 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.apprest.ipartek.ejercicios.modelos.Curso;
 import com.apprest.ipartek.ejercicios.modelos.Persona;
+import com.apprest.ipartek.ejercicios.modelos.dao.CursoDao;
 import com.apprest.ipartek.ejercicios.modelos.dao.PersonaDao;
 
-@Path("/personas")
+@Path("/personas/")
 @Produces("application/json")
 @Consumes("application/json")
 public class PersonaController {
 	private static final Logger LOGGER = Logger.getLogger(PersonaController.class.getCanonicalName());
+	
 	private static PersonaDao personaDao = PersonaDao.getInstance();
+	private static CursoDao cursoDao = CursoDao.getInstance();
+
 
 	private ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 	private Validator validator = factory.getValidator();
@@ -45,6 +49,7 @@ public class PersonaController {
 	}
 
 	@GET
+	@Path("alumnos/")
 	public ArrayList<Persona> getAll() {
 		LOGGER.info("getAll");		
 		// return personas;
@@ -52,7 +57,9 @@ public class PersonaController {
 		return registros;
 	}
 
+
 	@POST
+	@Path("alumnos/")
 	public Response insert(Persona persona) {
 		LOGGER.info("insert(" + persona + ")");
 		Response response = Response.status(Status.INTERNAL_SERVER_ERROR).entity(null).build();
@@ -67,6 +74,8 @@ public class PersonaController {
 				response = Response.status(Status.CREATED).entity(persona).build();
 				
 			}catch (Exception e) {
+				ResponseBody responseBody = new ResponseBody();
+				responseBody.setInformacion("nombre duplicado");
 				response = Response.status(Status.CONFLICT).entity(persona).build();
 			}	
 
@@ -84,7 +93,7 @@ public class PersonaController {
 	}
 
 	@PUT
-	@Path("/{id: \\d+}")
+	@Path("alumnos/{id: \\d+}")
 	public Response update(@PathParam("id") int id, Persona persona) {
 		LOGGER.info("update(" + id + ", " + persona + ")");		
 		Response response = Response.status(Status.NOT_FOUND).entity(persona).build();
@@ -112,7 +121,7 @@ public class PersonaController {
 	}
 
 	@DELETE
-	@Path("/{id: \\d+}")
+	@Path("alumnos/{id: \\d+}")
 	public Response eliminar(@PathParam("id") int id) {
 		LOGGER.info("eliminar(" + id + ")");
 
@@ -131,5 +140,58 @@ public class PersonaController {
 		}
 		return response;
 	}
+	
+	@POST
+	@Path("alumnos/{idPersona}/curso/{idCurso}")
+	public Response asignarCurso(@PathParam("idPersona") int idPersona, @PathParam("idCurso") int idCurso) {
+		LOGGER.info("asignarCurso idPersona=" + idPersona + " idCurso= " + idCurso);
+		
+		Response response = Response.status(Status.INTERNAL_SERVER_ERROR).entity(null).build();
+		ResponseBody responseBody = new ResponseBody();
+
+		try {		
+			personaDao.asignarCurso(idPersona, idCurso);
+			Curso c = cursoDao.getById(idCurso);
+			
+			responseBody.setInformacion("curso asigando con exito");
+			responseBody.setData(c);
+			response = Response.status(Status.CREATED).entity(responseBody).build();
+			
+		}  catch (SQLException e) {
+			responseBody.setInformacion("Error de conflicto, puede que ya tengas este curso");
+			response = Response.status(Status.CONFLICT).entity(responseBody).build();
+		}
+		catch (Exception e) {			
+			responseBody.setInformacion(e.getMessage());
+			response = Response.status(Status.NOT_FOUND).entity(responseBody).build();
+	}
+		return response;
+
+	}
+	@DELETE
+	@Path("alumnos/{idPersona}/curso/{idCurso}")
+	public Response eliminarCurso(@PathParam("idPersona") int idPersona, @PathParam("idCurso") int idCurso) {
+		LOGGER.info("eliminarCurso idPersona=" + idPersona + " idCurso= " + idCurso);
+		Response response = Response.status(Status.INTERNAL_SERVER_ERROR).entity(null).build();
+		ResponseBody responseBody = new ResponseBody();
+
+		try {		
+			personaDao.eliminarCurso(idPersona, idCurso);
+			Persona p = personaDao.getById(idPersona);
+			
+			responseBody.setInformacion("curso eliminado con exito");
+			responseBody.setData(p);
+			response = Response.status(Status.OK).entity(responseBody).build();
+			
+		} catch (Exception e) {			
+				responseBody.setInformacion(e.getMessage());
+				response = Response.status(Status.NOT_FOUND).entity(responseBody).build();
+		}
+
+		return response;
+
+	}
+	
+	
 
 }
