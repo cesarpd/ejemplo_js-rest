@@ -152,10 +152,8 @@ public class ProfesorController {
 
 			try {
 				profesorDao.asignarCurso(idPersona, idCurso);
-				Curso c = cursoDao.getById(idCurso);
 				
 				responseBody.setInformacion("curso asigando con exito");
-				responseBody.setData(c);
 				response = Response.status(Status.CREATED).entity(responseBody).build();
 			
 			} catch (SQLException e) {

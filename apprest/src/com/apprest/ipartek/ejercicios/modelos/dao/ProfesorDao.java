@@ -192,7 +192,7 @@ public class ProfesorDao implements IDAO<Persona>{
 		return result;
 	}
 	public boolean eliminarCurso( int idPersona, int idCurso ) throws Exception, SQLException {
-		boolean resul = false;
+		boolean result = false;
 		
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(SQL_ELIMINAR_CURSO);
@@ -205,13 +205,13 @@ public class ProfesorDao implements IDAO<Persona>{
 			//eliminamos la persona
 			int affetedRows = pst.executeUpdate();	
 			if (affetedRows == 1) {
-				resul = true;
+				result = true;
 			}else {
 				throw new Exception("No se encontrado registro id_persona =" + idPersona + " id_curso=" + idCurso );		
 			}
 		}
 		
-		return resul;
+		return result;
 	}
 	// Metodos
 	private void mapper(ResultSet rs, HashMap<Integer,Persona> hm) throws SQLException {

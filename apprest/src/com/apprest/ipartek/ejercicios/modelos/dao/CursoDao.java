@@ -21,7 +21,12 @@ public class CursoDao implements IDAO<Curso> {
 			"FROM curso c LEFT JOIN profesor_has_curso phc ON c.id = phc.curso_id\n" + 
 			"LEFT JOIN profesor p ON p.id = phc.profesor_id LIMIT 100;";
 	
-	private static String SQL_GET_BY_ID   = "SELECT id, nombre, precio, imagen FROM curso WHERE id = ?; ";
+	//private static String SQL_GET_BY_ID   = "SELECT id, nombre, precio, imagen FROM curso WHERE id = ?; ";
+	private static String SQL_GET_BY_ID   = 
+			"SELECT\\n\" + \n" + 
+			"c.id as id, c.nombre as nombre, c.imagen as imagen, c.precio as precio, p.nombre as profesor\\n\" + \n" + 
+			"FROM curso c LEFT JOIN profesor_has_curso phc ON c.id = phc.curso_id\\n\" + \n" + 
+			"WHERE id = ?";
 	
 	private static CursoDao INSTANCE = null;
 	
@@ -69,7 +74,7 @@ public class CursoDao implements IDAO<Curso> {
 		try (Connection con = ConnectionManager.getConnection();
 				PreparedStatement pst = con.prepareStatement(SQL_GET_BY_ID);
 		) {
-
+			
 			pst.setInt(1, id);
 			LOGGER.info(pst.toString());
 			
