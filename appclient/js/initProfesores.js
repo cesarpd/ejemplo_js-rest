@@ -11,6 +11,9 @@ const aList = document.getElementById("alist");
 const cList = document.getElementById("clist");
 const acList = document.getElementById("aclist");
 
+const errorTab = document.getElementById("error-tab");
+const errorText = document.getElementById("error-text");
+
 let alumnos = [];
 let cursos = [];
 

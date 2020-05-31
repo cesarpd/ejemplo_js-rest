@@ -26,9 +26,10 @@ function listarPersonas() {
 }
 
 function maquetarLista(personas) {
-  //Vaciamos la lista
+  // Vaciamos la lista
   console.debug(personas)
   aList.innerHTML='';
+  // Mensaje para el filtro sin resultado
   if (Object.keys(personas).length == 0) {
     aList.innerHTML = "No hay resultados que mostrar";
   }
