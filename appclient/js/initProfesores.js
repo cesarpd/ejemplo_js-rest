@@ -21,6 +21,7 @@ window.addEventListener("load", init());
 
 function init() {
   console.debug("Document loaded...");
+  listener();
   listarPersonas();
   initGallery();
 
