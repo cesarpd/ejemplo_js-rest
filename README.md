@@ -60,7 +60,8 @@ El proyecto utiliza __Java 1.8__ como lenguaje de servidor y __ECMAScript__ como
   Se ha utilizado la libreria Axios (Promise based HTTP client for the browser and node.js)
   [AXIOS](https://github.com/axios/axios "axios")
   
-  ###### ESTRUCTURA
+  ##### ESTRUCTURA
+  
   >./appclient/css/mdb
   >./appclient/vendor/js/axios
   >./appclient/vendor/js/mdb/lib
