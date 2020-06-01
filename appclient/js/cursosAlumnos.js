@@ -26,7 +26,7 @@ function listarCursosAlumno(alumnoSeleccionado){
         persona.cursos.forEach((curso) => {
           listaCursosAlumno.innerHTML += `
             <li>
-              ${curso.nombre}
+              Curso <strong>${curso.nombre}</strong> impartido por <strong>${curso.profesor==null ? "No tiene profesor asignado" : curso.profesor}</strong>
               <i class="fas fa-trash" onclick='eliminarCurso(${persona.id},${curso.id},event)'></i>
             </li>`;
         });
