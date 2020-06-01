@@ -44,6 +44,5 @@ function filtro() {
 
   maquetarLista(personasFiltradas);
 
-  selectorSexo.value = "t";
-  inputNombre.value = "";
+
 } // filtro

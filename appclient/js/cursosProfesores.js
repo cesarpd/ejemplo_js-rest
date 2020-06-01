@@ -26,7 +26,7 @@ function listarCursosProfesor(personaSeleccionada) {
       } else {
         persona.cursos.forEach((curso) => {
           listaCursosProfesor.innerHTML += `
-            <li>
+            <li class="animated">
               ${curso.nombre}
               <i class="fas fa-trash" onclick='eliminarCurso(${persona.id},${curso.id},event)'></i>
             </li>`;
@@ -101,13 +101,12 @@ function asignarCurso(personaId, cursoId, event) {
      .then((response) => {
        let mensaje = response.data.informacion;
        alert(mensaje);
-       //BUG Al usar el evento añadimos el codigo html tambien en el listado de los cursos del profesor listarCursosProfesor(). Aunque no se sobreescriba de inmediato no es bonito
-       event.target.parentElement.parentElement.innerHTML = `
-                                  <a class="btn btn-info comprar-curso" href="#" role="button"
-                                  onClick="eliminarCurso( ${personaId}, ${cursoId}, event)">
-                                    <i class="fas fa-cart-plus fa-5x deep-orange-lighter-hover"></i>
-                                  </a>
-        `; 
+
+      console.log("Target Node: " + event.target.nodeName);
+      event.target.nodeName == "I"
+        ? event.target.parentElement.classList.add("btn-info")
+        : event.target.classList.add("btn-info");
+
       listarPersonas();
      })
      .catch((error) => {
@@ -122,19 +121,16 @@ function eliminarCurso(personaId, cursoId, event) {
   //let personaSeleccionado = personas.find((persona) => persona.id === personaId);
   //console.debug("curso eliminado del persona %o", personaSeleccionado);
   const url = profesoresApi + personaId + "/curso/" + cursoId;
+        // Cambio visual para mostrar que se ha seleccionado
+      // event.target.parentElement.parentElement.innerHTML = `
+
   axios
     .delete(url)
     .then((response) => {
       let mensaje = response.data.informacion;
       alert(mensaje);
-      // Cambio visual para mostrar que se ha seleccionado
-      event.target.parentElement.parentElement.innerHTML = `
-                                  <a class="btn btn-success comprar-curso" href="#" role="button"
-                                  >
-                                    <i class="fas fa-cart-plus fa-5x deep-orange-lighter-hover"></i>
-                                  </a>
-        `; 
-      //Pedimos los datos actualizados
+      // Indicación visual del borrado
+      event.target.parentElement.classList.add("slideOutRight");
       //TODO recibir el objeto directamente sin tener que buscarlo
       axios
         .get(profesoresApi)

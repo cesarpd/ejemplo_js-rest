@@ -59,21 +59,16 @@ function listarCursos(indice) {
                               <div class="col-md-8 grey lighten-4 rounded-left p-4 d-flex flex-row justify-content-start">
                                 
                                 <img src="img/cursos/undefined.jpg" class="img-fluid z-depth-1" width="90">
-                                <h2 class="font-weight-bold px-5">${
-                                  curso.nombre
-                                }</h2>
+                                <h2 class="font-weight-bold px-5">${curso.nombre}</h2>
                                 </div>
                               <div class="col-md-4 text-center py-4 d-flex flex-row justify-content-around">
                                 <div>
                                   <p class="h5 font-weight-light text-muted mb-0 mt-2">Precio</p>
-                                  <p class="h1 font-weight-normal">${
-                                    curso.precio
-                                  }€</p>
+                                  <p class="h1 font-weight-normal">${curso.precio}€</p>
                                 </div>
                                 <div>
-                                  <a class="btn btn-success comprar-curso" href="#" role="button"
-                                  onClick="asignarCurso( ${indice}, ${curso.id},event, '')">
-                                    <i class="fas fa-cart-plus fa-5x deep-orange-lighter-hover"></i>
+                                  <a class="btn btn-success comprar-curso" href="#" role="button" onClick="asignarCurso( ${indice}, ${curso.id},event)">
+                                    <i class="fas fa-cart-plus fa-5x deep-orange-lighter-hover" ></i>
                                   </a>
                                 </div>
                               </div>
@@ -102,12 +97,18 @@ function asignarCurso(personaId, cursoId, event) {
      .then((response) => {
        let mensaje = response.data.informacion;
        alert(mensaje);
-      event.target.parentElement.parentElement.innerHTML = `
-                                  <a class="btn btn-info comprar-curso" href="#" role="button"
-                                  onClick="eliminarCurso( ${personaId}, ${cursoId}, event)">
-                                    <i class="fas fa-cart-plus fa-5x deep-orange-lighter-hover"></i>
-                                  </a>
-        `; 
+      // event.target.parentElement.innerHTML = `
+      //                             <a class="btn btn-info comprar-curso" href="#" role="button"
+      //                             onClick="eliminarCurso( ${personaId}, ${cursoId}, event)">
+      //                               <i class="fas fa-cart-plus fa-5x deep-orange-lighter-hover"></i>
+      //                             </a>
+      //   `;
+      //event.stopPropagation();
+      console.log("Target Node: " + event.target.nodeName);
+      event.target.nodeName == "I"
+        ? event.target.parentElement.classList.add("btn-info")
+        : event.target.classList.add("btn-info");
+      
       listarAlumnos();
      })
      .catch((error) => {

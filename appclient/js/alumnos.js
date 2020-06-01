@@ -16,9 +16,12 @@ function listarAlumnos() {
     .get(alumnosApi)
     .then((response) => {
       console.info(response);
-
       aList.innerHTML = "";
       alumnos = response.data;
+      //TODO asignacion temporal, alumno tiene que ser persona en todo el documento
+      // Asignamos
+      personas = alumnos;
+
       alumnos.forEach((alumno) => {
         aList.innerHTML += `
       <div class="col-lg-4 col-sm-6 mb-5 px-5">
@@ -245,4 +248,54 @@ function eliminar(indice) {
         console.info(error.message);
       });
   }
+}
+/**
+ * Actualiza la vista de personas con el valor recibido del filtro
+ * @param {*} personas 
+ */
+function maquetarLista(personas) {
+  // Vaciamos la lista
+  console.debug(personas);
+  aList.innerHTML = "";
+  // Mensaje para el filtro sin resultado
+  if (Object.keys(personas).length == 0) {
+    aList.innerHTML = "No hay resultados que mostrar";
+  }
+  personas.forEach((persona) => {
+    aList.innerHTML += `
+      <div class="col-lg-4 col-sm-6 mb-5 px-5">
+         <div class="row d-flex align-items-center">
+          <div class="col-5 avatar w-100 white d-flex justify-content-center align-items-center">
+           <img src="${
+             persona.avatar
+           }" class="img-fluid rounded-circle z-depth-1" />
+          </div>
+         <div class="col-7">
+           <h3 class=" h5 font-weight-bold pt-2">${persona.nombre}</h3>
+        
+            <h6 class="font-weight-light py-0">
+            ${
+              persona.sexo == "h"
+                ? '<i class="fas fa-mars"></i><span> Hombre </span>'
+                : '<i class="fas fa-venus"></i><span> Mujer </span>'
+            } 
+            </h6>
+
+            <a class= "pr-2 pl-0"><i onclick= "eliminar(${
+              persona.id
+            })" class= "fas fa-ban"></i></a>
+
+            <a onclick="editarPersona(${
+              persona.id
+            })" class="pr-2 pl-0" data-toggle="modal" data-target="#formularioPersona"><i class="fas fa-edit"> </i></a>
+
+            <a onclick="listarCursos(${
+              persona.id
+            })" class="pr-2 pl-0" data-toggle="modal" data-target="#comprarCursos"><i class="fas fa-plus"> </i></a>
+
+            </div>
+          </div>
+        </div>
+     `;
+  }); // Fin de innerHTML
 }

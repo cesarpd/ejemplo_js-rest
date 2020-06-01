@@ -12,6 +12,7 @@ const cList = document.getElementById("clist");
 const acList = document.getElementById("aclist");
 
 let alumnos = [];
+let personas = [];
 let cursos = [];
 
 /**
@@ -21,6 +22,7 @@ window.addEventListener("load", init());
 
 function init() {
   console.debug("Document loaded...");
+  listener();
   listarAlumnos();
   initGallery();
 
