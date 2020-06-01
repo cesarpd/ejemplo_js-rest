@@ -12,12 +12,20 @@ __Para Alumnos__
 + Listar Alumnos 
 + Agregar Alumnos 
 + Eliminar Alumnos 
-+ Editar Alumnos 
++ Editar Alumnos
+
+__Para Profesor__
++ Listar Profesor 
++ Agregar Profesor 
++ Eliminar Profesor 
++ Editar Profesor 
 
 __Para Cursos__
 + Listar Cursos 
 + Asignar Cursos al Alumno 
 + Eliminar Cursos del Alumno 
++ Asignar Cursos al Profesor 
++ Eliminar Cursos del Profesor 
 
 ### Tags
 [ACTIVIDAD_16](https://github.com/cesarpd/ejemplo_js-rest/releases/tag/v1.1-beta.1 "Operaciones CRUD básicas para alumnos")
@@ -30,6 +38,8 @@ __Para Cursos__
 [v1.1-beta.1 - Operaciones CRUD básicas para alumnos y cursos](https://github.com/cesarpd/ejemplo_js-rest/releases/tag/v1.1-beta.1 "Operaciones CRUD básicas para alumnos y cursos")
 
 [v1.0 - Operaciones CRUD básicas para alumnos](https://github.com/cesarpd/ejemplo_js-rest/releases/tag/v1.0 "Operaciones CRUD básicas para alumnos")
+
+[v3.1 - Operaciones CRUD básicas para alumnos y profesores](https://github.com/cesarpd/ejemplo_js-rest/releases/tag/v3.1 "Operaciones CRUD básicas para alumnos y profesores")
 
 ## Estructura del proyecto
 
@@ -44,21 +54,27 @@ El proyecto utiliza __Java 1.8__ como lenguaje de servidor y __ECMAScript__ como
   Se requiere de un unico Framework como dependencia que a su vez utiliza varias librerias y frameworks para funcionar:
 
   ##### FRAMEWORK MAESTRO
-  [MATERIAL DESIGN BOOTSTRAP -- mdbootstrap.com](hhttps://mdbootstrap.com/docs/jquery/getting-started/installation-guide/ "mdbootstrap.com")
+  [MATERIAL DESIGN BOOTSTRAP -- mdbootstrap.com](https://mdbootstrap.com/docs/jquery/getting-started/installation-guide/ "mdbootstrap.com")
   
-
-  ###### LIBRIAS Y FRAMEWORKS INCLUIDAS
-  >./appclient/css/lib
+  ##### LIBRERIAS ADICIONALES
+  Se ha utilizado la libreria Axios (Promise based HTTP client for the browser and node.js)
+  [AXIOS](https://github.com/axios/axios "axios")
   
-  >./appclient/js/lib
+  ###### ESTRUCTURA
+  >./appclient/css/mdb
+  >./appclient/vendor/js/axios
+  >./appclient/vendor/js/mdb/lib
 
     ==================
+    * Axios          =
     * Bootstrap 4.0  =
     * Fontawesome    =
     * JQuery         =
     * popper         =
     * Datatables     =
     ...
+   
+   
      
   #### Configuración
   Se debe apuntar el cliente al servicio REST local cambiando la url al principio del documento main:
@@ -75,11 +91,12 @@ El proyecto utiliza __Java 1.8__ como lenguaje de servidor y __ECMAScript__ como
   >./appclient/scrpt-db.sql
 
 #### Detalle API rest
+##### Alumnos
   @GET ALL Personas (Alumnos)
-  > http://localhost:8080/com.apprest.ipartek.ejercicios/api/personas/
+  > http://localhost:8080/com.apprest.ipartek.ejercicios/api/personas/alumnos/
   
   @POST Personas (Alumnos)
-  > http://localhost:8080/com.apprest.ipartek.ejercicios/api/personas/
+  > http://localhost:8080/com.apprest.ipartek.ejercicios/api/personas/alumnos/
 
   ```javascript
     {
@@ -93,34 +110,67 @@ El proyecto utiliza __Java 1.8__ como lenguaje de servidor y __ECMAScript__ como
           "nombre": "Java",
           "imagen": "default.png",
           "precio": 100.0
-        },
-        {
-          "id": 2,
-          "nombre": "JavaScript",
-          "imagen": "default.png",
-          "precio": 45.0
+          "profesor": "Profe 1"
         }
       ]
     }
   ```
   @PUT Persona (Alumno)
-  > http://localhost:8080/com.apprest.ipartek.ejercicios/api/personas/${id}
+  > http://localhost:8080/com.apprest.ipartek.ejercicios/api/personas/alumnos/${id}
 
   @DELETE Persona (Alumno)
-  > http://localhost:8080/com.apprest.ipartek.ejercicios/api/personas/${id}
+  > http://localhost:8080/com.apprest.ipartek.ejercicios/api/personas/alumnos/${id}
 
   @GET ALL Cursos
   > http://localhost:8080/com.apprest.ipartek.ejercicios/api/cursos/
 
   @POST Curso en Persona (Alumno)
-  > http://localhost:8080/com.apprest.ipartek.ejercicios/api/personas/${idPersona}/curso/${idCurso}
+  > http://localhost:8080/com.apprest.ipartek.ejercicios/api/personas/alumnos/${idPersona}/curso/${idCurso}
 
   @DELETE Curso en Persona (Alumno)
-  > http://localhost:8080/com.apprest.ipartek.ejercicios/api/personas/${idPersona}/curso/${idCurso}
+  > http://localhost:8080/com.apprest.ipartek.ejercicios/api/personas/alumnos/${idPersona}/curso/${idCurso}
 
 
 
-
-
-
+##### Profesores
+  @GET ALL Personas (Profesores)
+  > http://localhost:8080/com.apprest.ipartek.ejercicios/api/personas/profesores/
   
+  @POST Personas (Profesores)
+  > http://localhost:8080/com.apprest.ipartek.ejercicios/api/personas/profesores/
+
+  ```javascript
+    {
+      "id": 1,
+      "nombre": "Nombre",
+      "avatar": "img/avatar1.png",
+      "sexo": "h",
+      "cursos": [
+        {
+          "id": 1,
+          "nombre": "Java",
+          "imagen": "default.png",
+          "precio": 100.0
+          "profesor": "Profe 1"
+        }
+      ]
+    }
+  ```
+  @PUT Persona (Profesor)
+  > http://localhost:8080/com.apprest.ipartek.ejercicios/api/personas/profesores/${id}
+
+  @DELETE Persona (Profesor)
+  > http://localhost:8080/com.apprest.ipartek.ejercicios/api/personas/profesores/${id}
+
+  @GET ALL Cursos
+  > http://localhost:8080/com.apprest.ipartek.ejercicios/api/cursos/
+
+  @POST Curso en Persona (Profesor)
+  > http://localhost:8080/com.apprest.ipartek.ejercicios/api/personas/profesores/${idPersona}/curso/${idCurso}
+
+  @DELETE Curso en Persona (Profesor)
+  > http://localhost:8080/com.apprest.ipartek.ejercicios/api/personas/profesores/${idPersona}/curso/${idCurso}
+
+  ##### Cursos
+  @GET ALL Cursos
+  > http://localhost:8080/com.apprest.ipartek.ejercicios/api/cursos/
