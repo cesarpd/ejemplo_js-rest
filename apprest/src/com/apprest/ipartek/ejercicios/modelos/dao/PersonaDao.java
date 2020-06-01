@@ -24,18 +24,24 @@ public class PersonaDao implements IDAO<Persona> {
 //			"FROM persona p LEFT JOIN persona_has_curso phc ON p.id = phc.persona_id \n" + 
 //			"LEFT JOIN curso c ON c.id = phc.curso_id LIMIT 500;";
 
-	private static String SQL_GET_ALL = "SELECT\n" + 
+	private static String SQL_GET_ALL = 
+			"SELECT\n" + 
 			"p.id as persona_id, p.nombre as persona_nombre, p.avatar as persona_avatar, p.sexo as persona_sexo, c.id as curso_id, c.nombre as curso_nombre, c.imagen as curso_imagen, c.precio as curso_precio, pr.nombre as curso_profesor\n" + 
 			"FROM persona p LEFT JOIN persona_has_curso phc ON p.id = phc.persona_id\n" + 
 			"LEFT JOIN curso c ON c.id = phc.curso_id \n" + 
-			"JOIN profesor_has_curso prhc ON prhc.curso_id = c.id\n" + 
-			"JOIN profesor pr ON prhc.profesor_id = pr.id\n" + 
+			"LEFT JOIN profesor_has_curso prhc ON prhc.curso_id = c.id\n" + 
+			"LEFT JOIN profesor pr ON prhc.profesor_id = pr.id\n" + 
 			"LIMIT 500;";
 	
 
-	private static String SQL_GET_BY_ID = "SELECT  p.id as persona_id, p.nombre as persona_nombre, p.avatar as persona_avatar, p.sexo as persona_sexo, c.id as curso_id, c.nombre as curso_nombre, c.imagen as curso_imagen, c.precio as curso_precio \n" + 
-			"			\"FROM persona p LEFT JOIN persona_has_curso phc ON p.id = phc.persona_id \\n\" + \n" + 
-			"			\"LEFT JOIN curso c ON c.id = phc.curso_id WHERE p.id = ?;";
+	private static String SQL_GET_BY_ID = 
+			"SELECT  \n" + 
+			"p.id as persona_id, p.nombre as persona_nombre, p.avatar as persona_avatar, p.sexo as persona_sexo, c.id as curso_id, c.nombre as curso_nombre, c.imagen as curso_imagen, c.precio as curso_precio, pr.nombre as curso_profesor\n" + 
+			"FROM persona p LEFT JOIN persona_has_curso phc ON p.id = phc.persona_id\n" + 
+			"LEFT JOIN curso c ON c.id = phc.curso_id " +
+			"LEFT JOIN profesor_has_curso prhc ON prhc.curso_id = c.id\n" + 
+			"LEFT JOIN profesor pr ON prhc.profesor_id = pr.id\n" + 
+			"WHERE p.id = ?;";
 
 	//CRUD
 	//private static String SQL_GET_ALL   = "SELECT id, nombre, avatar, sexo FROM persona ORDER BY id DESC LIMIT 500; ";
@@ -109,9 +115,9 @@ public class PersonaDao implements IDAO<Persona> {
 				HashMap<Integer, Persona> hmPersonas = new HashMap<Integer, Persona>();
 
 				if( rs.next() ) {					
-					mapper(rs, hmPersonas);					
+					registro = mapper(rs, hmPersonas);					
 					
-				}else {
+				} else {
 					throw new Exception("Registro no encontrado para id = " + id);
 				}
 			}
@@ -260,7 +266,7 @@ public class PersonaDao implements IDAO<Persona> {
 		return resul;
 	}
 	// Metodos
-	private void mapper(ResultSet rs, HashMap<Integer,Persona> hm) throws SQLException {
+	private Persona mapper(ResultSet rs, HashMap<Integer,Persona> hm) throws SQLException {
 		Integer key = rs.getInt("persona_id");
 		
 		Persona p = hm.get(key);
@@ -283,14 +289,15 @@ public class PersonaDao implements IDAO<Persona> {
 			c.setImagen(rs.getString("curso_imagen"));
 			c.setProfesor(rs.getString("curso_profesor"));
 			
-
 			p.getCursos().add(c);
-			LOGGER.warning(p.getCursos().toString());;
+			//LOGGER.warning(p.getCursos().toString());;
 
 		}	
 
 		//actualizar hashmap
 		hm.put(key, p);
+		
+		return p;
 		
 	}
 	

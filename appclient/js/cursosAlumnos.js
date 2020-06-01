@@ -1,6 +1,3 @@
-//BUG alumnoSeleccionado debe de actualizarse con un nueva consulta a la API. Asi se actualizaran los resultados
-//BUG El boton cerrar debe refrescar los datos o puede generar un error
-
 function listarCursosAlumno(alumnoSeleccionado){
   //let alumnoAeditar = alumnos.find((alumno) => alumno.id === alumnoSeleccionado.id);
   console.debug("AlumnoAeditar %o", alumnoSeleccionado);
@@ -8,22 +5,38 @@ function listarCursosAlumno(alumnoSeleccionado){
   // pintar cursos del alumno
   let listaCursosAlumno = document.getElementById("aclist");
   listaCursosAlumno.innerHTML = "";
-
-  if (alumnoSeleccionado.cursos.length === 0) {
-    listaCursosAlumno.innerHTML = `
-      <p>No tienes ningun curso.</p>
-      `;
-  } else {
-    //let alumnoAeditar = alumnos.find((alumno) => alumno.id === alumnoSeleccionado.id)
-
-    alumnoSeleccionado.cursos.forEach((curso) => {
-      listaCursosAlumno.innerHTML += `
-        <li>
-          ${curso.nombre} <small> ${curso.profesor}</small>
-          <i class="fas fa-trash" onclick='eliminarCurso(${alumnoSeleccionado.id},${curso.id},event)'></i>
-        </li>`;
-    });
-  }
+/**
+   * Volvemos a pedir los datos de los alumnos para poder mantener la funcionalidad 
+   * de Guardar y Cerrar
+   * De esta forma podemos eliminar cursos de forma dinámica pero deshacer la edicion de los 
+   * datos personales del alumno.
+   */
+  axios
+    .get(alumnosApi)
+    .then((response) => {
+      personas = response.data;
+      let persona = personas.find(
+        (persona) => persona.id === alumnoSeleccionado.id
+      );
+      if (persona.cursos.length === 0) {
+        listaCursosAlumno.innerHTML = `
+            <p>No tienes ningun curso.</p>
+            `;
+      } else {
+        persona.cursos.forEach((curso) => {
+          listaCursosAlumno.innerHTML += `
+            <li>
+              ${curso.nombre}
+              <i class="fas fa-trash" onclick='eliminarCurso(${persona.id},${curso.id},event)'></i>
+            </li>`;
+        });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      let mensaje = error.response.data.informacion;
+      alert(mensaje);
+    }); //Fin de GET;
 }
 
 function listarCursos(indice) {

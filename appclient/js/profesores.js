@@ -26,6 +26,13 @@ function listarPersonas() {
 }
 
 function maquetarLista(personas) {
+  // Vaciamos la lista
+  console.debug(personas)
+  aList.innerHTML='';
+  // Mensaje para el filtro sin resultado
+  if (Object.keys(personas).length == 0) {
+    aList.innerHTML = "No hay resultados que mostrar";
+  }
   personas.forEach((persona) => {
     aList.innerHTML += `
       <div class="col-lg-4 col-sm-6 mb-5 px-5">
