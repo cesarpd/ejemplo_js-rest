@@ -1,6 +1,3 @@
-
-//BUG El boton cerrar debe refrescar los datos o puede generar un error
-
 function listarCursosProfesor(personaSeleccionada) {
   //let alumnoAeditar = alumnos.find((alumno) => alumno.id === personaSeleccionada.id);
   console.debug("Persona a editar %o", personaSeleccionada);
